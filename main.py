@@ -29,7 +29,7 @@ AGENT_UUID = os.environ["AGENT_UUID"]
 DO_API_TOKEN = os.environ["DO_API_TOKEN"]
 AGENT_NAME = os.environ.get("AGENT_NAME", "Eden Klima Wissensassistent")
 DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
-SYSTEM_PROMPT = """Du bist der Eden Klima Wissensassistent.
+ASSISTANT_INSTRUCTIONS = """Du bist der Eden Klima Wissensassistent.
 Antworte immer auf Deutsch.
 Nutze technische Unterlagen und die Eden Klima Wissensdatenbank, wenn diese Informationen verfügbar sind.
 Wenn keine passende Quelle gefunden wird, sage das klar auf Deutsch und gib nur sichere, allgemeine Orientierung.
@@ -129,10 +129,12 @@ async def chat(request: Request):
     history = body.get("history", [])
 
     # Build OpenAI-compatible messages array.
-    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
+    # DigitalOcean agent deployments can return an empty response when a separate
+    # system role is sent, so the German guidance is attached to the user turn.
+    messages = []
     for h in history:
         messages.append({"role": h.get("role", "user"), "content": h.get("content", "")})
-    messages.append({"role": "user", "content": message})
+    messages.append({"role": "user", "content": f"{ASSISTANT_INSTRUCTIONS}\n\nFrage: {message}"})
 
     headers = {
         "Authorization": f"Bearer {AGENT_API_KEY}",
@@ -147,12 +149,29 @@ async def chat(request: Request):
     except Exception:
         return JSONResponse(status_code=resp.status_code, content={"error": resp.text})
 
-    # Extract the response text from OpenAI-compatible format.
+    # Extract the response text from common OpenAI-compatible and agent formats.
     content = ""
     if "choices" in data and len(data["choices"]) > 0:
         content = data["choices"][0].get("message", {}).get("content", "")
     elif "detail" in data:
-        content = f"Error: {data['detail']}"
+        content = f"Fehler: {data['detail']}"
+    else:
+        content = (
+            data.get("content")
+            or data.get("answer")
+            or data.get("response")
+            or data.get("text")
+            or data.get("message")
+            or data.get("error")
+            or ""
+        )
+
+    if not content:
+        logger.warning("Agent returned no response content. Response keys: %s", sorted(data.keys()))
+        content = (
+            "Der Wissensassistent hat keine verwertbare Antwort vom Agent-Dienst erhalten. "
+            "Bitte prüfen Sie die Agent-Logs, Guardrails und die Knowledge-Base-Konfiguration."
+        )
 
     sources = (
         data.get("sources")
