@@ -29,6 +29,12 @@ AGENT_UUID = os.environ["AGENT_UUID"]
 DO_API_TOKEN = os.environ["DO_API_TOKEN"]
 AGENT_NAME = os.environ.get("AGENT_NAME", "Eden Klima Wissensassistent")
 DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
+SYSTEM_PROMPT = """Du bist der Eden Klima Wissensassistent.
+Antworte immer auf Deutsch.
+Nutze technische Unterlagen und die Eden Klima Wissensdatenbank, wenn diese Informationen verfügbar sind.
+Wenn keine passende Quelle gefunden wird, sage das klar auf Deutsch und gib nur sichere, allgemeine Orientierung.
+Erfinde keine Herstellerangaben, Fehlercodes oder Wartungsanweisungen.
+Weise bei Arbeiten an Strom, Kältemittel oder sicherheitsrelevanten Bauteilen auf Fachtechniker hin."""
 
 # Populated at startup.
 AGENT_ENDPOINT = None
@@ -123,7 +129,7 @@ async def chat(request: Request):
     history = body.get("history", [])
 
     # Build OpenAI-compatible messages array.
-    messages = []
+    messages = [{"role": "system", "content": SYSTEM_PROMPT}]
     for h in history:
         messages.append({"role": h.get("role", "user"), "content": h.get("content", "")})
     messages.append({"role": "user", "content": message})
