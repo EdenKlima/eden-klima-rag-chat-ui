@@ -1,0 +1,606 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>{{AGENT_NAME}}</title>
+  <style>
+    :root {
+      --eden-blue: #066aab;
+      --eden-blue-dark: #044f80;
+      --eden-blue-light: #e6f3fb;
+      --eden-ink: #173044;
+      --eden-muted: #647487;
+      --eden-line: #d8e3eb;
+      --eden-surface: #ffffff;
+      --eden-bg: #f5f8fa;
+      --eden-warm: #f5b642;
+      --eden-danger-bg: #fff1f0;
+      --eden-danger: #9f1d16;
+      --radius: 8px;
+      --shadow: 0 10px 26px rgba(23, 48, 68, 0.08);
+    }
+
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      min-height: 100vh;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      background:
+        linear-gradient(180deg, rgba(6, 106, 171, 0.08), rgba(245, 248, 250, 0) 280px),
+        var(--eden-bg);
+      color: var(--eden-ink);
+      font-family: Inter, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+    }
+
+    header {
+      height: 58px;
+      padding: 0 20px;
+      flex-shrink: 0;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      background: var(--eden-surface);
+      border-bottom: 1px solid var(--eden-line);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      min-width: 0;
+    }
+
+    .brand-mark {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      color: #ffffff;
+      background: var(--eden-blue);
+      font-weight: 800;
+      letter-spacing: 0;
+      flex: 0 0 auto;
+    }
+
+    .brand-copy { min-width: 0; }
+    .brand-title {
+      font-size: 15px;
+      line-height: 1.2;
+      font-weight: 800;
+      color: var(--eden-ink);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .brand-subline {
+      margin-top: 2px;
+      font-size: 12px;
+      color: var(--eden-muted);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+
+    .service-pill {
+      padding: 6px 10px;
+      border: 1px solid rgba(6, 106, 171, 0.18);
+      border-radius: 999px;
+      color: var(--eden-blue);
+      background: var(--eden-blue-light);
+      font-size: 12px;
+      font-weight: 700;
+      white-space: nowrap;
+    }
+
+    .chat-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 28px 16px;
+    }
+
+    .chat-inner {
+      width: min(820px, 100%);
+      margin: 0 auto;
+    }
+
+    .empty-state {
+      padding: clamp(20px, 7vh, 64px) 0 24px;
+      text-align: center;
+    }
+
+    .empty-icon {
+      width: 68px;
+      height: 68px;
+      margin: 0 auto 18px;
+      border-radius: 18px;
+      display: grid;
+      place-items: center;
+      background: var(--eden-blue);
+      color: #ffffff;
+      box-shadow: 0 18px 34px rgba(6, 106, 171, 0.22);
+    }
+    .empty-icon svg { width: 34px; height: 34px; fill: currentColor; }
+
+    h1 {
+      font-size: clamp(30px, 6vw, 48px);
+      line-height: 1.04;
+      letter-spacing: 0;
+      max-width: 760px;
+      margin: 0 auto 12px;
+    }
+
+    .subtitle {
+      max-width: 640px;
+      margin: 0 auto 22px;
+      color: var(--eden-muted);
+      font-size: clamp(15px, 2.8vw, 18px);
+      line-height: 1.55;
+    }
+
+    .safety-note {
+      max-width: 760px;
+      margin: 0 auto 24px;
+      padding: 14px 16px;
+      border: 1px solid rgba(245, 182, 66, 0.55);
+      border-left: 4px solid var(--eden-warm);
+      border-radius: var(--radius);
+      background: #fffaf0;
+      color: #60440b;
+      text-align: left;
+      font-size: 13px;
+      line-height: 1.5;
+    }
+
+    .prompts-label {
+      margin-bottom: 10px;
+      color: var(--eden-blue);
+      font-size: 12px;
+      font-weight: 800;
+      text-transform: uppercase;
+      letter-spacing: 0.08em;
+    }
+
+    .prompts {
+      display: grid;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 10px;
+      max-width: 760px;
+      margin: 0 auto;
+    }
+
+    .prompt-btn {
+      min-height: 48px;
+      padding: 12px 14px;
+      border: 1px solid var(--eden-line);
+      border-radius: var(--radius);
+      background: var(--eden-surface);
+      color: var(--eden-ink);
+      box-shadow: 0 4px 12px rgba(23, 48, 68, 0.05);
+      cursor: pointer;
+      font: inherit;
+      font-size: 14px;
+      line-height: 1.35;
+      text-align: left;
+      transition: border-color 0.15s ease, box-shadow 0.15s ease, transform 0.15s ease;
+    }
+    .prompt-btn:hover,
+    .prompt-btn:focus-visible {
+      border-color: var(--eden-blue);
+      box-shadow: 0 10px 24px rgba(6, 106, 171, 0.13);
+      outline: none;
+      transform: translateY(-1px);
+    }
+
+    .message {
+      display: flex;
+      gap: 12px;
+      margin-bottom: 18px;
+      animation: fadeIn 0.2s ease;
+    }
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(4px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    .message.user { flex-direction: row-reverse; }
+
+    .avatar {
+      width: 34px;
+      height: 34px;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      font-size: 12px;
+      font-weight: 800;
+    }
+    .message.assistant .avatar { background: var(--eden-blue); color: #ffffff; }
+    .message.user .avatar { background: #dfe8ef; color: var(--eden-ink); }
+
+    .bubble {
+      max-width: min(680px, 82%);
+      padding: 13px 15px;
+      border-radius: var(--radius);
+      font-size: 15px;
+      line-height: 1.6;
+      white-space: pre-wrap;
+      overflow-wrap: anywhere;
+    }
+    .message.user .bubble {
+      background: var(--eden-blue);
+      color: #ffffff;
+      border-bottom-right-radius: 3px;
+    }
+    .message.assistant .bubble {
+      background: var(--eden-surface);
+      border: 1px solid var(--eden-line);
+      border-bottom-left-radius: 3px;
+      box-shadow: var(--shadow);
+    }
+    .error-bubble {
+      background: var(--eden-danger-bg) !important;
+      border-color: #ffc8c4 !important;
+      color: var(--eden-danger) !important;
+    }
+
+    .answer-actions {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      margin-top: 14px;
+      padding-top: 12px;
+      border-top: 1px solid var(--eden-line);
+    }
+    .answer-actions a {
+      padding: 8px 10px;
+      border-radius: 6px;
+      color: var(--eden-blue);
+      background: var(--eden-blue-light);
+      font-size: 13px;
+      font-weight: 800;
+      text-decoration: none;
+    }
+    .answer-actions a:hover,
+    .answer-actions a:focus-visible {
+      background: var(--eden-blue);
+      color: #ffffff;
+      outline: none;
+    }
+
+    .sources {
+      margin-top: 12px;
+      padding-top: 10px;
+      border-top: 1px solid var(--eden-line);
+      color: var(--eden-muted);
+      font-size: 12px;
+      white-space: normal;
+    }
+    .sources strong { color: var(--eden-ink); }
+    .sources ul { margin: 6px 0 0 18px; }
+    .sources li { margin-top: 4px; }
+
+    .typing-dots {
+      display: inline-flex;
+      gap: 4px;
+      padding: 5px 0;
+    }
+    .typing-dots span {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: #9cb3c3;
+      animation: typingBounce 1.2s ease infinite;
+    }
+    .typing-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .typing-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes typingBounce {
+      0%, 60%, 100% { transform: translateY(0); }
+      30% { transform: translateY(-4px); }
+    }
+
+    .input-area {
+      flex-shrink: 0;
+      padding: 14px 16px 16px;
+      border-top: 1px solid var(--eden-line);
+      background: rgba(255, 255, 255, 0.94);
+      backdrop-filter: blur(10px);
+    }
+    .input-inner {
+      width: min(820px, 100%);
+      margin: 0 auto;
+    }
+    .composer {
+      display: flex;
+      align-items: flex-end;
+      gap: 10px;
+      padding: 8px;
+      border: 1px solid var(--eden-line);
+      border-radius: 12px;
+      background: var(--eden-surface);
+      box-shadow: 0 8px 22px rgba(23, 48, 68, 0.09);
+    }
+    textarea {
+      width: 100%;
+      min-height: 44px;
+      max-height: 150px;
+      padding: 11px 10px;
+      border: 0;
+      outline: none;
+      resize: none;
+      color: var(--eden-ink);
+      background: transparent;
+      font: inherit;
+      font-size: 15px;
+      line-height: 1.45;
+    }
+    textarea::placeholder { color: #8fa2b1; }
+    .composer:focus-within {
+      border-color: var(--eden-blue);
+      box-shadow: 0 0 0 4px rgba(6, 106, 171, 0.13), 0 8px 22px rgba(23, 48, 68, 0.09);
+    }
+
+    .send-btn {
+      width: 44px;
+      height: 44px;
+      border: 0;
+      border-radius: 8px;
+      display: grid;
+      place-items: center;
+      flex: 0 0 auto;
+      background: var(--eden-blue);
+      color: #ffffff;
+      cursor: pointer;
+      transition: background 0.15s ease, transform 0.15s ease;
+    }
+    .send-btn:hover { background: var(--eden-blue-dark); transform: translateY(-1px); }
+    .send-btn:disabled { background: #b7c7d3; cursor: not-allowed; transform: none; }
+    .send-btn svg { width: 19px; height: 19px; fill: currentColor; }
+
+    .input-hint {
+      margin-top: 7px;
+      color: var(--eden-muted);
+      font-size: 12px;
+      text-align: center;
+    }
+
+    @media (max-width: 680px) {
+      body { height: 100svh; }
+      header {
+        height: auto;
+        min-height: 58px;
+        padding: 10px 14px;
+      }
+      .service-pill { display: none; }
+      .brand-title { font-size: 14px; }
+      .brand-subline { font-size: 11px; }
+      .chat-container { padding: 18px 12px; }
+      .empty-state { padding-top: 18px; }
+      .empty-icon {
+        width: 56px;
+        height: 56px;
+        border-radius: 14px;
+      }
+      .empty-icon svg { width: 28px; height: 28px; }
+      .prompts { grid-template-columns: 1fr; }
+      .prompt-btn { min-height: 44px; }
+      .message { gap: 8px; }
+      .avatar { width: 30px; height: 30px; font-size: 11px; }
+      .bubble {
+        max-width: calc(100% - 38px);
+        font-size: 14px;
+        padding: 11px 12px;
+      }
+      .input-area { padding: 10px 10px 12px; }
+      .composer { border-radius: 10px; gap: 6px; }
+      textarea { font-size: 16px; }
+    }
+  </style>
+</head>
+<body>
+  <header>
+    <div class="brand" aria-label="Eden Klima">
+      <div class="brand-mark">EK</div>
+      <div class="brand-copy">
+        <div class="brand-title">Eden Klima</div>
+        <div class="brand-subline">Wissensassistent für Klima- und Kältetechnik</div>
+      </div>
+    </div>
+    <div class="service-pill">Klimaanlagen · Wärmepumpen · Wartung</div>
+  </header>
+
+  <main class="chat-container" id="chat">
+    <div class="chat-inner" id="chatInner">
+      <section class="empty-state" id="empty">
+        <div class="empty-icon" aria-hidden="true">
+          <svg viewBox="0 0 24 24"><path d="M19 2H5a3 3 0 0 0-3 3v14a3 3 0 0 0 3 3h14a3 3 0 0 0 3-3V5a3 3 0 0 0-3-3Zm-7 17a7 7 0 1 1 7-7 7.01 7.01 0 0 1-7 7Zm0-12a5 5 0 0 0-5 5h2a3 3 0 0 1 3-3V7Zm4.58 4H14.5a2.5 2.5 0 0 1-2.5 2.5V16a5 5 0 0 0 4.58-5Z"/></svg>
+        </div>
+        <h1>Eden Klima Wissensassistent</h1>
+        <p class="subtitle">Antworten auf Basis technischer Unterlagen und Eden Klima Wissensdatenbank</p>
+
+        <p class="safety-note">
+          Hinweis: Der Assistent ersetzt keine fachgerechte Prüfung vor Ort. Arbeiten an Strom, Kältemittel oder sicherheitsrelevanten Bauteilen dürfen nur von Fachtechnikern durchgeführt werden.
+        </p>
+
+        <div class="prompts-label">Beispielfragen</div>
+        <div class="prompts">
+          <button class="prompt-btn" onclick="usePrompt(this)">Was bedeutet der Fehler E554?</button>
+          <button class="prompt-btn" onclick="usePrompt(this)">Wie lade ich die Samsung Solar-Fernbedienung?</button>
+          <button class="prompt-btn" onclick="usePrompt(this)">Was kann ich tun, wenn die Klimaanlage nicht kühlt?</button>
+          <button class="prompt-btn" onclick="usePrompt(this)">Wie oft sollte eine Klimaanlage gewartet werden?</button>
+        </div>
+      </section>
+    </div>
+  </main>
+
+  <div class="input-area">
+    <div class="input-inner">
+      <div class="composer">
+        <textarea id="input" rows="1" placeholder="Frage zu Klimaanlage, Wärmepumpe, Wartung oder Störung stellen..." autofocus></textarea>
+        <button class="send-btn" id="send" onclick="sendMessage()" title="Nachricht senden" aria-label="Nachricht senden">
+          <svg viewBox="0 0 24 24"><path d="M2.01 21 23 12 2.01 3 2 10l15 2-15 2z"/></svg>
+        </button>
+      </div>
+      <div class="input-hint">Enter sendet die Nachricht, Umschalt+Enter fügt eine neue Zeile ein.</div>
+    </div>
+  </div>
+
+  <script>
+    const chatInner = document.getElementById('chatInner');
+    const chatContainer = document.getElementById('chat');
+    const textarea = document.getElementById('input');
+    const sendBtn = document.getElementById('send');
+    let history = [];
+
+    textarea.addEventListener('input', function() {
+      this.style.height = 'auto';
+      this.style.height = Math.min(this.scrollHeight, 150) + 'px';
+    });
+
+    textarea.addEventListener('keydown', function(e) {
+      if (e.key === 'Enter' && !e.shiftKey) {
+        e.preventDefault();
+        sendMessage();
+      }
+    });
+
+    function usePrompt(btn) {
+      textarea.value = btn.textContent;
+      textarea.focus();
+      sendMessage();
+    }
+
+    async function sendMessage() {
+      const message = textarea.value.trim();
+      if (!message) return;
+
+      const empty = document.getElementById('empty');
+      if (empty) empty.remove();
+
+      appendMessage('user', message);
+      history.push({ role: 'user', content: message });
+
+      textarea.value = '';
+      textarea.style.height = 'auto';
+      sendBtn.disabled = true;
+
+      const typingEl = appendTyping();
+
+      try {
+        const res = await fetch('/api/chat', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ message, history: history.slice(0, -1) }),
+        });
+        const data = await res.json();
+        const content = data.content || data.error || 'Keine Antwort erhalten.';
+        const isError = !!data.error || res.status >= 400;
+
+        typingEl.remove();
+        appendMessage('assistant', content, isError, data.sources);
+        history.push({ role: 'assistant', content });
+      } catch (err) {
+        typingEl.remove();
+        appendMessage('assistant', 'Verbindungsfehler: ' + err.message, true);
+      }
+
+      sendBtn.disabled = false;
+      textarea.focus();
+    }
+
+    function appendMessage(role, text, isError, sources) {
+      const div = document.createElement('div');
+      div.className = 'message ' + role;
+
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = role === 'user' ? 'DU' : 'EK';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble' + (isError ? ' error-bubble' : '');
+      bubble.textContent = text;
+
+      if (role === 'assistant' && !isError) {
+        appendSources(bubble, sources);
+        appendAnswerActions(bubble);
+      }
+
+      div.appendChild(avatar);
+      div.appendChild(bubble);
+      chatInner.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      return div;
+    }
+
+    function appendAnswerActions(parent) {
+      const actions = document.createElement('div');
+      actions.className = 'answer-actions';
+
+      const maintenance = document.createElement('a');
+      maintenance.href = '#wartung-anfragen';
+      maintenance.textContent = 'Wartung anfragen';
+
+      const repair = document.createElement('a');
+      repair.href = '#reparatur-anfragen';
+      repair.textContent = 'Reparatur anfragen';
+
+      actions.appendChild(maintenance);
+      actions.appendChild(repair);
+      parent.appendChild(actions);
+    }
+
+    function appendSources(parent, sources) {
+      const normalized = normalizeSources(sources);
+      if (!normalized.length) return;
+
+      const wrapper = document.createElement('div');
+      wrapper.className = 'sources';
+      const title = document.createElement('strong');
+      title.textContent = 'Quellen';
+      const list = document.createElement('ul');
+
+      normalized.slice(0, 5).forEach((source) => {
+        const item = document.createElement('li');
+        item.textContent = source;
+        list.appendChild(item);
+      });
+
+      wrapper.appendChild(title);
+      wrapper.appendChild(list);
+      parent.appendChild(wrapper);
+    }
+
+    function normalizeSources(sources) {
+      if (!sources) return [];
+      const raw = Array.isArray(sources) ? sources : [sources];
+      return raw.map((source) => {
+        if (typeof source === 'string') return source;
+        if (!source || typeof source !== 'object') return '';
+        return source.title || source.name || source.file_name || source.filename || source.url || JSON.stringify(source);
+      }).filter(Boolean);
+    }
+
+    function appendTyping() {
+      const div = document.createElement('div');
+      div.className = 'message assistant';
+
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      avatar.textContent = 'EK';
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+      bubble.innerHTML = '<div class="typing-dots" aria-label="Antwort wird erstellt"><span></span><span></span><span></span></div>';
+
+      div.appendChild(avatar);
+      div.appendChild(bubble);
+      chatInner.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      return div;
+    }
+  </script>
+</body>
+</html>
