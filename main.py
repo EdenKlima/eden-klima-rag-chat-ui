@@ -33,6 +33,7 @@ DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
 # Populated at startup.
 AGENT_ENDPOINT = None
 AGENT_API_KEY = None
+DISCOVERY_ERROR = None
 
 # Serve the static HTML chat page.
 INDEX_HTML = (Path(__file__).parent / "static" / "index.html").read_text()
@@ -79,7 +80,13 @@ def _discover_agent():
 
 @app.on_event("startup")
 async def startup_event():
-    _discover_agent()
+    global DISCOVERY_ERROR
+    try:
+        _discover_agent()
+        DISCOVERY_ERROR = None
+    except Exception as exc:
+        DISCOVERY_ERROR = str(exc)
+        logger.exception("Agent discovery failed; chat endpoint will report not ready")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -90,14 +97,27 @@ async def index():
 
 @app.get("/health")
 async def health():
-    return {"status": "ok", "agent_ready": AGENT_ENDPOINT is not None}
+    return {
+        "status": "ok",
+        "agent_ready": AGENT_ENDPOINT is not None and AGENT_API_KEY is not None,
+        "agent_error": DISCOVERY_ERROR,
+    }
 
 
 @app.post("/api/chat")
 async def chat(request: Request):
     """Proxy a chat message to the managed agent and return the response."""
     if not AGENT_ENDPOINT or not AGENT_API_KEY:
-        return JSONResponse(status_code=503, content={"error": "Agent not ready"})
+        return JSONResponse(
+            status_code=503,
+            content={
+                "error": (
+                    "Der Wissensassistent ist noch nicht bereit. "
+                    "Bitte pruefen Sie AGENT_UUID, DO_API_TOKEN und die Berechtigungen des DigitalOcean API Tokens."
+                ),
+                "details": DISCOVERY_ERROR,
+            },
+        )
 
     body = await request.json()
     message = body.get("message", "")
