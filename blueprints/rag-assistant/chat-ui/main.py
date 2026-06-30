@@ -109,11 +109,10 @@ async def chat(request: Request):
     """Proxy a chat message to the managed agent and return the response."""
     if not AGENT_ENDPOINT or not AGENT_API_KEY:
         return JSONResponse(
-            status_code=503,
             content={
                 "error": (
                     "Der Wissensassistent ist noch nicht bereit. "
-                    "Bitte pruefen Sie AGENT_UUID, DO_API_TOKEN und die Berechtigungen des DigitalOcean API Tokens."
+                    "Bitte prüfen Sie AGENT_UUID, DO_API_TOKEN und die Berechtigungen des DigitalOcean API Tokens."
                 ),
                 "details": DISCOVERY_ERROR,
             },
