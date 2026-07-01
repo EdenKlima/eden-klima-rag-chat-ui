@@ -14,6 +14,7 @@ Environment variables (injected by terraform via App Platform):
 import logging
 import os
 import sys
+import time
 from pathlib import Path
 
 import httpx
@@ -29,6 +30,20 @@ AGENT_UUID = os.environ.get("AGENT_UUID", "")
 DO_API_TOKEN = os.environ["DO_API_TOKEN"]
 AGENT_NAME = os.environ.get("AGENT_NAME", "Eden Klima Wissensassistent")
 DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
+DO_STATUS_URL = os.environ.get("DO_STATUS_URL", "https://status.digitalocean.com/api/v2/summary.json")
+DO_STATUS_CACHE_SECONDS = 60
+MAINTENANCE_MESSAGE = (
+    "Der Wissensassistent ist aktuell wegen einer technischen Störung beim KI-Dienst eingeschränkt. "
+    "Bitte versuchen Sie es später erneut."
+)
+DO_RELEVANT_COMPONENTS = {
+    "Agentic Inference Cloud",
+    "Agent Runtime",
+    "Knowledge Bases",
+    "Model Services",
+    "Guardrails",
+    "Inference",
+}
 ASSISTANT_INSTRUCTIONS = """Du bist der Eden Klima Wissensassistent.
 Antworte immer auf Deutsch.
 Nutze technische Unterlagen und die Eden Klima Wissensdatenbank, wenn diese Informationen verfügbar sind.
@@ -40,6 +55,7 @@ Weise bei Arbeiten an Strom, Kältemittel oder sicherheitsrelevanten Bauteilen a
 AGENT_ENDPOINT = None
 AGENT_API_KEY = None
 DISCOVERY_ERROR = None
+PROVIDER_STATUS_CACHE = {"checked_at": 0.0, "degraded": False, "components": []}
 
 # Serve the static HTML chat page.
 INDEX_HTML = (Path(__file__).parent / "static" / "index.html").read_text()
@@ -106,16 +122,30 @@ async def index():
 
 @app.get("/health")
 async def health():
+    provider_status = await _get_provider_status()
     return {
         "status": "ok",
         "agent_ready": AGENT_ENDPOINT is not None and AGENT_API_KEY is not None,
         "agent_error": DISCOVERY_ERROR,
+        "provider_degraded": provider_status["degraded"],
+        "provider_components": provider_status["components"],
     }
 
 
 @app.post("/api/chat")
 async def chat(request: Request):
     """Proxy a chat message to the managed agent and return the response."""
+    provider_status = await _get_provider_status()
+    if provider_status["degraded"]:
+        logger.warning("Provider degraded, skipping agent request. Components: %s", provider_status["components"])
+        return JSONResponse(
+            content={
+                "content": MAINTENANCE_MESSAGE,
+                "maintenance": True,
+                "provider_components": provider_status["components"],
+            },
+        )
+
     if not AGENT_ENDPOINT or not AGENT_API_KEY:
         return JSONResponse(
             content={
@@ -177,6 +207,42 @@ async def chat(request: Request):
     sources = _extract_sources(data)
 
     return JSONResponse(content={"content": content, "usage": data.get("usage"), "sources": sources})
+
+
+async def _get_provider_status():
+    now = time.monotonic()
+    if now - PROVIDER_STATUS_CACHE["checked_at"] < DO_STATUS_CACHE_SECONDS:
+        return PROVIDER_STATUS_CACHE
+
+    degraded = False
+    degraded_components = []
+    try:
+        async with httpx.AsyncClient(timeout=5.0, headers={"User-Agent": "eden-klima-rag-chat-ui"}) as client:
+            resp = await client.get(DO_STATUS_URL)
+            resp.raise_for_status()
+            data = resp.json()
+
+        for component in data.get("components", []):
+            name = component.get("name", "")
+            status = component.get("status", "operational")
+            description = component.get("description") or ""
+            component_text = f"{name} {description}".lower()
+            is_relevant = name in DO_RELEVANT_COMPONENTS or any(
+                term.lower() in component_text for term in DO_RELEVANT_COMPONENTS
+            )
+            if is_relevant and status != "operational":
+                degraded = True
+                degraded_components.append({"name": name, "status": status})
+
+    except Exception:
+        logger.exception("Could not check DigitalOcean provider status; continuing with normal chat flow")
+        degraded = False
+        degraded_components = []
+
+    PROVIDER_STATUS_CACHE.update(
+        {"checked_at": now, "degraded": degraded, "components": degraded_components}
+    )
+    return PROVIDER_STATUS_CACHE
 
 
 def _extract_content(data):

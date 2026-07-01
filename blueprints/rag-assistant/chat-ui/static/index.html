@@ -580,7 +580,7 @@
         const isError = !!data.error || res.status >= 400;
 
         typingEl.remove();
-        appendMessage('assistant', content, isError, data.sources);
+        appendMessage('assistant', content, isError, data.sources, { maintenance: !!data.maintenance });
         history.push({ role: 'assistant', content });
       } catch (err) {
         typingEl.remove();
@@ -593,7 +593,7 @@
       textarea.focus();
     }
 
-    function appendMessage(role, text, isError, sources) {
+    function appendMessage(role, text, isError, sources, options = {}) {
       const div = document.createElement('div');
       div.className = 'message ' + role;
 
@@ -616,7 +616,7 @@
         bubble.textContent = text;
       }
 
-      if (role === 'assistant' && !isError) {
+      if (role === 'assistant' && !isError && !options.maintenance) {
         appendSources(bubble, sources);
         appendAnswerActions(bubble);
       }
