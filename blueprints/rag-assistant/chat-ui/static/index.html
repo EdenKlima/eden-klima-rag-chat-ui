@@ -630,6 +630,7 @@
       const html = [];
       let paragraph = [];
       let listType = null;
+      let orderedCounter = 0;
 
       const flushParagraph = () => {
         if (!paragraph.length) return;
@@ -650,7 +651,7 @@
           return;
         }
 
-        const ordered = trimmed.match(/^\d+\.\s+(.*)$/);
+        const ordered = trimmed.match(/^(\d+)\.\s+(.*)$/);
         const unordered = trimmed.match(/^[-*]\s+(.*)$/);
 
         if (ordered || unordered) {
@@ -659,9 +660,19 @@
           if (listType && listType !== nextType) closeList();
           if (!listType) {
             listType = nextType;
-            html.push('<' + listType + '>');
+            if (ordered) {
+              const parsedNumber = Number(ordered[1]);
+              const startNumber = parsedNumber === 1 && orderedCounter > 0 ? orderedCounter + 1 : parsedNumber;
+              orderedCounter = startNumber;
+              html.push('<ol start="' + startNumber + '">');
+            } else {
+              html.push('<ul>');
+            }
+          } else if (ordered) {
+            const parsedNumber = Number(ordered[1]);
+            orderedCounter = parsedNumber === 1 && orderedCounter > 0 ? orderedCounter + 1 : parsedNumber;
           }
-          html.push('<li>' + formatInline((ordered || unordered)[1]) + '</li>');
+          html.push('<li>' + formatInline(ordered ? ordered[2] : unordered[1]) + '</li>');
           return;
         }
 
