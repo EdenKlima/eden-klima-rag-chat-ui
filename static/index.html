@@ -295,22 +295,42 @@
       margin-top: 14px;
       padding-top: 12px;
       border-top: 1px solid var(--eden-line);
+      align-items: center;
     }
+    .answer-actions-title {
+      flex: 1 0 100%;
+      color: var(--eden-ink);
+      font-size: 13px;
+      font-weight: 800;
+    }
+    .answer-actions button,
     .answer-actions a {
       padding: 8px 10px;
+      border: 0;
       border-radius: 6px;
       color: var(--eden-blue);
       background: var(--eden-blue-light);
+      cursor: pointer;
+      font-family: inherit;
       font-size: 13px;
       font-weight: 800;
       text-decoration: none;
     }
+    .answer-actions button:hover,
+    .answer-actions button:focus-visible,
     .answer-actions a:hover,
     .answer-actions a:focus-visible {
       background: var(--eden-blue);
       color: #ffffff;
       outline: none;
     }
+    .answer-feedback {
+      flex: 1 0 100%;
+      color: var(--eden-muted);
+      font-size: 13px;
+      line-height: 1.45;
+    }
+    .answer-feedback strong { color: var(--eden-ink); }
 
     .sources {
       margin-top: 12px;
@@ -606,13 +626,49 @@
       const actions = document.createElement('div');
       actions.className = 'answer-actions';
 
-      const maintenance = document.createElement('a');
-      maintenance.href = 'https://www.eden-klima.at/klimaanlagen-wartung/preisrechner/';
-      maintenance.target = '_blank';
-      maintenance.rel = 'noopener noreferrer';
-      maintenance.textContent = 'Wartung oder Reparatur anfragen';
+      const title = document.createElement('div');
+      title.className = 'answer-actions-title';
+      title.textContent = 'Hat das Ihr Problem gelöst?';
 
-      actions.appendChild(maintenance);
+      const yes = document.createElement('button');
+      yes.type = 'button';
+      yes.textContent = 'Ja';
+
+      const no = document.createElement('button');
+      no.type = 'button';
+      no.textContent = 'Nein';
+
+      const feedback = document.createElement('div');
+      feedback.className = 'answer-feedback';
+
+      yes.addEventListener('click', () => {
+        yes.disabled = true;
+        no.disabled = true;
+        feedback.textContent = 'Großartig, ich freue mich, dass ich Ihnen heute helfen konnte.';
+      });
+
+      no.addEventListener('click', () => {
+        yes.disabled = true;
+        no.disabled = true;
+        feedback.innerHTML = '';
+
+        const suggestion = document.createElement('p');
+        suggestion.innerHTML = '<strong>Nächster Schritt:</strong> Prüfen Sie bitte, ob der Fehler nach einem Neustart weiterhin auftritt, notieren Sie den Fehlercode und halten Sie nach Möglichkeit Modellbezeichnung oder ein Foto vom Display bereit.';
+
+        const maintenance = document.createElement('a');
+        maintenance.href = 'https://www.eden-klima.at/klimaanlagen-wartung/preisrechner/';
+        maintenance.target = '_blank';
+        maintenance.rel = 'noopener noreferrer';
+        maintenance.textContent = 'Wartung oder Reparatur anfragen';
+
+        feedback.appendChild(suggestion);
+        feedback.appendChild(maintenance);
+      });
+
+      actions.appendChild(title);
+      actions.appendChild(yes);
+      actions.appendChild(no);
+      actions.appendChild(feedback);
       parent.appendChild(actions);
     }
 
