@@ -25,10 +25,11 @@ logger = logging.getLogger("chat-ui")
 
 app = FastAPI(title="Eden Klima Wissensassistent")
 
-AGENT_UUID = os.environ["AGENT_UUID"]
+AGENT_UUID = os.environ.get("AGENT_UUID", "")
 DO_API_TOKEN = os.environ["DO_API_TOKEN"]
 AGENT_NAME = os.environ.get("AGENT_NAME", "Eden Klima Wissensassistent")
 DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
+DEBUG_UI = os.environ.get("DEBUG_UI", "").lower() in {"1", "true", "yes", "on"}
 ASSISTANT_INSTRUCTIONS = """Du bist der Eden Klima Wissensassistent.
 Antworte immer auf Deutsch.
 Nutze technische Unterlagen und die Eden Klima Wissensdatenbank, wenn diese Informationen verfügbar sind.
@@ -52,6 +53,9 @@ def _do_headers():
 def _discover_agent():
     """Fetch agent details from the DO API to get the deployment URL and API key."""
     global AGENT_ENDPOINT, AGENT_API_KEY
+
+    if not AGENT_UUID:
+        raise RuntimeError("AGENT_UUID is not configured")
 
     logger.info("Discovering agent %s ...", AGENT_UUID)
     with httpx.Client(timeout=30.0) as client:
@@ -136,48 +140,113 @@ async def chat(request: Request):
         messages.append({"role": h.get("role", "user"), "content": h.get("content", "")})
     messages.append({"role": "user", "content": f"{ASSISTANT_INSTRUCTIONS}\n\nFrage: {message}"})
 
+    logger.info(
+        "Sending request to agent: message_count=%s last_user_message=%r agent_uuid_present=%s",
+        len(messages),
+        message[-500:],
+        bool(AGENT_UUID),
+    )
+
     headers = {
         "Authorization": f"Bearer {AGENT_API_KEY}",
         "Content-Type": "application/json",
     }
 
-    async with httpx.AsyncClient(timeout=120.0) as client:
-        resp = await client.post(AGENT_ENDPOINT, json={"messages": messages}, headers=headers)
+    agent_payload = {
+        "messages": messages,
+        "include_retrieval_info": True,
+        "include_guardrails_info": True,
+        "stream": False,
+    }
+
+    async with httpx.AsyncClient(timeout=90.0) as client:
+        resp = await client.post(AGENT_ENDPOINT, json=agent_payload, headers=headers)
+
+    logger.info("Agent response status_code=%s", resp.status_code)
 
     try:
         data = resp.json()
     except Exception:
         return JSONResponse(status_code=resp.status_code, content={"error": resp.text})
 
+    logger.info("Agent response JSON keys=%s", sorted(data.keys()))
+
     # Extract the response text from common OpenAI-compatible and agent formats.
-    content = ""
-    if "choices" in data and len(data["choices"]) > 0:
-        content = data["choices"][0].get("message", {}).get("content", "")
-    elif "detail" in data:
-        content = f"Fehler: {data['detail']}"
-    else:
-        content = (
-            data.get("content")
-            or data.get("answer")
-            or data.get("response")
-            or data.get("text")
-            or data.get("message")
-            or data.get("error")
-            or ""
-        )
+    content = _extract_content(data)
+    logger.info("Agent assistant content length=%s", len(content))
 
     if not content:
         logger.warning("Agent returned no response content. Response keys: %s", sorted(data.keys()))
-        content = (
-            "Der Wissensassistent hat keine verwertbare Antwort vom Agent-Dienst erhalten. "
-            "Bitte prüfen Sie die Agent-Logs, Guardrails und die Knowledge-Base-Konfiguration."
-        )
+        content = "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut."
+        if DEBUG_UI:
+            content = (
+                "Technischer Debug: Der Agent-Dienst hat keine verwertbare Antwort geliefert. "
+                f"Status: {resp.status_code}. JSON-Schlüssel: {', '.join(sorted(data.keys())) or 'keine'}."
+            )
 
-    sources = (
-        data.get("sources")
-        or data.get("citations")
-        or data.get("retrieval_info")
-        or data.get("metadata", {}).get("sources")
-    )
+    sources = _extract_sources(data)
 
     return JSONResponse(content={"content": content, "usage": data.get("usage"), "sources": sources})
+
+
+def _extract_content(data):
+    if not isinstance(data, dict):
+        return ""
+
+    choices = data.get("choices")
+    if isinstance(choices, list) and choices:
+        first = choices[0] or {}
+        message = first.get("message") if isinstance(first, dict) else None
+        if isinstance(message, dict) and message.get("content"):
+            return str(message["content"])
+        if isinstance(first, dict) and first.get("text"):
+            return str(first["text"])
+
+    message = data.get("message")
+    if isinstance(message, dict) and message.get("content"):
+        return str(message["content"])
+
+    for key in ("content", "answer", "response", "output_text"):
+        value = data.get(key)
+        if value:
+            return str(value)
+
+    detail = data.get("detail")
+    if detail:
+        return f"Fehler: {detail}"
+
+    error = data.get("error")
+    if error:
+        return str(error)
+
+    return ""
+
+
+def _extract_sources(data):
+    if not isinstance(data, dict):
+        return None
+
+    candidates = [
+        data.get("sources"),
+        data.get("citations"),
+        data.get("retrieval_info"),
+        data.get("retrievalInfo"),
+        data.get("metadata", {}).get("sources") if isinstance(data.get("metadata"), dict) else None,
+    ]
+
+    for candidate in candidates:
+        if _has_sources(candidate):
+            return candidate
+    return None
+
+
+def _has_sources(value):
+    if not value:
+        return False
+    if isinstance(value, list):
+        return any(_has_sources(item) for item in value)
+    if isinstance(value, dict):
+        return any(_has_sources(item) for item in value.values())
+    if isinstance(value, str):
+        return bool(value.strip()) and value.strip() not in {"{}", "[]", '{"citations":[]}'}
+    return False

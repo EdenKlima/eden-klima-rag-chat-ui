@@ -521,6 +521,7 @@
     const textarea = document.getElementById('input');
     const sendBtn = document.getElementById('send');
     let history = [];
+    let loading = false;
 
     textarea.addEventListener('input', function() {
       this.style.height = 'auto';
@@ -535,14 +536,19 @@
     });
 
     function usePrompt(btn) {
+      if (loading) return;
       textarea.value = btn.textContent;
       textarea.focus();
       sendMessage();
     }
 
     async function sendMessage() {
+      if (loading) return;
       const message = textarea.value.trim();
       if (!message) return;
+      loading = true;
+      sendBtn.disabled = true;
+      textarea.disabled = true;
 
       const empty = document.getElementById('empty');
       if (empty) empty.remove();
@@ -552,7 +558,6 @@
 
       textarea.value = '';
       textarea.style.height = 'auto';
-      sendBtn.disabled = true;
 
       const typingEl = appendTyping();
 
@@ -572,7 +577,7 @@
             details: responseText.slice(0, 300),
           };
         }
-        const content = data.content || data.error || 'Keine Antwort erhalten.';
+        const content = data.content || data.error || 'Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut.';
         const isError = !!data.error || res.status >= 400;
 
         typingEl.remove();
@@ -583,7 +588,9 @@
         appendMessage('assistant', 'Verbindungsfehler: ' + err.message, true);
       }
 
+      loading = false;
       sendBtn.disabled = false;
+      textarea.disabled = false;
       textarea.focus();
     }
 
@@ -697,13 +704,21 @@
       if (!sources) return [];
       const raw = Array.isArray(sources) ? sources : [sources];
       return raw.flatMap((source) => {
-        if (typeof source === 'string') return source;
+        if (typeof source === 'string') {
+          const trimmed = source.trim();
+          if (!trimmed || trimmed === '{}' || trimmed === '[]' || trimmed === '{"citations":[]}') return '';
+          if (trimmed.startsWith('{') || trimmed.startsWith('[')) return '';
+          return trimmed;
+        }
         if (!source || typeof source !== 'object') return '';
         if (Array.isArray(source.citations)) return normalizeSources(source.citations);
         if (Array.isArray(source.sources)) return normalizeSources(source.sources);
         if (Array.isArray(source.documents)) return normalizeSources(source.documents);
-        return source.title || source.name || source.file_name || source.filename || source.url || JSON.stringify(source);
-      }).filter((source) => source && source !== '{}' && source !== '{"citations":[]}');
+        if (source.title || source.name || source.file_name || source.filename || source.url) {
+          return source.title || source.name || source.file_name || source.filename || source.url;
+        }
+        return '';
+      }).filter(Boolean);
     }
 
     function renderMarkdown(text) {
