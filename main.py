@@ -29,7 +29,6 @@ AGENT_UUID = os.environ.get("AGENT_UUID", "")
 DO_API_TOKEN = os.environ["DO_API_TOKEN"]
 AGENT_NAME = os.environ.get("AGENT_NAME", "Eden Klima Wissensassistent")
 DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
-DEBUG_UI = os.environ.get("DEBUG_UI", "").lower() in {"1", "true", "yes", "on"}
 ASSISTANT_INSTRUCTIONS = """Du bist der Eden Klima Wissensassistent.
 Antworte immer auf Deutsch.
 Nutze technische Unterlagen und die Eden Klima Wissensdatenbank, wenn diese Informationen verfügbar sind.
@@ -120,11 +119,7 @@ async def chat(request: Request):
     if not AGENT_ENDPOINT or not AGENT_API_KEY:
         return JSONResponse(
             content={
-                "error": (
-                    "Der Wissensassistent ist noch nicht bereit. "
-                    "Bitte prüfen Sie AGENT_UUID, DO_API_TOKEN und die Berechtigungen des DigitalOcean API Tokens."
-                ),
-                "details": DISCOVERY_ERROR,
+                "error": "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut.",
             },
         )
 
@@ -178,11 +173,6 @@ async def chat(request: Request):
     if not content:
         logger.warning("Agent returned no response content. Response keys: %s", sorted(data.keys()))
         content = "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut."
-        if DEBUG_UI:
-            content = (
-                "Technischer Debug: Der Agent-Dienst hat keine verwertbare Antwort geliefert. "
-                f"Status: {resp.status_code}. JSON-Schlüssel: {', '.join(sorted(data.keys())) or 'keine'}."
-            )
 
     sources = _extract_sources(data)
 

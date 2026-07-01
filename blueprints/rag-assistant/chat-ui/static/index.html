@@ -574,7 +574,6 @@
         } catch (parseError) {
           data = {
             error: 'Der Dienst hat keine lesbare Antwort geliefert. Bitte versuchen Sie es in einigen Minuten erneut.',
-            details: responseText.slice(0, 300),
           };
         }
         const content = data.content || data.error || 'Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut.';
