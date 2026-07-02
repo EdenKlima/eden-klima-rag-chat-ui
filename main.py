@@ -44,13 +44,6 @@ DO_RELEVANT_COMPONENTS = {
     "Guardrails",
     "Inference",
 }
-ASSISTANT_INSTRUCTIONS = """Du bist der Eden Klima Wissensassistent.
-Antworte immer auf Deutsch.
-Nutze technische Unterlagen und die Eden Klima Wissensdatenbank, wenn diese Informationen verfügbar sind.
-Wenn keine passende Quelle gefunden wird, sage das klar auf Deutsch und gib nur sichere, allgemeine Orientierung.
-Erfinde keine Herstellerangaben, Fehlercodes oder Wartungsanweisungen.
-Weise bei Arbeiten an Strom, Kältemittel oder sicherheitsrelevanten Bauteilen auf Fachtechniker hin."""
-
 # Populated at startup.
 AGENT_ENDPOINT = None
 AGENT_API_KEY = None
@@ -157,13 +150,12 @@ async def chat(request: Request):
     message = body.get("message", "")
     history = body.get("history", [])
 
-    # Build OpenAI-compatible messages array.
-    # DigitalOcean agent deployments can return an empty response when a separate
-    # system role is sent, so the German guidance is attached to the user turn.
+    # Build OpenAI-compatible messages array. Keep the user query clean so the
+    # agent's configured instructions and retrieval rewrite work like the DO console.
     messages = []
     for h in history:
         messages.append({"role": h.get("role", "user"), "content": h.get("content", "")})
-    messages.append({"role": "user", "content": f"{ASSISTANT_INSTRUCTIONS}\n\nFrage: {message}"})
+    messages.append({"role": "user", "content": message})
 
     logger.info(
         "Sending request to agent: message_count=%s last_user_message=%r agent_uuid_present=%s",
