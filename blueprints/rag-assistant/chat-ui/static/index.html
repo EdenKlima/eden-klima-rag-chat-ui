@@ -322,6 +322,11 @@
       border-color: #ffc8c4 !important;
       color: var(--eden-danger) !important;
     }
+    .warn-bubble {
+      background: #fffaf0 !important;
+      border-color: #f5d9a8 !important;
+      color: #60440b !important;
+    }
 
     .answer-actions {
       display: flex;
@@ -600,7 +605,7 @@
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message, history: history.slice(0, -1) }),
+          body: JSON.stringify({ message, history: history.slice(0, -1).slice(-16) }),
         });
         const responseText = await res.text();
         let data;
@@ -615,7 +620,10 @@
         const isError = !!data.error || res.status >= 400;
 
         typingEl.remove();
-        appendMessage('assistant', content, isError, data.sources, { maintenance: !!data.maintenance });
+        appendMessage('assistant', content, isError, data.sources, {
+          maintenance: !!data.maintenance,
+          warn: !isError && data.retrieval_status === 'error',
+        });
         history.push({ role: 'assistant', content });
       } catch (err) {
         typingEl.remove();
@@ -644,14 +652,14 @@
       }
 
       const bubble = document.createElement('div');
-      bubble.className = 'bubble' + (isError ? ' error-bubble' : '');
+      bubble.className = 'bubble' + (isError ? ' error-bubble' : '') + (options.warn ? ' warn-bubble' : '');
       if (role === 'assistant' && !isError) {
         bubble.innerHTML = renderMarkdown(text);
       } else {
         bubble.textContent = text;
       }
 
-      if (role === 'assistant' && !isError && !options.maintenance) {
+      if (role === 'assistant' && !isError && !options.maintenance && !options.warn) {
         appendSources(bubble, sources);
         appendAnswerActions(bubble);
       }
@@ -737,7 +745,7 @@
     function normalizeSources(sources) {
       if (!sources) return [];
       const raw = Array.isArray(sources) ? sources : [sources];
-      return raw.flatMap((source) => {
+      const flat = raw.flatMap((source) => {
         if (typeof source === 'string') {
           const trimmed = source.trim();
           if (!trimmed || trimmed === '{}' || trimmed === '[]' || trimmed === '{"citations":[]}') return '';
@@ -748,11 +756,13 @@
         if (Array.isArray(source.citations)) return normalizeSources(source.citations);
         if (Array.isArray(source.sources)) return normalizeSources(source.sources);
         if (Array.isArray(source.documents)) return normalizeSources(source.documents);
-        if (source.title || source.name || source.file_name || source.filename || source.url) {
-          return source.title || source.name || source.file_name || source.filename || source.url;
+        if (source.filename || source.file_name || source.title || source.name || source.url) {
+          const label = source.filename || source.file_name || source.title || source.name || source.url;
+          return source.page ? label + ' (S. ' + source.page + ')' : label;
         }
         return '';
       }).filter(Boolean);
+      return Array.from(new Set(flat));
     }
 
     function renderMarkdown(text) {

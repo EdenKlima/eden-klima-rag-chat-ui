@@ -1,0 +1,4204 @@
+{
+ "source": "data/samsung_error_codes_master.md",
+ "total_codes": 446,
+ "codes": {
+  "101": {
+   "code": "101",
+   "e_code": "E101",
+   "message": "Indoor Unit Communication Error - check the DC output voltage at the communication terminal",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "102": {
+   "code": "102",
+   "e_code": "E102",
+   "message": "Indoor Unit/Outdoor Unit communication time-out error: error in more than 6 packets",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "103": {
+   "code": "103",
+   "e_code": "E103",
+   "message": "Communication Error Between Indoor Unit Panel and Main",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "104": {
+   "code": "104",
+   "e_code": "E104",
+   "message": "communication error : \"IF ↔ Indoor unit\" some disconnect in Indoor unit (communicating) only [GHP-R22]",
+   "note": "For GHP-R22",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "105": {
+   "code": "105",
+   "e_code": "E105",
+   "message": "communication Error in between sensing space module and Indoor unit",
+   "note": null,
+   "groups_raw": "G Mini4way",
+   "groups": []
+  },
+  "106": {
+   "code": "106",
+   "e_code": "E106",
+   "message": "Communication Error Between LCD and Panel",
+   "note": "Verdi",
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "107": {
+   "code": "107",
+   "e_code": "E107",
+   "message": "Communication Error Between LCD Outdoor Unit",
+   "note": "Verdi",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "108": {
+   "code": "108",
+   "e_code": "E108",
+   "message": "Duplicated assigned IDU main address Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "109": {
+   "code": "109",
+   "e_code": "E109",
+   "message": "Communication error - Indoor address tracking failed by ODU (IDU main address is not confirmed)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "121": {
+   "code": "121",
+   "e_code": "E121",
+   "message": "Error of temperature sensor in the indoor unit (open/short) Room senser",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "122": {
+   "code": "122",
+   "e_code": "E122",
+   "message": "Error of heat exchanger-in sensor on the indoor unit (open/short) Eva in",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "123": {
+   "code": "123",
+   "e_code": "E123",
+   "message": "Error of heat exchanger-out sensor on the indoor unit (open/short) Eva out",
+   "note": null,
+   "groups_raw": "FJM, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "124": {
+   "code": "124",
+   "e_code": "E124",
+   "message": "Communication error between indoor unit and outdoor unit. (error is displayed on outdoor unit)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "125": {
+   "code": "125",
+   "e_code": "E125",
+   "message": "Eva_Mid 2 termperature sensor of outdoor unit (open/short)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "126": {
+   "code": "126",
+   "e_code": "E126",
+   "message": "IDU discharge temperature sensor short/open (for Ducted & AHU Kit)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "127": {
+   "code": "127",
+   "e_code": "E127",
+   "message": "[GHP-R22] Indoor Temperature(Suction Temperature) Sensor breakaway Error",
+   "note": "For GHP-R22",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "128": {
+   "code": "128",
+   "e_code": "E128",
+   "message": "Indoor unit heat exchanger in temp sensor detached",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "129": {
+   "code": "129",
+   "e_code": "E129",
+   "message": "Indoor unit heat exchanger out temp sensor detached",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "130": {
+   "code": "130",
+   "e_code": "E130",
+   "message": "Indoor unit heat exchange in and out temprerature sensor is detached",
+   "note": null,
+   "groups_raw": "FJM, DVM, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "131": {
+   "code": "131",
+   "e_code": "E131",
+   "message": "Sub(Electronic) Heater Sensor 1 Error",
+   "note": null,
+   "groups_raw": "FJM Slim 1way , DVM PLUS2 ,DVM Inverter indoor unit",
+   "groups": []
+  },
+  "132": {
+   "code": "132",
+   "e_code": "E132",
+   "message": "Sub(Electronic) Heater Sensor 2 Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "133": {
+   "code": "133",
+   "e_code": "E133",
+   "message": "Sub(Electronic) Heater Sensor 3 Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "134": {
+   "code": "134",
+   "e_code": "E134",
+   "message": "Shutter Sensor Error (In case of model which have two shutter, upper Error : Aurora)",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "135": {
+   "code": "135",
+   "e_code": "E135",
+   "message": "Indoor fan cleaner frequency feedback error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "136": {
+   "code": "136",
+   "e_code": "E136",
+   "message": "Shutter Sensor Error (In case, model which have two shutter Error in bottom : Aurora)",
+   "note": "Aurora Bottom Sensor",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "137": {
+   "code": "137",
+   "e_code": "E137",
+   "message": "VOC sensor of ERV (open/short)",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "138": {
+   "code": "138",
+   "e_code": "E138",
+   "message": "Gas sensor of ERV (open/short)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "139": {
+   "code": "139",
+   "e_code": "E139",
+   "message": "CO2 Sensor of ERV (open/short)",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "140": {
+   "code": "140",
+   "e_code": "E140",
+   "message": "Indoor Dust sensor Error",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "141": {
+   "code": "141",
+   "e_code": "E141",
+   "message": "IAQ CO2 SENSOR OPEN/SHORT ERROR",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "142": {
+   "code": "142",
+   "e_code": "E142",
+   "message": "Indoor Unit Humid Sensor short/open",
+   "note": null,
+   "groups_raw": "Factory error code(vivace,junfrau etc)",
+   "groups": []
+  },
+  "143": {
+   "code": "143",
+   "e_code": "E143",
+   "message": "Sensing space Sensor Error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "144": {
+   "code": "144",
+   "e_code": "E144",
+   "message": "Eva2_in Sensor of Indoor Unit short/open",
+   "note": "Sensor attached duct of Eva2 for India",
+   "groups_raw": "India duct",
+   "groups": []
+  },
+  "145": {
+   "code": "145",
+   "e_code": "E145",
+   "message": "Eva2_out Sensor of Indoor Unit short/open",
+   "note": "Sensor attached duct of Eva2 for India",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "146": {
+   "code": "146",
+   "e_code": "E146",
+   "message": "EEV Inlet Sensor short/open",
+   "note": "Sensor for EEV to know overheating rate",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "147": {
+   "code": "147",
+   "e_code": "E147",
+   "message": "Indoor Eva2_in Sensor break away Error",
+   "note": "Sensor attached duct of Eva2 for India",
+   "groups_raw": "India duct",
+   "groups": []
+  },
+  "148": {
+   "code": "148",
+   "e_code": "E148",
+   "message": "Indoor Eva2_out Sensor break away Error",
+   "note": "Sensor attached duct of Eva2 for India",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "149": {
+   "code": "149",
+   "e_code": "E149",
+   "message": "Error of AHU Master Indoor unit's Room Sensor setting",
+   "note": "AHU",
+   "groups_raw": "AHU kit",
+   "groups": []
+  },
+  "150": {
+   "code": "150",
+   "e_code": "E150",
+   "message": "RESERVED(DMS-SNET3 Error)",
+   "note": "Refer to Error History",
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "151": {
+   "code": "151",
+   "e_code": "E151",
+   "message": "Open error of electoronic expansion valve in indoor unit(2nd)",
+   "note": null,
+   "groups_raw": "DVM, ERV, EHS",
+   "groups": [
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "152": {
+   "code": "152",
+   "e_code": "E152",
+   "message": "Close error of electoronic expansion valve in indoor unit(2nd)",
+   "note": null,
+   "groups_raw": "DVM, ERV, EHS",
+   "groups": [
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "153": {
+   "code": "153",
+   "e_code": "E153",
+   "message": "2nd Float switch on indoor unit detection",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "154": {
+   "code": "154",
+   "e_code": "E154",
+   "message": "Indoor unit Fan Error",
+   "note": null,
+   "groups_raw": "FJM, DVM, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "155": {
+   "code": "155",
+   "e_code": "E155",
+   "message": "Indoor unit fan error, (the 2nd motor of indoor unit)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "156": {
+   "code": "156",
+   "e_code": "E156",
+   "message": "Indoor unit (EEV2) open error 2nd",
+   "note": "Duct of Indoor unit EEV2 for India",
+   "groups_raw": "India duct",
+   "groups": []
+  },
+  "157": {
+   "code": "157",
+   "e_code": "E157",
+   "message": "Indoor unit (EEV2) close error 2nd",
+   "note": "Duct of Indoor unit EEV2 for India",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "158": {
+   "code": "158",
+   "e_code": "E158",
+   "message": "UDoor upper operation Error",
+   "note": "(check Photo Sensor or operating Relay Error)",
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "159": {
+   "code": "159",
+   "e_code": "E159",
+   "message": "UDoor lower operation Error",
+   "note": "(check Photo Sensor or operating Relay Error)",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "160": {
+   "code": "160",
+   "e_code": "E160",
+   "message": "IDU drain pump lock error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "161": {
+   "code": "161",
+   "e_code": "E161",
+   "message": "More than 2 indoor units are heating and cooling simultaneously",
+   "note": null,
+   "groups_raw": "FJM, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "162": {
+   "code": "162",
+   "e_code": "E162",
+   "message": "Outdoor unit EEPROM error",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "163": {
+   "code": "163",
+   "e_code": "E163",
+   "message": "EEPROM option setting error",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "164": {
+   "code": "164",
+   "e_code": "E164",
+   "message": "IDU EEPROM error (wrong EEPROM, download EEPROM or shoot again Option Code)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "165": {
+   "code": "165",
+   "e_code": "E165",
+   "message": "Elect Discharge Temp Protect Error",
+   "note": null,
+   "groups_raw": "FJM Slim 1way , DVM PLUS2, DVM Inverter indoor unit",
+   "groups": []
+  },
+  "166": {
+   "code": "166",
+   "e_code": "E166",
+   "message": "Electric motor related to no wind Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "167": {
+   "code": "167",
+   "e_code": "E167",
+   "message": "Option code setting error on the indoor unit's dipswitches",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "168": {
+   "code": "168",
+   "e_code": "E168",
+   "message": "IAQ Safety S/W Open Error",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "169": {
+   "code": "169",
+   "e_code": "E169",
+   "message": "Error of AHU EEV",
+   "note": "AHU",
+   "groups_raw": "AHU kit",
+   "groups": []
+  },
+  "170": {
+   "code": "170",
+   "e_code": "E170",
+   "message": "Temperature display setting error (settings for celsius and farenheir display mixed up)",
+   "note": "07.03 Applied DVM for Trane No applied for Domestic/Europe",
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "171": {
+   "code": "171",
+   "e_code": "E171",
+   "message": "EVA-MID Break away",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "172": {
+   "code": "172",
+   "e_code": "E172",
+   "message": "EVA-IN Break away",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "173": {
+   "code": "173",
+   "e_code": "E173",
+   "message": "EVA-OUT Break away",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "174": {
+   "code": "174",
+   "e_code": "E174",
+   "message": "\"Return air temp. sensor in ERV\" short/open",
+   "note": "ERV+",
+   "groups_raw": "ERV",
+   "groups": [
+    "ERV"
+   ]
+  },
+  "175": {
+   "code": "175",
+   "e_code": "E175",
+   "message": "\"Outdoor temp. sensor in ERV\" short/open Error",
+   "note": "ERV+",
+   "groups_raw": "ERV",
+   "groups": [
+    "ERV"
+   ]
+  },
+  "177": {
+   "code": "177",
+   "e_code": "E177",
+   "message": "Indoor unit control kit completes emergency stop. Check the indoor unit (control kit)",
+   "note": "hydro box 대표 Error display in outdoor unit",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "180": {
+   "code": "180",
+   "e_code": "E180",
+   "message": "MCU solenoid valve error. Opening in cooling and heating simultaneously (1st Detection)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "181": {
+   "code": "181",
+   "e_code": "E181",
+   "message": "MCU solenoid valve error. Opening in cooling and heating simultaneously (2nd Detection)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "182": {
+   "code": "182",
+   "e_code": "E182",
+   "message": "Indoor Hudimity sensor Error (ERV)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "183": {
+   "code": "183",
+   "e_code": "E183",
+   "message": "Outdoor Hudimity sensor Error (ERV)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "185": {
+   "code": "185",
+   "e_code": "E185",
+   "message": "Incorrect wiring, crossed wires between power of indoor unit and communication cables",
+   "note": null,
+   "groups_raw": "FJM, DVM, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "186": {
+   "code": "186",
+   "e_code": "E186",
+   "message": "MPI (SPi) malfunction error",
+   "note": null,
+   "groups_raw": "FJM, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "187": {
+   "code": "187",
+   "e_code": "E187",
+   "message": "K1Filter Feedback Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "190": {
+   "code": "190",
+   "e_code": "E190",
+   "message": "Pipe check operation failure - no match between indoor unit address and eva-in sensor",
+   "note": null,
+   "groups_raw": "FJM, DVM",
+   "groups": [
+    "FJM",
+    "DVM"
+   ]
+  },
+  "191": {
+   "code": "191",
+   "e_code": "E191",
+   "message": "Pipe check operation failure - no match between indoor unit address and eva-out sensor",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "192": {
+   "code": "192",
+   "e_code": "E192",
+   "message": "Indoor Unit COVER OPEN(Indoor unit switch for safety",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "193": {
+   "code": "193",
+   "e_code": "E193",
+   "message": "Indoor Panel Zero-Crossing Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "194": {
+   "code": "194",
+   "e_code": "E194",
+   "message": "Indoor Main Zero-Crossing Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "195": {
+   "code": "195",
+   "e_code": "E195",
+   "message": "IAQ safety S/W Open Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "199": {
+   "code": "199",
+   "e_code": "E199",
+   "message": "Pipe check operation has failed",
+   "note": null,
+   "groups_raw": "FJM, DVM",
+   "groups": [
+    "FJM",
+    "DVM"
+   ]
+  },
+  "201": {
+   "code": "201",
+   "e_code": "E201",
+   "message": "Communication error between indoor and outdoor unit (tracking failure, the quantity/address of indoor units set on the outdoor unit's PCB differs from the quantity/address of actual indoor units)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "202": {
+   "code": "202",
+   "e_code": "E202",
+   "message": "Indoor/Outdoor communication error after 1 min. (all the indoor units fail to communicate with outdoor unit)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "203": {
+   "code": "203",
+   "e_code": "E203",
+   "message": "Communication error between outdoor main & inverter micom (detected after 1 min. of operation)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "204": {
+   "code": "204",
+   "e_code": "E204",
+   "message": "After completing Tracking 5 times, the quantity of MCU boxes set on the PCB of the ODU's PCB differ from the amount of MCU boxes actually connected to the ODU",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "205": {
+   "code": "205",
+   "e_code": "E205",
+   "message": "Communication Error Between Outdoor Unit Inv Micom -- Fan Motor Micom",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "206": {
+   "code": "206",
+   "e_code": "E206",
+   "message": "Outdoor unit communication error between main MICOM and inverter MICOM",
+   "note": null,
+   "groups_raw": "FJM, DVM",
+   "groups": [
+    "FJM",
+    "DVM"
+   ]
+  },
+  "210": {
+   "code": "210",
+   "e_code": "E210",
+   "message": "Communication error between MCU box and outdoor unit",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "211": {
+   "code": "211",
+   "e_code": "E211",
+   "message": "Conflicting addresses on indoor units and MCU",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "212": {
+   "code": "212",
+   "e_code": "E212",
+   "message": "Occurs if the same indoor unit is assigned to an MCU box 3 times",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "213": {
+   "code": "213",
+   "e_code": "E213",
+   "message": "Indoor unit addresses and indoor unit activating dip switch on the MCU box do not match",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "214": {
+   "code": "214",
+   "e_code": "E214",
+   "message": "Quantity of MCU's set on the outdoor unit does not match actual quantity of MCU's",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "215": {
+   "code": "215",
+   "e_code": "E215",
+   "message": "Indoor unit's address setting error on the MCU box",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "216": {
+   "code": "216",
+   "e_code": "E216",
+   "message": "Indoor unit's activating dipaswitch causes setting error on MCU's PCB (the indoor unit is not connected to the MCU's port but the indoor unit's activating dipswitch on the MCU's PCB turns on)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "217": {
+   "code": "217",
+   "e_code": "E217",
+   "message": "Indoor unit's activating dipaswitch causes setting error on MCU's PCB (the indoor unit is connected to the MCU's port but the indoor unit's activating dipswitch on the MCU's PCB turns off)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "218": {
+   "code": "218",
+   "e_code": "E218",
+   "message": "Indoor unit quantity causes error MCU's PCB (quantity of installed indoor units has exceeded the maximum for the MCU's PCB)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "219": {
+   "code": "219",
+   "e_code": "E219",
+   "message": "MCU subcooler-in sensor short/open error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "220": {
+   "code": "220",
+   "e_code": "E220",
+   "message": "MCU subcooler-in sensor short/open error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "221": {
+   "code": "221",
+   "e_code": "E221",
+   "message": "Outdoor temperature sensor error Error level; over 4.9V (-50°C) under 0.4V (93°C)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "224": {
+   "code": "224",
+   "e_code": "E224",
+   "message": "Water Temprature SENSOR ERROR (OPEN/SHORT)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "226": {
+   "code": "226",
+   "e_code": "E226",
+   "message": "Ambient temperature sensor has become detached from the outdoor unit",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "231": {
+   "code": "231",
+   "e_code": "E231",
+   "message": "Condensor-out temperature sensor error on the main outdoor unit (open/short error)",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "236": {
+   "code": "236",
+   "e_code": "E236",
+   "message": "Condensor-out temperature sensor of the outdoor unit open/short error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "237": {
+   "code": "237",
+   "e_code": "E237",
+   "message": "Condensor temperature sensor error (open/short error) Error level; over 4.9V (-50°C) under 0.4V (93°C)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "241": {
+   "code": "241",
+   "e_code": "E241",
+   "message": "Condensor-mid temperature sensor has become detached",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "242": {
+   "code": "242",
+   "e_code": "E242",
+   "message": "Outdoor Unit Heater Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "246": {
+   "code": "246",
+   "e_code": "E246",
+   "message": "Condensor-out 1 temperature sensor has become detached",
+   "note": null,
+   "groups_raw": "FJM, DVM, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "251": {
+   "code": "251",
+   "e_code": "E251",
+   "message": "Discharge temperature sensor error (open/short)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "256": {
+   "code": "256",
+   "e_code": "E256",
+   "message": "Discharge temperature sensor of compressor 1 short/open -ERROR detect Condition: detect outdoor temperatureerature more than -10°C -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "257": {
+   "code": "257",
+   "e_code": "E257",
+   "message": "Discharge temperature sensor of compressor 2 short/open -ERROR detect Condition: detect Outdoor temperatureerature more than -10 °C -ERROR LEVEL: more than 4.95V(-30'C),less than 0.5V(151'C)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "258": {
+   "code": "258",
+   "e_code": "E258",
+   "message": "Discharge temperature sensor of compressor 3 short/open -ERROR detect Condition: Outdoor temperatureerature more than -10 detect °C -ERROR LEVEL: more than 4.95V(-30'C),less than 0.5V(151'C)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "261": {
+   "code": "261",
+   "e_code": "E261",
+   "message": "Compressor discharge temperature sensor of compressor 1 has become detached - self diagnosis",
+   "note": null,
+   "groups_raw": "FJM, DVM, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "262": {
+   "code": "262",
+   "e_code": "E262",
+   "message": "Compressor discharge temperature sensor of compressor 1 has become detached - self diagnosis",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "263": {
+   "code": "263",
+   "e_code": "E263",
+   "message": "Compressor discharge temperature sensor of compressor 2 has become detached - self diagnosis",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "264": {
+   "code": "264",
+   "e_code": "E264",
+   "message": "Compressor discharge temperature sensor of compressor 3 has become detached - self diagnosis",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "265": {
+   "code": "265",
+   "e_code": "E265",
+   "message": "Sump (base) temperature sensor of main unit's compressor has become detached from the compressor",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "266": {
+   "code": "266",
+   "e_code": "E266",
+   "message": "Sump (base) temperature sensor of sub unit 1's compressor has become detached from the compressor",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "267": {
+   "code": "267",
+   "e_code": "E267",
+   "message": "Sump (base) temperature sensor of sub unit 2's compressor has become detached from the compressor",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "268": {
+   "code": "268",
+   "e_code": "E268",
+   "message": "Sump (base) temperature sensor of sub unit 3's compressor has become detached from the compressor",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "269": {
+   "code": "269",
+   "e_code": "E269",
+   "message": "Suction line 1 temperature sensor has become detached from the sensor bracket",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "271": {
+   "code": "271",
+   "e_code": "E271",
+   "message": "Sump (base) temperature sensor error on compressor 1 (short/open) -ERROR detect Condition: detect outdoortemperatureerature -10°C -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "276": {
+   "code": "276",
+   "e_code": "E276",
+   "message": "Sump (base) temperature sensor error on compressor 1 (short/open) -ERROR detect Condition: detect outdoor temperatureerature more than -10°C -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "277": {
+   "code": "277",
+   "e_code": "E277",
+   "message": "Sump (base) temperature sensor error on compressor 2 (short/open) -ERROR detect Condition: detect outdoor temperatureerature -10°C -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "278": {
+   "code": "278",
+   "e_code": "E278",
+   "message": "Sump (base) temperature sensor error on compressor 3 (short/open) -ERROR detect Condition: detect outdoor temperatureerature more than -10°C -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "286": {
+   "code": "286",
+   "e_code": "E286",
+   "message": "중압센서 short/open에러 Middle Pressure short/open Error (To be confirmed by HQ)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "291": {
+   "code": "291",
+   "e_code": "E291",
+   "message": "Refrigerant leakage or high pressure sensor is open/short",
+   "note": null,
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "296": {
+   "code": "296",
+   "e_code": "E296",
+   "message": "Refrigerant leakage or low pressure sensor is open/short",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "301": {
+   "code": "301",
+   "e_code": "E301",
+   "message": "High Pressure SENSOR breakaway ERROR",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "306": {
+   "code": "306",
+   "e_code": "E306",
+   "message": "Low Pressure SENSOR breakaway ERROR",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "307": {
+   "code": "307",
+   "e_code": "E307",
+   "message": "Oil balance temperature sensor (open/short)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "308": {
+   "code": "308",
+   "e_code": "E308",
+   "message": "Suction line 1 temperature sensor error (open/short)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "309": {
+   "code": "309",
+   "e_code": "E309",
+   "message": "Oil Balace Sensor2 SHORT/OPEN",
+   "note": null,
+   "groups_raw": "DVM+2",
+   "groups": []
+  },
+  "310": {
+   "code": "310",
+   "e_code": "E310",
+   "message": "Oil Balance Sensor3 SHORT/OPEN",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "311": {
+   "code": "311",
+   "e_code": "E311",
+   "message": "Double tube / liquid temperature sensor error (open/short)",
+   "note": null,
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "312": {
+   "code": "312",
+   "e_code": "E312",
+   "message": "Main cooling solenoid valve opening error (open/short)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "313": {
+   "code": "313",
+   "e_code": "E313",
+   "message": "4-Way Valve operation Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "314": {
+   "code": "314",
+   "e_code": "E314",
+   "message": "Oil Balace Sensor4 SHORT/OPEN",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "315": {
+   "code": "315",
+   "e_code": "E315",
+   "message": "CT1 Sensor Short or Open",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "316": {
+   "code": "316",
+   "e_code": "E316",
+   "message": "CT2 Sensor Short or Open",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "317": {
+   "code": "317",
+   "e_code": "E317",
+   "message": "CT3 Sensor Short or Open",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "320": {
+   "code": "320",
+   "e_code": "E320",
+   "message": "OLP Sensor Error (open/short) Error condition; outdoor temperature under -20°C Error level; over 4.95V (-30°C) under 0.5V (151°C)",
+   "note": null,
+   "groups_raw": "FJM, CAC, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "EHS"
+   ]
+  },
+  "321": {
+   "code": "321",
+   "e_code": "E321",
+   "message": "EVI-in temperature sensor error (open/short)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "322": {
+   "code": "322",
+   "e_code": "E322",
+   "message": "EVI-out temperature sensor error (open/short)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "323": {
+   "code": "323",
+   "e_code": "E323",
+   "message": "Suction line 2 temperature sensor error (open/short) (on heat recovery systems only)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "324": {
+   "code": "324",
+   "e_code": "E324",
+   "message": "Outdoor Unit Fan Motor Current Sensor SHORT / OPEN",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "325": {
+   "code": "325",
+   "e_code": "E325",
+   "message": "Outdoor Unit Fan2 Motor Current Sensor SHORT / OPEN",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "330": {
+   "code": "330",
+   "e_code": "E330",
+   "message": "Eva-In1 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "331": {
+   "code": "331",
+   "e_code": "E331",
+   "message": "Eva-In2 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "332": {
+   "code": "332",
+   "e_code": "E332",
+   "message": "Eva-In3 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "333": {
+   "code": "333",
+   "e_code": "E333",
+   "message": "Eva-In4 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "334": {
+   "code": "334",
+   "e_code": "E334",
+   "message": "Eva-In5 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "335": {
+   "code": "335",
+   "e_code": "E335",
+   "message": "EVA-Out1 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "336": {
+   "code": "336",
+   "e_code": "E336",
+   "message": "EVA-Out2 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "337": {
+   "code": "337",
+   "e_code": "E337",
+   "message": "EVA-Out3 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "338": {
+   "code": "338",
+   "e_code": "E338",
+   "message": "EVA-Out4 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "339": {
+   "code": "339",
+   "e_code": "E339",
+   "message": "EVA-Out5 sensor short/open",
+   "note": null,
+   "groups_raw": "FJM",
+   "groups": [
+    "FJM"
+   ]
+  },
+  "346": {
+   "code": "346",
+   "e_code": "E346",
+   "message": "Failure of starting 'fan controller 2'",
+   "note": null,
+   "groups_raw": "DVM fan Inverter",
+   "groups": []
+  },
+  "347": {
+   "code": "347",
+   "e_code": "E347",
+   "message": "Error of wiring of 'fan controller 2'",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "348": {
+   "code": "348",
+   "e_code": "E348",
+   "message": "Locking Error of 'fan controller 2'",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "353": {
+   "code": "353",
+   "e_code": "E353",
+   "message": "Overheat Error of Outdoor 2nd fan",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "355": {
+   "code": "355",
+   "e_code": "E355",
+   "message": "IPM(Internal PCB Module) Overheat Error of Outdoor 2nd fan",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "361": {
+   "code": "361",
+   "e_code": "E361",
+   "message": "Starting failure error of compressor 2 OR CT1 Low Current",
+   "note": null,
+   "groups_raw": "DVM fan Inverter",
+   "groups": []
+  },
+  "364": {
+   "code": "364",
+   "e_code": "E364",
+   "message": "Inverter 2 DC Peak Compressor down - ( Over current error of compressor 2)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "365": {
+   "code": "365",
+   "e_code": "E365",
+   "message": "Inverter 2 Compressor down overcurrent (over than 30 A) / Overload",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "366": {
+   "code": "366",
+   "e_code": "E366",
+   "message": "Inverter 2 PBA DC Link over / under Voltage (Equal or Less than 150 V / Equal or over 410V)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "367": {
+   "code": "367",
+   "e_code": "E367",
+   "message": "Inverter 2 Compressor rotating failure - Wiring disconnection error of compressor 2.",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "368": {
+   "code": "368",
+   "e_code": "E368",
+   "message": "Inverter 2 Compressor CT sensor Error - Current sensor error of INV PBA 2",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "369": {
+   "code": "369",
+   "e_code": "E369",
+   "message": "DC-link voltage sensor error of INV PBA 2",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "371": {
+   "code": "371",
+   "e_code": "E371",
+   "message": "Inverter 2 ODU EEPROM Read / Write Error (OTP Error)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "374": {
+   "code": "374",
+   "e_code": "E374",
+   "message": "Inverter PBA 2 Heatsink Temperature sensor Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "378": {
+   "code": "378",
+   "e_code": "E378",
+   "message": "ODU FAN 2 IPM H/W OC ( Over current of fan 2)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "385": {
+   "code": "385",
+   "e_code": "E385",
+   "message": "Inverter 2 PBA Input Current sensor Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "387": {
+   "code": "387",
+   "e_code": "E387",
+   "message": "Outdoor unit Fan 2 Hall Sensor Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "388": {
+   "code": "388",
+   "e_code": "E388",
+   "message": "Inverter 2 PBA Input Voltage sensor Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "389": {
+   "code": "389",
+   "e_code": "E389",
+   "message": "Outdoor fan 2 motor Overload error (system stop)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "391": {
+   "code": "391",
+   "e_code": "E391",
+   "message": "Fan 2 PBA EEPROM Read/Writer Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "393": {
+   "code": "393",
+   "e_code": "E393",
+   "message": "Fan 2 PBA CT Sensor Error (Motor current sensor error)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "396": {
+   "code": "396",
+   "e_code": "E396",
+   "message": "Fan 2 PBA DC Link voltage sensor Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "399": {
+   "code": "399",
+   "e_code": "E399",
+   "message": "Fan 2 PBA Heatsink temperature sensor error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "400": {
+   "code": "400",
+   "e_code": "E400",
+   "message": "IGBT module overheated error of INV PCB 2 (Compressor down)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "401": {
+   "code": "401",
+   "e_code": "E401",
+   "message": "Outdoor unit freeze up (compressor stopped)",
+   "note": null,
+   "groups_raw": "FJM, DVM",
+   "groups": [
+    "FJM",
+    "DVM"
+   ]
+  },
+  "402": {
+   "code": "402",
+   "e_code": "E402",
+   "message": "Outdoor Freezing detect 2",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "403": {
+   "code": "403",
+   "e_code": "E403",
+   "message": "Detection of outdoor unit freeze up when compressor is stopped or the indoor units do not reach above -4°C after 5 minutes of operation",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "404": {
+   "code": "404",
+   "e_code": "E404",
+   "message": "Outdoor overload 1 Protection Control Error",
+   "note": null,
+   "groups_raw": "FJM, CAC, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "EHS"
+   ]
+  },
+  "405": {
+   "code": "405",
+   "e_code": "E405",
+   "message": "Outdoor overload 2 Protection Control Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "406": {
+   "code": "406",
+   "e_code": "E406",
+   "message": "Outdoor overload 3 Protection Control Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "407": {
+   "code": "407",
+   "e_code": "E407",
+   "message": "Compressor stopped by high pressure protection control",
+   "note": null,
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "408": {
+   "code": "408",
+   "e_code": "E408",
+   "message": "COMP down due to High PressureSensor Protection Control 2",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "409": {
+   "code": "409",
+   "e_code": "E409",
+   "message": "COMP down due to High PressureSensor Protection Control 3",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "410": {
+   "code": "410",
+   "e_code": "E410",
+   "message": "Compressor stopped by low pressure protection control or refrigerant leakage",
+   "note": null,
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "411": {
+   "code": "411",
+   "e_code": "E411",
+   "message": "COMP down due to Low PressureSensor Protection Control 2",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "412": {
+   "code": "412",
+   "e_code": "E412",
+   "message": "COMP down due to Low PressureSensor Protection Control 3",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "413": {
+   "code": "413",
+   "e_code": "E413",
+   "message": "Sump sensor has gone into protection control",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "414": {
+   "code": "414",
+   "e_code": "E414",
+   "message": "Outdoor SUMP DOWN_2 Protection Control",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "415": {
+   "code": "415",
+   "e_code": "E415",
+   "message": "Outdoor SUMP DOWN_3 Protection Control",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "416": {
+   "code": "416",
+   "e_code": "E416",
+   "message": "Compressor is stopped due to discharge temperature by protection control",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "417": {
+   "code": "417",
+   "e_code": "E417",
+   "message": "Outdoor DischargeTemperature _2 Protection Control",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "418": {
+   "code": "418",
+   "e_code": "E418",
+   "message": "Outdoor DischargeTemperature _3 Protection Control",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "419": {
+   "code": "419",
+   "e_code": "E419",
+   "message": "EEV open error (self diagnosis)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM"
+   ]
+  },
+  "420": {
+   "code": "420",
+   "e_code": "E420",
+   "message": "Outdoor EEV#2 opening 6th Self-Check Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "421": {
+   "code": "421",
+   "e_code": "E421",
+   "message": "Outdoor EEV#3 opening 6th Self-Check Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "422": {
+   "code": "422",
+   "e_code": "E422",
+   "message": "EEV close error (self diagnosis)",
+   "note": null,
+   "groups_raw": "FJM, CAC",
+   "groups": [
+    "FJM",
+    "CAC"
+   ]
+  },
+  "423": {
+   "code": "423",
+   "e_code": "E423",
+   "message": "Outdoor EEV#2 closing 6th Self-Check Error",
+   "note": null,
+   "groups_raw": "DVM+3",
+   "groups": []
+  },
+  "424": {
+   "code": "424",
+   "e_code": "E424",
+   "message": "Outdoor EEV#3 closing 6th Self-Check Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "425": {
+   "code": "425",
+   "e_code": "E425",
+   "message": "Reverse phase or phase open (3 phase wiring of outdoor unit, R-S-T-N)",
+   "note": null,
+   "groups_raw": "CAC, DVM",
+   "groups": [
+    "CAC",
+    "DVM"
+   ]
+  },
+  "426": {
+   "code": "426",
+   "e_code": "E426",
+   "message": "Outdoor Reverse Phase or Missing Phase detect 2 Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "427": {
+   "code": "427",
+   "e_code": "E427",
+   "message": "Outdoor Reverse Phase or Missing Phase detect 3 Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "428": {
+   "code": "428",
+   "e_code": "E428",
+   "message": "Compressor stopped by abnormal compression ratio",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "429": {
+   "code": "429",
+   "e_code": "E429",
+   "message": "COMP down by Compression Ratio control Error 2",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "430": {
+   "code": "430",
+   "e_code": "E430",
+   "message": "COMP down by Compression Ratio control Error 3",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "431": {
+   "code": "431",
+   "e_code": "E431",
+   "message": "Self diagnosis of oil solenoid valve (open and close error) or closing error of oil balance valve",
+   "note": null,
+   "groups_raw": "Oil valve 1 error(DVM+3 INDIA)",
+   "groups": []
+  },
+  "432": {
+   "code": "432",
+   "e_code": "E432",
+   "message": "Oil Balance Valve2 Error",
+   "note": null,
+   "groups_raw": "DVM+3",
+   "groups": []
+  },
+  "433": {
+   "code": "433",
+   "e_code": "E433",
+   "message": "Oil Balance Valve3 Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "434": {
+   "code": "434",
+   "e_code": "E434",
+   "message": "Oil Balance Valve opening Error (In DVM PLUS 2, HotGasValve Opening Error)",
+   "note": null,
+   "groups_raw": "Right",
+   "groups": []
+  },
+  "435": {
+   "code": "435",
+   "e_code": "E435",
+   "message": "Water Cooling Flow Switch Error",
+   "note": null,
+   "groups_raw": "DVM water",
+   "groups": []
+  },
+  "436": {
+   "code": "436",
+   "e_code": "E436",
+   "message": "Evaporator Protect for Freeze and Burst Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "437": {
+   "code": "437",
+   "e_code": "E437",
+   "message": "Oil Balance Valve Closing Error(In DVM PLUS 2, HotGasValve Opening Error)",
+   "note": null,
+   "groups_raw": "DVM+3",
+   "groups": []
+  },
+  "438": {
+   "code": "438",
+   "e_code": "E438",
+   "message": "EVI EEV leakage or intercooler leakage",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "439": {
+   "code": "439",
+   "e_code": "E439",
+   "message": "Refrigerant leakage error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "440": {
+   "code": "440",
+   "e_code": "E440",
+   "message": "Temperature range in heating has been exceeded",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "441": {
+   "code": "441",
+   "e_code": "E441",
+   "message": "Temperature range in cooling has been exceeded",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "442": {
+   "code": "442",
+   "e_code": "E442",
+   "message": "Temperature range for refrigerant charging in heating operation has been exceeded (over 15°C)",
+   "note": null,
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "443": {
+   "code": "443",
+   "e_code": "E443",
+   "message": "System cannot operate due to pressure of system being too low",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "445": {
+   "code": "445",
+   "e_code": "E445",
+   "message": "CCH wire is broken or sump sensor has become detached",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "446": {
+   "code": "446",
+   "e_code": "E446",
+   "message": "Fan1 Motor Starting Failure",
+   "note": null,
+   "groups_raw": "DVM fan inverter",
+   "groups": []
+  },
+  "447": {
+   "code": "447",
+   "e_code": "E447",
+   "message": "Fan 1 Motor Wiring disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "448": {
+   "code": "448",
+   "e_code": "E448",
+   "message": "Fan 1 Motor lock Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "450": {
+   "code": "450",
+   "e_code": "E450",
+   "message": "COND High Temperature(Protection Control) Every Time",
+   "note": null,
+   "groups_raw": "DVMCo",
+   "groups": []
+  },
+  "451": {
+   "code": "451",
+   "e_code": "E451",
+   "message": "Low Pressure Switch Low Pressure(Protection Control)",
+   "note": null,
+   "groups_raw": "DVMCo",
+   "groups": []
+  },
+  "452": {
+   "code": "452",
+   "e_code": "E452",
+   "message": "Temporary power failure or zero crossing error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "453": {
+   "code": "453",
+   "e_code": "E453",
+   "message": "Outdoor unit's fan motor is in overload (due to temperature)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "454": {
+   "code": "454",
+   "e_code": "E454",
+   "message": "OutdoorFan RPM Error (RPM has exceeded 2500rpm, the difference between the target velocity and the practical velocity is more than 100rpm every 10 seconds)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "455": {
+   "code": "455",
+   "e_code": "E455",
+   "message": "Internal PCB Module (IPM) overload error on outdoor unit's fan motor (due to temperature)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "456": {
+   "code": "456",
+   "e_code": "E456",
+   "message": "OutdoorFan Overcurrent Error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "457": {
+   "code": "457",
+   "e_code": "E457",
+   "message": "Backlash error on outdoor unit's fan motor",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "458": {
+   "code": "458",
+   "e_code": "E458",
+   "message": "Outdoor unit fan 1 error (fan RPM error)/or for DVM compressor 1 over current error",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "459": {
+   "code": "459",
+   "e_code": "E459",
+   "message": "Outdoor unit IPM Fault Error Or CT2 over currency",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "460": {
+   "code": "460",
+   "e_code": "E460",
+   "message": "Outdoor Unit/Indoor Unit communication wired incorrect (connected to power terminal)/For DVM Compressor 3 over current",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "461": {
+   "code": "461",
+   "e_code": "E461",
+   "message": "Inverter Compressor start up error (failed to start 5 times)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "462": {
+   "code": "462",
+   "e_code": "E462",
+   "message": "Total current error / PFC over current error (inverter compressor)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "463": {
+   "code": "463",
+   "e_code": "E463",
+   "message": "Compressor tripped by OLP temperature control mode",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "464": {
+   "code": "464",
+   "e_code": "E464",
+   "message": "IPM over current (o.c) error",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "465": {
+   "code": "465",
+   "e_code": "E465",
+   "message": "Compressor overload error",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "466": {
+   "code": "466",
+   "e_code": "E466",
+   "message": "DC-Link under/over voltage error (under 150V or over 410V)",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "467": {
+   "code": "467",
+   "e_code": "E467",
+   "message": "Inverter compressor rotation error",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "468": {
+   "code": "468",
+   "e_code": "E468",
+   "message": "Current sensor error on inverter compressor",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "469": {
+   "code": "469",
+   "e_code": "E469",
+   "message": "DC-Link voltage sensor error on inverter compressor",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "470": {
+   "code": "470",
+   "e_code": "E470",
+   "message": "Outdoor unit EEPROM Read/Write Error",
+   "note": null,
+   "groups_raw": "FJM, DVM, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "471": {
+   "code": "471",
+   "e_code": "E471",
+   "message": "OTP Error on inverter",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "472": {
+   "code": "472",
+   "e_code": "E472",
+   "message": "Inverter MICOM zero-croosing error",
+   "note": null,
+   "groups_raw": "FJM, CAC, EHS",
+   "groups": [
+    "FJM",
+    "CAC",
+    "EHS"
+   ]
+  },
+  "473": {
+   "code": "473",
+   "e_code": "E473",
+   "message": "Inverter compressor lock error",
+   "note": null,
+   "groups_raw": "CAC, EHS",
+   "groups": [
+    "CAC",
+    "EHS"
+   ]
+  },
+  "474": {
+   "code": "474",
+   "e_code": "E474",
+   "message": "Heat-Sink sensor error",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "475": {
+   "code": "475",
+   "e_code": "E475",
+   "message": "Outdoor fan 2 error with BLDC fan",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "476": {
+   "code": "476",
+   "e_code": "E476",
+   "message": "4wAY Error detect",
+   "note": "Self-Check, After 6times, COMP DOWN",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "477": {
+   "code": "477",
+   "e_code": "E477",
+   "message": "Compressor has stopped due to luquid refrigerant entering the compressor",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "478": {
+   "code": "478",
+   "e_code": "E478",
+   "message": "OutdoorFan IPM H/W OC",
+   "note": null,
+   "groups_raw": "DVM Fan inverter",
+   "groups": []
+  },
+  "479": {
+   "code": "479",
+   "e_code": "E479",
+   "message": "4WAY miss connection detect Error",
+   "note": "PAC Fixed",
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "480": {
+   "code": "480",
+   "e_code": "E480",
+   "message": "Fixed Comp 1 Stege OLP Protection Control(leakage for refrigerant Error)",
+   "note": null,
+   "groups_raw": "Fixed comp model OLP error",
+   "groups": []
+  },
+  "481": {
+   "code": "481",
+   "e_code": "E481",
+   "message": "Comp1 operating Error",
+   "note": "Duct for India",
+   "groups_raw": "India duct",
+   "groups": []
+  },
+  "482": {
+   "code": "482",
+   "e_code": "E482",
+   "message": "Comp2 operating Error",
+   "note": "Duct for India",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "483": {
+   "code": "483",
+   "e_code": "E483",
+   "message": "Over AC-voltage error",
+   "note": "INV",
+   "groups_raw": "FJM, CAC",
+   "groups": [
+    "FJM",
+    "CAC"
+   ]
+  },
+  "484": {
+   "code": "484",
+   "e_code": "E484",
+   "message": "PFC Overload error",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "485": {
+   "code": "485",
+   "e_code": "E485",
+   "message": "Input-current sensor error",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "486": {
+   "code": "486",
+   "e_code": "E486",
+   "message": "Outdoor Fan DC-Link Voltage Under/Over Error",
+   "note": null,
+   "groups_raw": "DVM Fan inverter",
+   "groups": []
+  },
+  "487": {
+   "code": "487",
+   "e_code": "E487",
+   "message": "Outdoor Fan Hall Sensor Error",
+   "note": null,
+   "groups_raw": "DVM Fan inverter",
+   "groups": []
+  },
+  "488": {
+   "code": "488",
+   "e_code": "E488",
+   "message": "ODU Fan Input voltage Sensor Error",
+   "note": "2011.01.06 Deleted ->Movo to E387",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "489": {
+   "code": "489",
+   "e_code": "E489",
+   "message": "ODU FAN 1 motor Overload error (system stop)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "490": {
+   "code": "490",
+   "e_code": "E490",
+   "message": "Outdoor Temperature 0 deegree & Indoor Temperature less than 0 deegree prohibition to operate",
+   "note": "ERV Ventilation System.",
+   "groups_raw": "ERV",
+   "groups": [
+    "ERV"
+   ]
+  },
+  "491": {
+   "code": "491",
+   "e_code": "E491",
+   "message": "Fan Controller1 EEPROM Read/Write Error",
+   "note": null,
+   "groups_raw": "DVM fan inverter",
+   "groups": []
+  },
+  "492": {
+   "code": "492",
+   "e_code": "E492",
+   "message": "Outdoor Fan2 IPM H/W OC",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "493": {
+   "code": "493",
+   "e_code": "E493",
+   "message": "Fan Controller1 Current Sensor Error",
+   "note": null,
+   "groups_raw": "DVM fan inverter",
+   "groups": []
+  },
+  "494": {
+   "code": "494",
+   "e_code": "E494",
+   "message": "Delayed time Error due to OutdoorFan2 Fan Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "495": {
+   "code": "495",
+   "e_code": "E495",
+   "message": "Outdoor Fan2 Overheat Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "496": {
+   "code": "496",
+   "e_code": "E496",
+   "message": "Fan Controller1 DC Link Sensor Error",
+   "note": null,
+   "groups_raw": "DVM fan inverter",
+   "groups": []
+  },
+  "497": {
+   "code": "497",
+   "e_code": "E497",
+   "message": "Outdoor Fan2 Overcurrent Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "498": {
+   "code": "498",
+   "e_code": "E498",
+   "message": "Outdoor Fan2 IPM(Internal PCB Module) Overheat Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "499": {
+   "code": "499",
+   "e_code": "E499",
+   "message": "Fan Controller1 Heat Sink Temp Sensor Error",
+   "note": null,
+   "groups_raw": "DVM Fan inverter",
+   "groups": []
+  },
+  "500": {
+   "code": "500",
+   "e_code": "E500",
+   "message": "Heat-Sink over heating error",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "503": {
+   "code": "503",
+   "e_code": "E503",
+   "message": "Service valve lock error",
+   "note": "Auto start up",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "504": {
+   "code": "504",
+   "e_code": "E504",
+   "message": "Compressor operation failure error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "505": {
+   "code": "505",
+   "e_code": "E505",
+   "message": "High pressure sensor error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "506": {
+   "code": "506",
+   "e_code": "E506",
+   "message": "Low pressure sensor error",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "508": {
+   "code": "508",
+   "e_code": "E508",
+   "message": "Smart Install failed or could not start",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "512": {
+   "code": "512",
+   "e_code": "E512",
+   "message": "RESERVED(DMS-SNET3 Error)",
+   "note": "Refer to Error History",
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "551": {
+   "code": "551",
+   "e_code": "E551",
+   "message": "Defrost working",
+   "note": null,
+   "groups_raw": "DVMCo",
+   "groups": []
+  },
+  "552": {
+   "code": "552",
+   "e_code": "E552",
+   "message": "Low Discharge Pressure",
+   "note": null,
+   "groups_raw": "DVM water , GEO",
+   "groups": []
+  },
+  "553": {
+   "code": "553",
+   "e_code": "E553",
+   "message": "equability operation",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "554": {
+   "code": "554",
+   "e_code": "E554",
+   "message": "Gas leak error",
+   "note": "side of COMP1 of Duct for India",
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "555": {
+   "code": "555",
+   "e_code": "E555",
+   "message": "Oil collection operation (not an error)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "556": {
+   "code": "556",
+   "e_code": "E556",
+   "message": "Capacity miss match between indoor unit and outdoor unit",
+   "note": null,
+   "groups_raw": "CAC, EHS",
+   "groups": [
+    "CAC",
+    "EHS"
+   ]
+  },
+  "557": {
+   "code": "557",
+   "e_code": "E557",
+   "message": "Option code miss match between indoor unit and outdoor unit",
+   "note": null,
+   "groups_raw": "CAC, EHS",
+   "groups": [
+    "CAC",
+    "EHS"
+   ]
+  },
+  "559": {
+   "code": "559",
+   "e_code": "E559",
+   "message": "Indoor Unit operation stops due to an unknown error in Outdoor Unit",
+   "note": null,
+   "groups_raw": "FJM, DVM, EHS",
+   "groups": [
+    "FJM",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "560": {
+   "code": "560",
+   "e_code": "E560",
+   "message": "Outdoor Unit option switch setting error(inapplicable option switch turns on)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "561": {
+   "code": "561",
+   "e_code": "E561",
+   "message": "ERV supply air fan error due to RPM",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "562": {
+   "code": "562",
+   "e_code": "E562",
+   "message": "ERV return air fan error due to RPM",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "563": {
+   "code": "563",
+   "e_code": "E563",
+   "message": "Indoor units do not match what the outdoor unit reads",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "564": {
+   "code": "564",
+   "e_code": "E564",
+   "message": "IAQ Clean Fan Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "565": {
+   "code": "565",
+   "e_code": "E565",
+   "message": "Miss connection Error between Comp and power wire - power line of Eva1 connect with Comp2 or power line of Eva2 connect with Comp1",
+   "note": "Duct for India",
+   "groups_raw": "India duct",
+   "groups": []
+  },
+  "570": {
+   "code": "570",
+   "e_code": "E570",
+   "message": "Boot Code Check FAIL",
+   "note": "detect whenentry into test mode",
+   "groups_raw": "Factory error code",
+   "groups": []
+  },
+  "573": {
+   "code": "573",
+   "e_code": "E573",
+   "message": "DVM WATER mixed module installation dip switch error (HP and HR connected together)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "574": {
+   "code": "574",
+   "e_code": "E574",
+   "message": "Total Leakage of Refrigerant of Outdoor Unit 2",
+   "note": "Comp2 side of Duct for India",
+   "groups_raw": "India duct",
+   "groups": []
+  },
+  "575": {
+   "code": "575",
+   "e_code": "E575",
+   "message": "Total Leakage of Refrigerant of Outdoor Unit 3 (Comp1, Comp2 bot detected)",
+   "note": "Duct for India both detect",
+   "groups_raw": "-",
+   "groups": []
+  },
+  "590": {
+   "code": "590",
+   "e_code": "E590",
+   "message": "Inverter Driver#1 Communication error",
+   "note": "DVMINV 도입",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "591": {
+   "code": "591",
+   "e_code": "E591",
+   "message": "Inverter Driver#2 Communication error",
+   "note": "DVMINV 도입",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "592": {
+   "code": "592",
+   "e_code": "E592",
+   "message": "Inverter Driver#3 Communication error",
+   "note": "DVMINV 도입",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "593": {
+   "code": "593",
+   "e_code": "E593",
+   "message": "Inverter Driver#4 Communication error",
+   "note": "DVMINV 도입",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "594": {
+   "code": "594",
+   "e_code": "E594",
+   "message": "Fan Driver#1 Communication Error",
+   "note": "DVMINV 도입",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "595": {
+   "code": "595",
+   "e_code": "E595",
+   "message": "Fan Driver#2 Communication Error",
+   "note": "DVMINV 도입",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "596": {
+   "code": "596",
+   "e_code": "E596",
+   "message": "Fan Driver#3 Communication Error",
+   "note": "DVMINV 도입",
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "601": {
+   "code": "601",
+   "e_code": "E601",
+   "message": "Communication error between indoor unit and wired remote control after 3 minutes",
+   "note": null,
+   "groups_raw": "CAC, DVM, ERV, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "602": {
+   "code": "602",
+   "e_code": "E602",
+   "message": "Communication error between master and slave wired remote control",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "603": {
+   "code": "603",
+   "e_code": "E603",
+   "message": "Communication packet error (baud rate error)",
+   "note": null,
+   "groups_raw": "CAC, DVM",
+   "groups": [
+    "CAC",
+    "DVM"
+   ]
+  },
+  "604": {
+   "code": "604",
+   "e_code": "E604",
+   "message": "Communication error between the indoor unit and wired remote controller after tracking has been completed 10 times.",
+   "note": null,
+   "groups_raw": "CAC, DVM, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "EHS"
+   ]
+  },
+  "605": {
+   "code": "605",
+   "e_code": "E605",
+   "message": "Communication error (between 7 day scheduler, wired remote control/7 day scheduler and the centralized controller)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "606": {
+   "code": "606",
+   "e_code": "E606",
+   "message": "COM1/COM2 cross-installed error",
+   "note": null,
+   "groups_raw": "CAC, DVM, ERV, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "607": {
+   "code": "607",
+   "e_code": "E607",
+   "message": "Error between master wired remote controller and slave wired remote controller settings",
+   "note": null,
+   "groups_raw": "CAC, DVM, ERV, EHS",
+   "groups": [
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "608": {
+   "code": "608",
+   "e_code": "E608",
+   "message": "ERV controller can not be detected",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "609": {
+   "code": "609",
+   "e_code": "E609",
+   "message": "Indoor unit can not be detected for sychronised control",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "610": {
+   "code": "610",
+   "e_code": "E610",
+   "message": "Communication error between centralized controler and interface module",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "611": {
+   "code": "611",
+   "e_code": "E611",
+   "message": "Communication error between DMS and centralized controller",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "612": {
+   "code": "612",
+   "e_code": "E612",
+   "message": "DMS ↔ PEAK Transmitter Communication Error",
+   "note": null,
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "613": {
+   "code": "613",
+   "e_code": "E613",
+   "message": "Communication error between DMS and SIM interface module",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "614": {
+   "code": "614",
+   "e_code": "E614",
+   "message": "Communication error between SIM and power meter",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "615": {
+   "code": "615",
+   "e_code": "E615",
+   "message": "Communication error between interface module and the indoor unit",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "616": {
+   "code": "616",
+   "e_code": "E616",
+   "message": "Communication error between interface module and the outdoor unit",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "617": {
+   "code": "617",
+   "e_code": "E617",
+   "message": "Peak power Transmitter <-> Demand Controller Communication Error, Demand Transmitter <-> Amount of eletricity system communication Error",
+   "note": null,
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "618": {
+   "code": "618",
+   "e_code": "E618",
+   "message": "Amount of indoor units installed has exceeded the limit for the outdoor unit",
+   "note": null,
+   "groups_raw": "CAC, DVM, ERV",
+   "groups": [
+    "CAC",
+    "DVM",
+    "ERV"
+   ]
+  },
+  "619": {
+   "code": "619",
+   "e_code": "E619",
+   "message": "Temperature displays are mixed up when indoor units have been connected to MWR-WS00 (celsius/farneheit)",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "620": {
+   "code": "620",
+   "e_code": "E620",
+   "message": "Temperature display setting error on MWR-WS00 (celsius/farenheit)",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "621": {
+   "code": "621",
+   "e_code": "E621",
+   "message": "Option code setting error when connected to wired remote controller (master/slave)",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "622": {
+   "code": "622",
+   "e_code": "E622",
+   "message": "Demand Controller / select the type of amount of electricity system Error",
+   "note": null,
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "623": {
+   "code": "623",
+   "e_code": "E623",
+   "message": "Demand Transmitter PT / CT ratio set Error",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "624": {
+   "code": "624",
+   "e_code": "E624",
+   "message": "Demand Transmitter data receive error from amount of electricity",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "625": {
+   "code": "625",
+   "e_code": "E625",
+   "message": "Master DMS ↔ Slave DMS Communication Error",
+   "note": null,
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "626": {
+   "code": "626",
+   "e_code": "E626",
+   "message": "ERV linkage wire remote controller(AWR-WE00) ERV separate installation Error (not connect indoor unit and, only ERV be installed) indoor unit linkage wire remocontroller(AWR-VH10) indoor unit separate installation Error (not connect indoor unit and, only ERV be installed)",
+   "note": null,
+   "groups_raw": "ERV",
+   "groups": [
+    "ERV"
+   ]
+  },
+  "627": {
+   "code": "627",
+   "e_code": "E627",
+   "message": "While in linkage controll Master/Slave Wire Remote controller, Slave Wire Remote controller 2EA installation Error(Installing Wire Remocontroller set slave in Master Wire Remocontroller 2EA at the same time)",
+   "note": null,
+   "groups_raw": "ERV, Control",
+   "groups": [
+    "ERV"
+   ]
+  },
+  "628": {
+   "code": "628",
+   "e_code": "E628",
+   "message": "DMS↔Transmitter Communication Error",
+   "note": null,
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "629": {
+   "code": "629",
+   "e_code": "E629",
+   "message": "DMS↔DDC Communication Error",
+   "note": null,
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "630": {
+   "code": "630",
+   "e_code": "E630",
+   "message": "ERV wire remote controller normal ventilation option set Error - Check normal ventilation option set only. - ERV normal ventilation No option, use Wire Remote controller option normal ventilation",
+   "note": null,
+   "groups_raw": "ERV",
+   "groups": [
+    "ERV"
+   ]
+  },
+  "631": {
+   "code": "631",
+   "e_code": "E631",
+   "message": "ERVWire Remote controller auto ventilation option set Error - Check set auto ventilation only - ERV auto ventilation no option, use wire remote controller auto ventilation",
+   "note": null,
+   "groups_raw": "ERV",
+   "groups": [
+    "ERV"
+   ]
+  },
+  "632": {
+   "code": "632",
+   "e_code": "E632",
+   "message": "Error when input the pulse except set the value of Pulse Width by PIM 1. less than 20ms , 2. over 400ms , 3. over range of set pulse width, 4. repeated purse over 3min",
+   "note": null,
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "652": {
+   "code": "652",
+   "e_code": "E652",
+   "message": "Two wired remote controllers have been set to Master mode (COM1 wiring)",
+   "note": null,
+   "groups_raw": "DVM, ERV",
+   "groups": [
+    "DVM",
+    "ERV"
+   ]
+  },
+  "653": {
+   "code": "653",
+   "e_code": "E653",
+   "message": "Error with the room temperature sensor in the wired remote control (open/short)",
+   "note": null,
+   "groups_raw": "DVM, ERV, EHS",
+   "groups": [
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "654": {
+   "code": "654",
+   "e_code": "E654",
+   "message": "Memory data error in the wired remote control (MWR-WS00)",
+   "note": null,
+   "groups_raw": "DVM, ERV, EHS",
+   "groups": [
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  },
+  "655": {
+   "code": "655",
+   "e_code": "E655",
+   "message": "RESERVED(DMS-SNET3 Error)",
+   "note": "Refer to Error History",
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "656": {
+   "code": "656",
+   "e_code": "E656",
+   "message": "RESERVED(DMS-SNET3Error)",
+   "note": "Refer to Error History",
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "701": {
+   "code": "701",
+   "e_code": "E701",
+   "message": "Floating switch error on the indoor unit (1st detection)",
+   "note": null,
+   "groups_raw": "DVM",
+   "groups": [
+    "DVM"
+   ]
+  },
+  "702": {
+   "code": "702",
+   "e_code": "E702",
+   "message": "EEV closing error on the indoor unit (1st detection)",
+   "note": null,
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "703": {
+   "code": "703",
+   "e_code": "E703",
+   "message": "EEV opening error on the indoor unit (1st detection)",
+   "note": null,
+   "groups_raw": "DVM, EHS",
+   "groups": [
+    "DVM",
+    "EHS"
+   ]
+  },
+  "720": {
+   "code": "720",
+   "e_code": "E720",
+   "message": "Outdoor EEV#1 opening Self-Check Every time error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "721": {
+   "code": "721",
+   "e_code": "E721",
+   "message": "Outdoor EEV#2 opening Self-Check Every time error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "722": {
+   "code": "722",
+   "e_code": "E722",
+   "message": "Outdoor EEV#3 opening Self-Check Every time error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "723": {
+   "code": "723",
+   "e_code": "E723",
+   "message": "Outdoor EEV#1 closing Self-Check Every time error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "724": {
+   "code": "724",
+   "e_code": "E724",
+   "message": "Outdoor EEV#2 closing Self-Check Every time error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "725": {
+   "code": "725",
+   "e_code": "E725",
+   "message": "Outdoor EEV#3 closing Self-Check Every time error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "768": {
+   "code": "768",
+   "e_code": "E768",
+   "message": "RESERVED(DMS-SNET3 Error)",
+   "note": "Error History 참조",
+   "groups_raw": "Control",
+   "groups": []
+  },
+  "801": {
+   "code": "801",
+   "e_code": "E801",
+   "message": "[GHP-R410A] communication error : \"IF → Outdoor unit\" : Disconnection",
+   "note": null,
+   "groups_raw": "Korea model only",
+   "groups": []
+  },
+  "802": {
+   "code": "802",
+   "e_code": "E802",
+   "message": "[GHP-R410A] communication error : \"Outdoor unit → IF\" : Disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "803": {
+   "code": "803",
+   "e_code": "E803",
+   "message": "[GHP-R410A] communication error : \"IF ↔ Indoor unit\" some disconnect in Indoor unit (communicating)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "804": {
+   "code": "804",
+   "e_code": "E804",
+   "message": "[GHP-R410A] communication error : Among outdoor unit",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "805": {
+   "code": "805",
+   "e_code": "E805",
+   "message": "[GHP-R410A] Error setting ourdoor unit organization",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "806": {
+   "code": "806",
+   "e_code": "E806",
+   "message": "[GHP-R410A] Remocon Sensor disconnect/short circuit",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "807": {
+   "code": "807",
+   "e_code": "E807",
+   "message": "[GHP-R410A] outdoor liquid pipe Sensor disconnect/short circuit",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "808": {
+   "code": "808",
+   "e_code": "E808",
+   "message": "[GHP-R410A] outdoor Unit - overcooling heat exchanger entry temp thermystor disconnect/short circuit",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "809": {
+   "code": "809",
+   "e_code": "E809",
+   "message": "[GHP-R410A]COMP suction temp overheat",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "810": {
+   "code": "810",
+   "e_code": "E810",
+   "message": "[GHP-R410A] COMP suction superheat not soar",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "811": {
+   "code": "811",
+   "e_code": "E811",
+   "message": "[GHP-R410A] refrigerant high pressure Switch disconnect",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "812": {
+   "code": "812",
+   "e_code": "E812",
+   "message": "[GHP-R410A] Gas EEV Output error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "813": {
+   "code": "813",
+   "e_code": "E813",
+   "message": "[GHP-R410A] refrigerant low pressure Sensor error(2nd)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "814": {
+   "code": "814",
+   "e_code": "E814",
+   "message": "[GHP-R410A] refrigerant high pressure Sensor error 1",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "815": {
+   "code": "815",
+   "e_code": "E815",
+   "message": "[GHP-R410A] refrigerant high pressure Sensor error 2 (value of high pressure sensor less than standard low pressure)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "816": {
+   "code": "816",
+   "e_code": "E816",
+   "message": "[GHP-R410A] Water Pump operation failure",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "817": {
+   "code": "817",
+   "e_code": "E817",
+   "message": "[GHP-R410A] Water Pump a number of revolute error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "818": {
+   "code": "818",
+   "e_code": "E818",
+   "message": "[GHP-R410A] IPM(outdoor unit FAN operating Driver) error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "819": {
+   "code": "819",
+   "e_code": "E819",
+   "message": "[GHP-R410A] outdoor heat exchange Fan 1 operating failure",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "820": {
+   "code": "820",
+   "e_code": "E820",
+   "message": "[GHP-R410A] outdoor heat exchange Fan 2 operating failure",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "821": {
+   "code": "821",
+   "e_code": "E821",
+   "message": "[GHP-R410A] outdoor heat exchange Fan 3 operating failure",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "822": {
+   "code": "822",
+   "e_code": "E822",
+   "message": "[GHP-R410A] outdoor heat exchange Fan 1 a number of revolute error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "823": {
+   "code": "823",
+   "e_code": "E823",
+   "message": "[GHP-R410A] outdoor heat exchange Fan 2 a number of revolute error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "824": {
+   "code": "824",
+   "e_code": "E824",
+   "message": "[GHP-R410A] outdoor heat exchange Fan 3 a number of revolute error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "825": {
+   "code": "825",
+   "e_code": "E825",
+   "message": "[GHP-R410A] outdoor Unit - heat exchange Fan error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "826": {
+   "code": "826",
+   "e_code": "E826",
+   "message": "[GHP-R410A] outdoor Unit - Accum exit temp thermystor 1 disconnect/short circuit",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "827": {
+   "code": "827",
+   "e_code": "E827",
+   "message": "[GHP-R410A] outdoor Unit - Accum exit temp thermystor 2 disconnect/short circuit",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "828": {
+   "code": "828",
+   "e_code": "E828",
+   "message": "[GHP-R410A] outdoor unit Unit - refrigerant low pressure Switch disconnect",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "829": {
+   "code": "829",
+   "e_code": "E829",
+   "message": "[GHP-R410A] refrigerant low pressure error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "830": {
+   "code": "830",
+   "e_code": "E830",
+   "message": "[GHP-R410A] three phase error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "831": {
+   "code": "831",
+   "e_code": "E831",
+   "message": "[GHP-R410A] one phase power part error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "832": {
+   "code": "832",
+   "e_code": "E832",
+   "message": "[GHP-R410A] Main - Sub MICOM Program Version Unmatch",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "833": {
+   "code": "833",
+   "e_code": "E833",
+   "message": "[GHP-R410A] indoor unit connection number Over",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "834": {
+   "code": "834",
+   "e_code": "E834",
+   "message": "[GHP-R410A] indoor unit connection capacity Over",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "835": {
+   "code": "835",
+   "e_code": "E835",
+   "message": "[GHP-R410A] outdoor-indoor connection Unmatch",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "836": {
+   "code": "836",
+   "e_code": "E836",
+   "message": "[GHP-R410A] Outdoor Unit -Regular Inspection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "837": {
+   "code": "837",
+   "e_code": "E837",
+   "message": "[GHP-R410A] Refrigerant High pressure error 1",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "838": {
+   "code": "838",
+   "e_code": "E838",
+   "message": "[GHP-R410A] Refrigerant High pressure error 2",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "841": {
+   "code": "841",
+   "e_code": "E841",
+   "message": "[GHP-R410A] Ourdoor Unit Gas Temp Thermistor short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "842": {
+   "code": "842",
+   "e_code": "E842",
+   "message": "[GHP-R410A] Engine Room 온도 Sensor 단선/단락",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "843": {
+   "code": "843",
+   "e_code": "E843",
+   "message": "[GHP-R410A] Engine water temp Sensor short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "844": {
+   "code": "844",
+   "e_code": "E844",
+   "message": "[GHP-R410A] Enginedischarge temp Sensor disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "845": {
+   "code": "845",
+   "e_code": "E845",
+   "message": "[GHP-R410A] Engine fluid pressure error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "846": {
+   "code": "846",
+   "e_code": "E846",
+   "message": "[GHP-R410A] Engine Fluid pressure Switch disconnected",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "847": {
+   "code": "847",
+   "e_code": "E847",
+   "message": "[GHP-R410A] Engine over revolute 1",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "848": {
+   "code": "848",
+   "e_code": "E848",
+   "message": "[GHP-R410A] Engine over revolute 2",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "849": {
+   "code": "849",
+   "e_code": "E849",
+   "message": "[GHP-R410A] Starter Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "850": {
+   "code": "850",
+   "e_code": "E850",
+   "message": "[GHP-R410A] Engine a number of revolute control error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "851": {
+   "code": "851",
+   "e_code": "E851",
+   "message": "[GHP-R410A] Engine Stop",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "852": {
+   "code": "852",
+   "e_code": "E852",
+   "message": "[GHP-R410A] IGUNAITA(firer) low voltage",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "853": {
+   "code": "853",
+   "e_code": "E853",
+   "message": "[GHP-R410A] IGUNAITA(firer) disconnect",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "854": {
+   "code": "854",
+   "e_code": "E854",
+   "message": "[GHP-R410A] IGUNAITA(firer) over voltage",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "855": {
+   "code": "855",
+   "e_code": "E855",
+   "message": "[GHP-R410A] Engine discharge temp Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "856": {
+   "code": "856",
+   "e_code": "E856",
+   "message": "[GHP-R410A] Engine water temp overheat",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "857": {
+   "code": "857",
+   "e_code": "E857",
+   "message": "[GHP-R410A] Engine operation failure",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "858": {
+   "code": "858",
+   "e_code": "E858",
+   "message": "[GHP-R410A] Engine cooling",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "859": {
+   "code": "859",
+   "e_code": "E859",
+   "message": "[GHP-R410A] Engine insufficient operating revolute",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "860": {
+   "code": "860",
+   "e_code": "E860",
+   "message": "[GHP-R410A] Engine a number of revolute Haunting Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "861": {
+   "code": "861",
+   "e_code": "E861",
+   "message": "[GHP-R410A] COMP discharge temperature overheat",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "862": {
+   "code": "862",
+   "e_code": "E862",
+   "message": "[GHP-R410A] Compressor Discharge temperature Sensor1 short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "863": {
+   "code": "863",
+   "e_code": "E863",
+   "message": "[GHP-R410A] Compressor Discharge temperature Sensor2 short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "864": {
+   "code": "864",
+   "e_code": "E864",
+   "message": "[GHP-R410A] Compressor Discharge temperature Sensor3 short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "865": {
+   "code": "865",
+   "e_code": "E865",
+   "message": "[GHP-R410A] Compressor Discharge temperature Sensor4 short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "866": {
+   "code": "866",
+   "e_code": "E866",
+   "message": "[GHP-R410A] Compressor nhale temperature Sensor1 short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "867": {
+   "code": "867",
+   "e_code": "E867",
+   "message": "[GHP-R410A] Compressor suction temperature Sensor2 short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "868": {
+   "code": "868",
+   "e_code": "E868",
+   "message": "[GHP-R22] Outdoor Unit - Accum Entrance Temperature Sensor short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "869": {
+   "code": "869",
+   "e_code": "E869",
+   "message": "[GHP-R22] Outdoor Unit - refrigerants Gas pipe temperature Sensor short/disconnection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "870": {
+   "code": "870",
+   "e_code": "E870",
+   "message": "[GHP-R22] Outdoor Unit - comp lubricating oil insufficiency error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "871": {
+   "code": "871",
+   "e_code": "E871",
+   "message": "[GHP-R22] Outdoor Unit - Refrigerant overfill error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "872": {
+   "code": "872",
+   "e_code": "E872",
+   "message": "[GHP-R22] Outdoor Unit - Compressor induction temperature error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "873": {
+   "code": "873",
+   "e_code": "E873",
+   "message": "[GHP-R22] Engine cooling system Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "874": {
+   "code": "874",
+   "e_code": "E874",
+   "message": "[GHP-R22] Engine Oil System error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "875": {
+   "code": "875",
+   "e_code": "E875",
+   "message": "[GHP-R22] Engine power system Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "876": {
+   "code": "876",
+   "e_code": "E876",
+   "message": "[GHP-R22] Engine operating/control system Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "880": {
+   "code": "880",
+   "e_code": "E880",
+   "message": "[GHP-R410A] Outdoor Unit - Engine Temp of Cooling water low",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "881": {
+   "code": "881",
+   "e_code": "E881",
+   "message": "[GHP-R410A] Outdoor Unit - leakage of Engine oil",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "882": {
+   "code": "882",
+   "e_code": "E882",
+   "message": "[GHP-R410A] Outdoor Unit - Lack of Comp oil",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "883": {
+   "code": "883",
+   "e_code": "E883",
+   "message": "[GHP-R410A] Outdoor Unit - starter Trans voltage short",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "901": {
+   "code": "901",
+   "e_code": "E901",
+   "message": "Water Inlet Sensor(Tw1) SHORT / OPEN",
+   "note": "EHS",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "902": {
+   "code": "902",
+   "e_code": "E902",
+   "message": "Water Outlet Sensor(Tw3) SHORT / OPEN",
+   "note": "EHS",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "903": {
+   "code": "903",
+   "e_code": "E903",
+   "message": "PHE Sensor(Tw2) SHORT / OPEN",
+   "note": "EHS",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "904": {
+   "code": "904",
+   "e_code": "E904",
+   "message": "Water TANK Sensor SHORT / OPEN",
+   "note": "EHS",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "905": {
+   "code": "905",
+   "e_code": "E905",
+   "message": "SOLAR Sensor SHORT / OPEN",
+   "note": "EHS",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "906": {
+   "code": "906",
+   "e_code": "E906",
+   "message": "Outdoor Unit's EVA In_sensor SHORT / OPEN",
+   "note": "Gen3 Outdoor unit",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "907": {
+   "code": "907",
+   "e_code": "E907",
+   "message": "Heat exchanger freezing burst protection",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "908": {
+   "code": "908",
+   "e_code": "E908",
+   "message": "During Heat exchanger freezing burst protection Compressor Stop (system will try to restart)",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "909": {
+   "code": "909",
+   "e_code": "E909",
+   "message": "Failure to restart after 908 error 3 times. System stop",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "910": {
+   "code": "910",
+   "e_code": "E910",
+   "message": "Breakaway of Water Out temperature-sensor (TW2) error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "911": {
+   "code": "911",
+   "e_code": "E911",
+   "message": "Flow Switch Open Error",
+   "note": "EHS",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "912": {
+   "code": "912",
+   "e_code": "E912",
+   "message": "Flow Switch Close Error",
+   "note": "EHS",
+   "groups_raw": "EHS",
+   "groups": [
+    "EHS"
+   ]
+  },
+  "913": {
+   "code": "913",
+   "e_code": "E913",
+   "message": "Failure to restart after 911 error after 6 times",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  },
+  "914": {
+   "code": "914",
+   "e_code": "E914",
+   "message": "Thermostat Wiring Error",
+   "note": null,
+   "groups_raw": "-",
+   "groups": []
+  }
+ },
+ "ranges": [
+  {
+   "key": "101~120",
+   "from": 101,
+   "to": 120,
+   "message": "Indoor Unit Communication",
+   "note": null,
+   "groups_raw": "FJM, CAC, DVM, ERV, EHS, Contol",
+   "groups": [
+    "FJM",
+    "CAC",
+    "DVM",
+    "ERV",
+    "EHS"
+   ]
+  }
+ ]
+}

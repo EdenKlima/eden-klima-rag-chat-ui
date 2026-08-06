@@ -1,0 +1,11 @@
+.git
+.gitignore
+.dockerignore
+docs
+scripts
+blueprints
+README.md
+__pycache__
+*.pyc
+.venv
+.DS_Store

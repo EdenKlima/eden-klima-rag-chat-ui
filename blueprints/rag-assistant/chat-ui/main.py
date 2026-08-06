@@ -2,19 +2,29 @@
 messages to a DigitalOcean managed GenAI agent and serves a simple web
 interface.
 
-The app self-discovers the agent's deployment URL and API key at startup
-using the DO API.
+Error-code questions take a deterministic path: a regex detects the code,
+the verified record is loaded from data/error_codes.json and injected into
+the agent request, so the answer never depends on vector-search ranking.
+All other questions use the agent's knowledge-base retrieval as before.
 
-Environment variables (injected by terraform via App Platform):
-    AGENT_UUID   — UUID of the managed agent
-    DO_API_TOKEN — DigitalOcean API token
-    AGENT_NAME   — Display name of the agent (optional)
+Environment variables:
+    AGENT_ENDPOINT   — agent endpoint URL (preferred; base URL or full /api/v1/chat/completions)
+    AGENT_ACCESS_KEY — static agent access key (preferred)
+    AGENT_UUID       — UUID of the managed agent (legacy discovery fallback)
+    DO_API_TOKEN     — DigitalOcean API token (legacy discovery fallback only;
+                       creates a new agent key at startup — set AGENT_ENDPOINT +
+                       AGENT_ACCESS_KEY instead to stop key minting)
+    AGENT_NAME       — display name of the agent (optional)
+    LOOKUP_ENABLED   — set to 0 to disable the deterministic error-code path
 """
 
+import json
 import logging
 import os
+import re
 import sys
 import time
+import uuid
 from pathlib import Path
 
 import httpx
@@ -27,14 +37,21 @@ logger = logging.getLogger("chat-ui")
 app = FastAPI(title="Eden Klima Wissensassistent")
 
 AGENT_UUID = os.environ.get("AGENT_UUID", "")
-DO_API_TOKEN = os.environ["DO_API_TOKEN"]
+DO_API_TOKEN = os.environ.get("DO_API_TOKEN", "")
 AGENT_NAME = os.environ.get("AGENT_NAME", "Eden Klima Wissensassistent")
 DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
 DO_STATUS_URL = os.environ.get("DO_STATUS_URL", "https://status.digitalocean.com/api/v2/summary.json")
 DO_STATUS_CACHE_SECONDS = 60
+LOOKUP_ENABLED = os.environ.get("LOOKUP_ENABLED", "1") != "0"
+MAX_MESSAGE_CHARS = int(os.environ.get("MAX_MESSAGE_CHARS", "2000"))
+MAX_HISTORY_ENTRIES = int(os.environ.get("MAX_HISTORY_ENTRIES", "16"))
 MAINTENANCE_MESSAGE = (
     "Der Wissensassistent ist aktuell wegen einer technischen Störung beim KI-Dienst eingeschränkt. "
     "Bitte versuchen Sie es später erneut."
+)
+KB_UNAVAILABLE_MESSAGE = (
+    "Die Wissensdatenbank konnte gerade nicht zuverlässig abgefragt werden. "
+    "Bitte versuchen Sie es erneut oder kontaktieren Sie Eden Klima."
 )
 DO_RELEVANT_COMPONENTS = {
     "Agentic Inference Cloud",
@@ -44,48 +61,279 @@ DO_RELEVANT_COMPONENTS = {
     "Guardrails",
     "Inference",
 }
-# Populated at startup.
+# Populated at startup (or from env).
 AGENT_ENDPOINT = None
 AGENT_API_KEY = None
 DISCOVERY_ERROR = None
+LAST_DISCOVERY_ATTEMPT = 0.0
+DISCOVERY_RETRY_SECONDS = 60
 PROVIDER_STATUS_CACHE = {"checked_at": 0.0, "degraded": False, "components": []}
 
 # Serve the static HTML chat page.
 INDEX_HTML = (Path(__file__).parent / "static" / "index.html").read_text()
 
+# ---------------------------------------------------------------------------
+# Deterministic error-code lookup
+# ---------------------------------------------------------------------------
+
+ERROR_DB_PATH = Path(__file__).parent / "data" / "error_codes.json"
+try:
+    _db = json.loads(ERROR_DB_PATH.read_text(encoding="utf-8"))
+    ERROR_CODES = _db.get("codes", {})
+    ERROR_RANGES = _db.get("ranges", [])
+except Exception:
+    logger.exception("Could not load %s — deterministic lookup disabled", ERROR_DB_PATH)
+    ERROR_CODES, ERROR_RANGES = {}, []
+
+ERROR_CODES_SOURCE_LABEL = "Samsung Fehlercode-Datenbank (verifizierter Eintrag)"
+KNOWN_GROUPS = ("FJM", "CAC", "DVM", "ERV", "EHS")
+
+# 3-digit code, optional E prefix, not embedded in longer alphanumerics (R410A, AR12…, 2026).
+CODE_RE = re.compile(r"(?<![0-9A-Za-z])(?:[eE][-. ]?)?([1-9][0-9]{2})(?![0-9A-Za-z])")
+CODE_CONTEXT_RE = re.compile(
+    r"(?i)\b(fehl[a-zäöü]*|err?[o0]r[a-z]*|codes?|st(?:ö|oe)rung(?:en)?|meldung|alarm"
+    r"|zeigt|angezeigt|anzeige|blinkt|shows?|displays?|displayed)\b"
+)
+BARE_CODE_RE = re.compile(r"^[eE]?[-. ]?[1-9][0-9]{2}[\s?.!]*$")
+CODES_WORD_RE = re.compile(r"(?i)(fehler\s?codes?|error\s?codes?|\bcodes\b|fehlercodeliste)")
+LIST_WORD_RE = re.compile(r"(?i)\b(welche|alle|liste|übersicht|uebersicht|wie\s*viele|which|list|all|how\s*many|gibt\s*es|kennst|gelten)\b")
+RANGE_RE = re.compile(
+    r"(?i)zwischen\s+E?(\d{3})\s+und\s+E?(\d{3})|between\s+E?(\d{3})\s+and\s+E?(\d{3})|(?<![0-9])E?(\d{3})\s*(?:~|–|bis)\s*E?(\d{3})(?![0-9])"
+)
+GROUP_RE = re.compile(r"(?i)\b(FJM|CAC|DVM|ERV|EHS)\b")
+
+
+def _record_lines(rec):
+    lines = [
+        f"Code: {rec['code']} ({rec['e_code']})",
+        f"Original-Fehlermeldung: {rec['message']}",
+        f"Produktgruppen: {rec['groups_raw'] or '—'}",
+    ]
+    if rec.get("note"):
+        lines.append(f"Zusatznotiz: {rec['note']}")
+    return "\n".join(lines)
+
+
+def _range_lines(rng):
+    lines = [
+        f"Fehlercode-Bereich: {rng['key']} (E{rng['from']} bis E{rng['to']})",
+        f"Original-Fehlermeldung: {rng['message']}",
+        f"Produktgruppen: {rng['groups_raw'] or '—'}",
+    ]
+    if rng.get("note"):
+        lines.append(f"Zusatznotiz: {rng['note']}")
+    return "\n".join(lines)
+
+
+def _neighbor_codes(code, limit=4):
+    target = int(code)
+    known = sorted(int(c) for c in ERROR_CODES)
+    return [str(c) for c in sorted(known, key=lambda c: (abs(c - target), c))[:limit]]
+
+
+def _covering_range(code):
+    value = int(code)
+    for rng in ERROR_RANGES:
+        if rng["from"] <= value <= rng["to"]:
+            return rng
+    return None
+
+
+def detect_error_code_intent(message):
+    """Return an intent dict for error-code style questions, or None for normal RAG."""
+    if not ERROR_CODES:
+        return None
+    text = message.strip()
+
+    range_match = RANGE_RE.search(text)
+    if range_match:
+        nums = [g for g in range_match.groups() if g]
+        if len(nums) >= 2:
+            lo, hi = sorted((int(nums[0]), int(nums[1])))
+            for rng in ERROR_RANGES:
+                if rng["from"] == lo and rng["to"] == hi:
+                    return {"type": "codes", "records": [], "range_records": [rng], "missing": []}
+            if LIST_WORD_RE.search(text) or CODES_WORD_RE.search(text):
+                return {"type": "list_range", "from": lo, "to": hi}
+
+    has_context = bool(CODE_CONTEXT_RE.search(text)) or bool(BARE_CODE_RE.match(text))
+    candidates = []
+    for m in CODE_RE.finditer(text):
+        prefixed = m.group(0).lower().startswith("e")
+        if prefixed or has_context:
+            code = m.group(1)
+            if code not in candidates:
+                candidates.append(code)
+    if candidates:
+        records, range_records, missing = [], [], []
+        for code in candidates[:3]:
+            if code in ERROR_CODES:
+                records.append(ERROR_CODES[code])
+            else:
+                rng = _covering_range(code)
+                if rng:
+                    range_records.append(rng)
+                else:
+                    missing.append(code)
+        return {"type": "codes", "records": records, "range_records": range_records, "missing": missing}
+
+    if CODES_WORD_RE.search(text) and LIST_WORD_RE.search(text):
+        group_match = GROUP_RE.search(text)
+        if group_match:
+            return {"type": "list_group", "group": group_match.group(1).upper()}
+        return {"type": "list_all"}
+
+    return None
+
+
+def build_dataset_block(intent):
+    """Render the verified dataset that gets appended to the user message."""
+    parts = []
+    instruction = (
+        "[ANWEISUNG: Beantworte die obige Nutzerfrage AUSSCHLIESSLICH auf Basis dieser "
+        "verifizierten Fehlercode-Daten im Fehlercode-Antwortformat. Diese Daten sind maßgeblich "
+        "und aktueller als alle anderen Quellen. Antworte in der Sprache der Nutzerfrage. "
+        "Erfinde keine zusätzlichen Ursachen oder Reparaturschritte.]"
+    )
+
+    if intent["type"] == "codes":
+        for rec in intent["records"]:
+            parts.append(_record_lines(rec))
+        for rng in intent["range_records"]:
+            parts.append(_range_lines(rng))
+        for code in intent["missing"]:
+            neighbors = ", ".join(_neighbor_codes(code))
+            parts.append(
+                f"Der Code {code} (E{code}) ist NICHT in der Fehlercode-Datenbank dokumentiert.\n"
+                f"Ähnliche dokumentierte Codes: {neighbors}."
+            )
+        if intent["missing"] and not intent["records"] and not intent["range_records"]:
+            instruction = (
+                "[ANWEISUNG: Teile ehrlich mit, dass dieser Code nicht in der Wissensdatenbank "
+                "dokumentiert ist, biete die ähnlichen Codes als Rückfrage an und erfinde keine "
+                "Bedeutung. Antworte in der Sprache der Nutzerfrage.]"
+            )
+
+    elif intent["type"] == "list_all":
+        by_series = {}
+        for code in ERROR_CODES:
+            by_series.setdefault(code[0] + "xx", 0)
+            by_series[code[0] + "xx"] += 1
+        series = " · ".join(f"{k}: {v} Codes" for k, v in sorted(by_series.items()))
+        known = sorted(int(c) for c in ERROR_CODES)
+        parts.append(
+            f"Die Fehlercode-Datenbank enthält {len(ERROR_CODES)} dokumentierte Samsung-Fehlercodes "
+            f"(Bereich {known[0]}–{known[-1]}) plus den Sammelbereich 101~120.\n"
+            f"Verteilung: {series}.\n"
+            "Jeder Code gilt mit und ohne E-Präfix (465 = E465)."
+        )
+        instruction = (
+            "[ANWEISUNG: Nenne die Gesamtzahl und die Verteilung, erkläre, dass einzelne Codes "
+            "jederzeit abgefragt werden können, und zähle NICHT alle Codes auf. "
+            "Antworte in der Sprache der Nutzerfrage.]"
+        )
+
+    elif intent["type"] == "list_range":
+        lo, hi = intent["from"], intent["to"]
+        hits = [ERROR_CODES[c] for c in sorted(ERROR_CODES, key=int) if lo <= int(c) <= hi]
+        if not hits:
+            parts.append(f"Im Bereich {lo}–{hi} sind keine Fehlercodes dokumentiert.")
+        elif len(hits) <= 40:
+            listing = "\n".join(f"- {r['code']} ({r['e_code']}): {r['message']}" for r in hits)
+            parts.append(f"Dokumentierte Fehlercodes im Bereich {lo}–{hi} ({len(hits)}):\n{listing}")
+        else:
+            listing = "\n".join(f"- {r['code']}: {r['message'][:70]}" for r in hits[:20])
+            parts.append(
+                f"Im Bereich {lo}–{hi} sind {len(hits)} Fehlercodes dokumentiert. Erste 20:\n{listing}"
+            )
+
+    elif intent["type"] == "list_group":
+        group = intent["group"]
+        hits = [r for c, r in sorted(ERROR_CODES.items(), key=lambda kv: int(kv[0])) if group in r["groups"]]
+        listing = "\n".join(f"- {r['code']} ({r['e_code']}): {r['message'][:70]}" for r in hits[:25])
+        more = f"\n… und {len(hits) - 25} weitere." if len(hits) > 25 else ""
+        parts.append(
+            f"Für die Produktgruppe {group} sind {len(hits)} Fehlercodes dokumentiert. "
+            f"Auswahl:\n{listing}{more}"
+        )
+        instruction = (
+            "[ANWEISUNG: Nenne die Gesamtzahl für die Produktgruppe und eine kompakte Auswahl; "
+            "biete an, einzelne Codes im Detail zu erklären. Antworte in der Sprache der Nutzerfrage.]"
+        )
+
+    if not parts:
+        return None
+    block = "\n\n".join(parts)
+    return (
+        f"\n\n[VERIFIZIERTE FEHLERCODE-DATEN — Quelle: {ERROR_CODES_SOURCE_LABEL}]\n"
+        f"{block}\n{instruction}"
+    )
+
+
+def lookup_has_verified_data(intent):
+    if intent is None:
+        return False
+    if intent["type"] == "codes":
+        return bool(intent["records"] or intent["range_records"])
+    return intent["type"] in {"list_all", "list_range", "list_group"}
+
+
+# ---------------------------------------------------------------------------
+# Agent plumbing
+# ---------------------------------------------------------------------------
 
 def _do_headers():
     return {"Authorization": f"Bearer {DO_API_TOKEN}", "Content-Type": "application/json"}
 
 
+def _normalize_endpoint(url):
+    url = url.rstrip("/")
+    if not url.endswith("/chat/completions"):
+        url = f"{url}/api/v1/chat/completions"
+    return url
+
+
+def _configure_agent_from_env():
+    """Preferred path: static credentials, no DO API token needed, no key minting."""
+    global AGENT_ENDPOINT, AGENT_API_KEY
+    endpoint = os.environ.get("AGENT_ENDPOINT", "")
+    key = os.environ.get("AGENT_ACCESS_KEY", "")
+    if endpoint and key:
+        AGENT_ENDPOINT = _normalize_endpoint(endpoint)
+        AGENT_API_KEY = key
+        logger.info("Using static agent credentials from environment: %s", AGENT_ENDPOINT)
+        return True
+    return False
+
+
 def _discover_agent():
-    """Fetch agent details from the DO API to get the deployment URL and API key."""
+    """Legacy fallback: fetch agent details via the DO API and mint an access key.
+
+    Deprecated because it creates a new key on every boot — set AGENT_ENDPOINT +
+    AGENT_ACCESS_KEY instead and remove DO_API_TOKEN from the app.
+    """
     global AGENT_ENDPOINT, AGENT_API_KEY
 
-    if not AGENT_UUID:
-        raise RuntimeError("AGENT_UUID is not configured")
+    if not AGENT_UUID or not DO_API_TOKEN:
+        raise RuntimeError("No agent credentials: set AGENT_ENDPOINT + AGENT_ACCESS_KEY (preferred) or AGENT_UUID + DO_API_TOKEN")
 
-    logger.info("Discovering agent %s ...", AGENT_UUID)
+    logger.warning(
+        "Legacy discovery path: minting a new agent API key at startup. "
+        "Set AGENT_ENDPOINT + AGENT_ACCESS_KEY to stop key sprawl."
+    )
     with httpx.Client(timeout=30.0) as client:
-        # Get agent details.
         resp = client.get(f"{DO_API_BASE}/v2/gen-ai/agents/{AGENT_UUID}", headers=_do_headers())
         resp.raise_for_status()
         agent = resp.json()["agent"]
 
-        # Extract deployment URL.
         deployment = agent.get("deployment", {})
         deploy_url = deployment.get("url")
-        if deploy_url:
-            AGENT_ENDPOINT = f"{deploy_url}/api/v1/chat/completions"
-            logger.info("Agent endpoint: %s", AGENT_ENDPOINT)
-        else:
+        if not deploy_url:
             logger.error("Agent has no deployment URL. Status: %s", deployment.get("status"))
             raise RuntimeError("Agent deployment URL not available")
+        AGENT_ENDPOINT = f"{deploy_url}/api/v1/chat/completions"
+        logger.info("Agent endpoint: %s", AGENT_ENDPOINT)
 
-        # Create an API key for agent authentication.
-        # The auto-generated api_keys[].api_key is a chatbot identifier, not a secret key.
-        # We need to create a real API key via the API.
-        logger.info("Creating agent API key...")
         key_resp = client.post(
             f"{DO_API_BASE}/v2/gen-ai/agents/{AGENT_UUID}/api_keys",
             headers=_do_headers(),
@@ -96,15 +344,39 @@ def _discover_agent():
         logger.info("Agent API key created")
 
 
+def _ensure_agent_ready():
+    """Retry legacy discovery at most once per DISCOVERY_RETRY_SECONDS."""
+    global DISCOVERY_ERROR, LAST_DISCOVERY_ATTEMPT
+    if AGENT_ENDPOINT and AGENT_API_KEY:
+        return True
+    now = time.monotonic()
+    if now - LAST_DISCOVERY_ATTEMPT < DISCOVERY_RETRY_SECONDS:
+        return False
+    LAST_DISCOVERY_ATTEMPT = now
+    try:
+        if _configure_agent_from_env():
+            DISCOVERY_ERROR = None
+            return True
+        _discover_agent()
+        DISCOVERY_ERROR = None
+        return True
+    except Exception as exc:
+        DISCOVERY_ERROR = str(exc)
+        logger.exception("Agent discovery failed")
+        return False
+
+
 @app.on_event("startup")
 async def startup_event():
-    global DISCOVERY_ERROR
+    global DISCOVERY_ERROR, LAST_DISCOVERY_ATTEMPT
+    LAST_DISCOVERY_ATTEMPT = time.monotonic()
     try:
-        _discover_agent()
+        if not _configure_agent_from_env():
+            _discover_agent()
         DISCOVERY_ERROR = None
     except Exception as exc:
         DISCOVERY_ERROR = str(exc)
-        logger.exception("Agent discovery failed; chat endpoint will report not ready")
+        logger.exception("Agent discovery failed; chat endpoint will retry lazily")
 
 
 @app.get("/", response_class=HTMLResponse)
@@ -119,56 +391,89 @@ async def health():
     return {
         "status": "ok",
         "agent_ready": AGENT_ENDPOINT is not None and AGENT_API_KEY is not None,
-        "agent_error": DISCOVERY_ERROR,
+        "agent_error": "agent_not_configured" if DISCOVERY_ERROR else None,
+        "lookup_codes": len(ERROR_CODES),
         "provider_degraded": provider_status["degraded"],
         "provider_components": provider_status["components"],
     }
 
 
+def _sanitize_history(raw_history):
+    cleaned = []
+    if not isinstance(raw_history, list):
+        return cleaned
+    for item in raw_history[-MAX_HISTORY_ENTRIES:]:
+        if not isinstance(item, dict):
+            continue
+        role = item.get("role")
+        content = item.get("content")
+        if role not in ("user", "assistant") or not isinstance(content, str):
+            continue
+        cleaned.append({"role": role, "content": content[:4000]})
+    return cleaned
+
+
 @app.post("/api/chat")
 async def chat(request: Request):
     """Proxy a chat message to the managed agent and return the response."""
+    request_id = uuid.uuid4().hex[:12]
+    started = time.monotonic()
+
+    def _elapsed_ms():
+        return int((time.monotonic() - started) * 1000)
+
     provider_status = await _get_provider_status()
     if provider_status["degraded"]:
-        logger.warning("Provider degraded, skipping agent request. Components: %s", provider_status["components"])
+        logger.warning("[%s] Provider degraded, skipping agent request. Components: %s",
+                       request_id, provider_status["components"])
         return JSONResponse(
             content={
                 "content": MAINTENANCE_MESSAGE,
                 "maintenance": True,
+                "retrieval_status": "error",
                 "provider_components": provider_status["components"],
+                "request_id": request_id,
+                "latency_ms": _elapsed_ms(),
             },
         )
 
-    if not AGENT_ENDPOINT or not AGENT_API_KEY:
+    if not _ensure_agent_ready():
         return JSONResponse(
             content={
                 "error": "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut.",
+                "retrieval_status": "error",
+                "request_id": request_id,
+                "latency_ms": _elapsed_ms(),
             },
         )
 
-    body = await request.json()
-    message = body.get("message", "")
-    history = body.get("history", [])
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse(status_code=400, content={"error": "Ungültige Anfrage.", "request_id": request_id})
 
-    # Build OpenAI-compatible messages array. Keep the user query clean so the
-    # agent's configured instructions and retrieval rewrite work like the DO console.
-    messages = []
-    for h in history:
-        messages.append({"role": h.get("role", "user"), "content": h.get("content", "")})
-    messages.append({"role": "user", "content": message})
+    message = body.get("message", "")
+    if not isinstance(message, str) or not message.strip():
+        return JSONResponse(status_code=400, content={"error": "Bitte geben Sie eine Frage ein.", "request_id": request_id})
+    message = message.strip()[:MAX_MESSAGE_CHARS]
+    history = _sanitize_history(body.get("history", []))
+
+    intent = detect_error_code_intent(message) if LOOKUP_ENABLED else None
+    dataset_block = build_dataset_block(intent) if intent else None
+    lookup_used = dataset_block is not None and lookup_has_verified_data(intent)
+
+    agent_message = message + dataset_block if dataset_block else message
+    messages = history + [{"role": "user", "content": agent_message}]
 
     logger.info(
-        "Sending request to agent: message_count=%s last_user_message=%r agent_uuid_present=%s",
-        len(messages),
-        message[-500:],
-        bool(AGENT_UUID),
+        "[%s] agent request: history=%d lookup=%s message=%r",
+        request_id, len(history), intent["type"] if intent else "-", message[:200],
     )
 
     headers = {
         "Authorization": f"Bearer {AGENT_API_KEY}",
         "Content-Type": "application/json",
     }
-
     agent_payload = {
         "messages": messages,
         "include_retrieval_info": True,
@@ -176,29 +481,69 @@ async def chat(request: Request):
         "stream": False,
     }
 
-    async with httpx.AsyncClient(timeout=90.0) as client:
-        resp = await client.post(AGENT_ENDPOINT, json=agent_payload, headers=headers)
+    try:
+        async with httpx.AsyncClient(timeout=90.0) as client:
+            resp = await client.post(AGENT_ENDPOINT, json=agent_payload, headers=headers)
+    except httpx.HTTPError as exc:
+        logger.warning("[%s] agent request failed: %s", request_id, exc)
+        return JSONResponse(
+            content={
+                "content": KB_UNAVAILABLE_MESSAGE,
+                "retrieval_status": "error",
+                "request_id": request_id,
+                "latency_ms": _elapsed_ms(),
+            },
+        )
 
-    logger.info("Agent response status_code=%s", resp.status_code)
+    logger.info("[%s] agent response status_code=%s", request_id, resp.status_code)
 
     try:
         data = resp.json()
     except Exception:
-        return JSONResponse(status_code=resp.status_code, content={"error": resp.text})
+        return JSONResponse(
+            content={
+                "content": KB_UNAVAILABLE_MESSAGE,
+                "retrieval_status": "error",
+                "request_id": request_id,
+                "latency_ms": _elapsed_ms(),
+            },
+        )
 
-    logger.info("Agent response JSON keys=%s", sorted(data.keys()))
+    if resp.status_code >= 500:
+        logger.warning("[%s] agent 5xx: %s", request_id, str(data)[:300])
+        return JSONResponse(
+            content={
+                "content": KB_UNAVAILABLE_MESSAGE,
+                "retrieval_status": "error",
+                "request_id": request_id,
+                "latency_ms": _elapsed_ms(),
+            },
+        )
 
-    # Extract the response text from common OpenAI-compatible and agent formats.
-    content = _extract_content(data)
-    logger.info("Agent assistant content length=%s", len(content))
+    content = _clean_content(_extract_content(data))
+    sources, retrieval_status = _extract_sources(data, lookup_used)
+    if lookup_used:
+        retrieval_status = "lookup"
+    guardrails = _extract_guardrails(data)
 
     if not content:
-        logger.warning("Agent returned no response content. Response keys: %s", sorted(data.keys()))
+        logger.warning("[%s] agent returned no content. keys=%s", request_id, sorted(data.keys()))
         content = "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut."
+        retrieval_status = "error"
 
-    sources = _extract_sources(data)
+    logger.info("[%s] done in %sms status=%s sources=%d", request_id, _elapsed_ms(), retrieval_status, len(sources))
 
-    return JSONResponse(content={"content": content, "usage": data.get("usage"), "sources": sources})
+    return JSONResponse(
+        content={
+            "content": content,
+            "usage": data.get("usage"),
+            "sources": sources,
+            "retrieval_status": retrieval_status,
+            "guardrails": guardrails,
+            "request_id": request_id,
+            "latency_ms": _elapsed_ms(),
+        }
+    )
 
 
 async def _get_provider_status():
@@ -237,6 +582,14 @@ async def _get_provider_status():
     return PROVIDER_STATUS_CACHE
 
 
+CITATION_MARKER_RE = re.compile(r"\s*\[+\s*C\d+\s*\]+")
+
+
+def _clean_content(text):
+    """Strip inline [[C1]]/[C2] citation markers — sources are shown separately."""
+    return CITATION_MARKER_RE.sub("", text or "").strip()
+
+
 def _extract_content(data):
     if not isinstance(data, dict):
         return ""
@@ -270,31 +623,54 @@ def _extract_content(data):
     return ""
 
 
-def _extract_sources(data):
+def _extract_sources(data, lookup_used=False):
+    """Read retrieval.retrieved_data (the documented location) into UI-friendly sources.
+
+    Returns (sources, retrieval_status) where status is success/empty/unknown.
+    """
+    sources = []
+    if lookup_used:
+        sources.append({"filename": ERROR_CODES_SOURCE_LABEL, "page": None, "score": None})
+
+    retrieved = None
+    if isinstance(data, dict):
+        retrieval = data.get("retrieval")
+        if isinstance(retrieval, dict):
+            retrieved = retrieval.get("retrieved_data")
+
+    if not isinstance(retrieved, list):
+        return sources, "unknown"
+
+    status = "success" if retrieved else "empty"
+    seen = set()
+    for item in retrieved:
+        if not isinstance(item, dict):
+            continue
+        filename = item.get("filename") or item.get("item_name") or ""
+        metadata = item.get("metadata") if isinstance(item.get("metadata"), dict) else {}
+        page = item.get("page_number") or metadata.get("page_number") or metadata.get("page")
+        if not filename:
+            continue
+        key = (filename, page)
+        if key in seen:
+            continue
+        seen.add(key)
+        score = item.get("score")
+        if not isinstance(score, (int, float)) or not (0 <= score <= 1):
+            score = None  # platform sentinel values (e.g. -9549511700) are not real scores
+        sources.append({"filename": filename, "page": page, "score": score})
+        if len(sources) >= 6:
+            break
+    return sources, status
+
+
+def _extract_guardrails(data):
     if not isinstance(data, dict):
-        return None
-
-    candidates = [
-        data.get("sources"),
-        data.get("citations"),
-        data.get("retrieval_info"),
-        data.get("retrievalInfo"),
-        data.get("metadata", {}).get("sources") if isinstance(data.get("metadata"), dict) else None,
-    ]
-
-    for candidate in candidates:
-        if _has_sources(candidate):
-            return candidate
-    return None
-
-
-def _has_sources(value):
-    if not value:
-        return False
-    if isinstance(value, list):
-        return any(_has_sources(item) for item in value)
-    if isinstance(value, dict):
-        return any(_has_sources(item) for item in value.values())
-    if isinstance(value, str):
-        return bool(value.strip()) and value.strip() not in {"{}", "[]", '{"citations":[]}'}
-    return False
+        return []
+    guardrails = data.get("guardrails")
+    if not isinstance(guardrails, dict):
+        return []
+    triggered = guardrails.get("triggered_guardrails")
+    if not isinstance(triggered, list):
+        return []
+    return [g.get("rule_name") for g in triggered if isinstance(g, dict) and g.get("rule_name")]
