@@ -7,6 +7,14 @@ the verified record is loaded from data/error_codes.json and injected into
 the agent request, so the answer never depends on vector-search ranking.
 All other questions use the agent's knowledge-base retrieval as before.
 
+Endpoints:
+    GET  /                     chat UI
+    GET  /health               liveness + agent/lookup state
+    POST /api/chat             single JSON response
+    POST /api/chat/stream      server-sent events (token stream + meta event)
+    POST /api/feedback         store a thumbs up/down for an answer
+    GET  /api/feedback/summary recent feedback counts (in-memory)
+
 Environment variables:
     AGENT_ENDPOINT   — agent endpoint URL (preferred; base URL or full /api/v1/chat/completions)
     AGENT_ACCESS_KEY — static agent access key (preferred)
@@ -16,6 +24,8 @@ Environment variables:
                        AGENT_ACCESS_KEY instead to stop key minting)
     AGENT_NAME       — display name of the agent (optional)
     LOOKUP_ENABLED   — set to 0 to disable the deterministic error-code path
+    STREAMING_ENABLED— set to 0 to disable /api/chat/stream (UI falls back)
+    RATE_LIMIT_PER_MINUTE — per-IP request budget, 0 disables (default 30)
 """
 
 import json
@@ -25,11 +35,13 @@ import re
 import sys
 import time
 import uuid
+from collections import deque
+from datetime import datetime, timezone
 from pathlib import Path
 
 import httpx
 from fastapi import FastAPI, Request
-from fastapi.responses import HTMLResponse, JSONResponse
+from fastapi.responses import HTMLResponse, JSONResponse, StreamingResponse
 
 logging.basicConfig(level=logging.INFO, stream=sys.stdout)
 logger = logging.getLogger("chat-ui")
@@ -43,15 +55,22 @@ DO_API_BASE = os.environ.get("DO_API_BASE", "https://api.digitalocean.com")
 DO_STATUS_URL = os.environ.get("DO_STATUS_URL", "https://status.digitalocean.com/api/v2/summary.json")
 DO_STATUS_CACHE_SECONDS = 60
 LOOKUP_ENABLED = os.environ.get("LOOKUP_ENABLED", "1") != "0"
+STREAMING_ENABLED = os.environ.get("STREAMING_ENABLED", "1") != "0"
+RATE_LIMIT_PER_MINUTE = int(os.environ.get("RATE_LIMIT_PER_MINUTE", "30"))
 MAX_MESSAGE_CHARS = int(os.environ.get("MAX_MESSAGE_CHARS", "2000"))
 MAX_HISTORY_ENTRIES = int(os.environ.get("MAX_HISTORY_ENTRIES", "16"))
-MAINTENANCE_MESSAGE = (
-    "Der Wissensassistent ist aktuell wegen einer technischen Störung beim KI-Dienst eingeschränkt. "
-    "Bitte versuchen Sie es später erneut."
+AGENT_TIMEOUT_SECONDS = float(os.environ.get("AGENT_TIMEOUT_SECONDS", "90"))
+
+PROVIDER_DEGRADED_HINT = (
+    "Beim KI-Dienst gibt es aktuell eine gemeldete Störung. Antworten können unvollständig sein."
 )
 KB_UNAVAILABLE_MESSAGE = (
     "Die Wissensdatenbank konnte gerade nicht zuverlässig abgefragt werden. "
     "Bitte versuchen Sie es erneut oder kontaktieren Sie Eden Klima."
+)
+NO_ANSWER_MESSAGE = "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut."
+RATE_LIMIT_MESSAGE = (
+    "Es sind gerade sehr viele Anfragen offen. Bitte warten Sie einen Moment und versuchen Sie es erneut."
 )
 # The platform guardrail replaces blocked answers with canned English text.
 GUARDRAIL_CANNED_MARKERS = (
@@ -293,6 +312,44 @@ def lookup_has_verified_data(intent):
 
 
 # ---------------------------------------------------------------------------
+# Rate limiting (per client IP, in-process)
+# ---------------------------------------------------------------------------
+
+_RATE_BUCKETS = {}
+
+
+def client_ip(request):
+    forwarded = request.headers.get("x-forwarded-for", "")
+    if forwarded:
+        return forwarded.split(",")[0].strip()[:64]
+    return (request.client.host if request.client else "unknown")[:64]
+
+
+def rate_limited(key, now=None):
+    """True when the caller exceeded RATE_LIMIT_PER_MINUTE in the last 60s."""
+    if RATE_LIMIT_PER_MINUTE <= 0:
+        return False
+    now = time.monotonic() if now is None else now
+    bucket = _RATE_BUCKETS.setdefault(key, deque())
+    while bucket and now - bucket[0] > 60:
+        bucket.popleft()
+    if len(bucket) >= RATE_LIMIT_PER_MINUTE:
+        return True
+    bucket.append(now)
+    if len(_RATE_BUCKETS) > 2000:
+        for stale in [k for k, v in _RATE_BUCKETS.items() if not v]:
+            _RATE_BUCKETS.pop(stale, None)
+    return False
+
+
+# ---------------------------------------------------------------------------
+# Feedback
+# ---------------------------------------------------------------------------
+
+FEEDBACK_RING = deque(maxlen=200)
+
+
+# ---------------------------------------------------------------------------
 # Agent plumbing
 # ---------------------------------------------------------------------------
 
@@ -407,6 +464,7 @@ async def health():
         "agent_ready": AGENT_ENDPOINT is not None and AGENT_API_KEY is not None,
         "agent_error": "agent_not_configured" if DISCOVERY_ERROR else None,
         "lookup_codes": len(ERROR_CODES),
+        "streaming": STREAMING_ENABLED,
         "provider_degraded": provider_status["degraded"],
         "provider_components": provider_status["components"],
     }
@@ -427,38 +485,55 @@ def _sanitize_history(raw_history):
     return cleaned
 
 
-@app.post("/api/chat")
-async def chat(request: Request):
-    """Proxy a chat message to the managed agent and return the response."""
+class _PreparedChat:
+    """Everything both the streaming and the non-streaming endpoint need."""
+
+    def __init__(self, messages, lookup_used, intent, request_id, started, debug, provider_status):
+        self.messages = messages
+        self.lookup_used = lookup_used
+        self.intent = intent
+        self.request_id = request_id
+        self.started = started
+        self.debug = debug
+        self.provider_status = provider_status
+
+    def elapsed_ms(self):
+        return int((time.monotonic() - self.started) * 1000)
+
+    def base_meta(self):
+        meta = {
+            "request_id": self.request_id,
+            "latency_ms": self.elapsed_ms(),
+            "provider_degraded": self.provider_status["degraded"],
+        }
+        if self.provider_status["degraded"]:
+            meta["provider_hint"] = PROVIDER_DEGRADED_HINT
+            meta["provider_components"] = self.provider_status["components"]
+        return meta
+
+    def debug_block(self, **extra):
+        if not self.debug:
+            return None
+        block = {
+            "intent": self.intent["type"] if self.intent else None,
+            "lookup_used": self.lookup_used,
+            "history_turns": len(self.messages) - 1,
+            "agent_timeout_s": AGENT_TIMEOUT_SECONDS,
+        }
+        block.update(extra)
+        return block
+
+
+async def _prepare_chat(request):
+    """Validate + build the agent payload. Returns _PreparedChat or JSONResponse error."""
     request_id = uuid.uuid4().hex[:12]
     started = time.monotonic()
 
-    def _elapsed_ms():
-        return int((time.monotonic() - started) * 1000)
-
-    provider_status = await _get_provider_status()
-    if provider_status["degraded"]:
-        logger.warning("[%s] Provider degraded, skipping agent request. Components: %s",
-                       request_id, provider_status["components"])
+    if rate_limited(client_ip(request)):
+        logger.warning("[%s] rate limited", request_id)
         return JSONResponse(
-            content={
-                "content": MAINTENANCE_MESSAGE,
-                "maintenance": True,
-                "retrieval_status": "error",
-                "provider_components": provider_status["components"],
-                "request_id": request_id,
-                "latency_ms": _elapsed_ms(),
-            },
-        )
-
-    if not _ensure_agent_ready():
-        return JSONResponse(
-            content={
-                "error": "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut.",
-                "retrieval_status": "error",
-                "request_id": request_id,
-                "latency_ms": _elapsed_ms(),
-            },
+            status_code=429,
+            content={"error": RATE_LIMIT_MESSAGE, "retrieval_status": "error", "request_id": request_id},
         )
 
     try:
@@ -470,7 +545,20 @@ async def chat(request: Request):
     if not isinstance(message, str) or not message.strip():
         return JSONResponse(status_code=400, content={"error": "Bitte geben Sie eine Frage ein.", "request_id": request_id})
     message = message.strip()[:MAX_MESSAGE_CHARS]
+
+    provider_status = await _get_provider_status()
+
+    if not _ensure_agent_ready():
+        return JSONResponse(
+            content={
+                "error": NO_ANSWER_MESSAGE,
+                "retrieval_status": "error",
+                "request_id": request_id,
+                "latency_ms": int((time.monotonic() - started) * 1000),
+            },
+        )
     history = _sanitize_history(body.get("history", []))
+    debug = bool(body.get("debug"))
 
     intent = detect_error_code_intent(message) if LOOKUP_ENABLED else None
     dataset_block = build_dataset_block(intent) if intent else None
@@ -483,87 +571,265 @@ async def chat(request: Request):
         "[%s] agent request: history=%d lookup=%s message=%r",
         request_id, len(history), intent["type"] if intent else "-", message[:200],
     )
+    return _PreparedChat(messages, lookup_used, intent, request_id, started, debug, provider_status)
 
-    headers = {
-        "Authorization": f"Bearer {AGENT_API_KEY}",
-        "Content-Type": "application/json",
-    }
-    agent_payload = {
-        "messages": messages,
+
+def _agent_payload(prepared, stream):
+    return {
+        "messages": prepared.messages,
         "include_retrieval_info": True,
         "include_guardrails_info": True,
-        "stream": False,
+        "stream": stream,
     }
 
+
+def _agent_headers():
+    return {"Authorization": f"Bearer {AGENT_API_KEY}", "Content-Type": "application/json"}
+
+
+def _apply_guardrail_replacement(content, sources, guardrails):
+    """Replace the platform's canned English refusal with the German safety answer."""
+    if any(marker in content for marker in GUARDRAIL_CANNED_MARKERS):
+        if "content_moderation" not in guardrails:
+            guardrails.append("content_moderation")
+        return GUARDRAIL_SAFE_MESSAGE, [], guardrails
+    return content, sources, guardrails
+
+
+@app.post("/api/chat")
+async def chat(request: Request):
+    """Proxy a chat message to the managed agent and return the full response."""
+    prepared = await _prepare_chat(request)
+    if isinstance(prepared, JSONResponse):
+        return prepared
+
     try:
-        async with httpx.AsyncClient(timeout=90.0) as client:
-            resp = await client.post(AGENT_ENDPOINT, json=agent_payload, headers=headers)
+        async with httpx.AsyncClient(timeout=AGENT_TIMEOUT_SECONDS) as client:
+            resp = await client.post(AGENT_ENDPOINT, json=_agent_payload(prepared, False), headers=_agent_headers())
     except httpx.HTTPError as exc:
-        logger.warning("[%s] agent request failed: %s", request_id, exc)
+        logger.warning("[%s] agent request failed: %s", prepared.request_id, exc)
         return JSONResponse(
-            content={
-                "content": KB_UNAVAILABLE_MESSAGE,
-                "retrieval_status": "error",
-                "request_id": request_id,
-                "latency_ms": _elapsed_ms(),
-            },
+            content={"content": KB_UNAVAILABLE_MESSAGE, "retrieval_status": "error", **prepared.base_meta()},
         )
 
-    logger.info("[%s] agent response status_code=%s", request_id, resp.status_code)
+    logger.info("[%s] agent response status_code=%s", prepared.request_id, resp.status_code)
 
     try:
         data = resp.json()
     except Exception:
         return JSONResponse(
-            content={
-                "content": KB_UNAVAILABLE_MESSAGE,
-                "retrieval_status": "error",
-                "request_id": request_id,
-                "latency_ms": _elapsed_ms(),
-            },
+            content={"content": KB_UNAVAILABLE_MESSAGE, "retrieval_status": "error", **prepared.base_meta()},
         )
 
     if resp.status_code >= 500:
-        logger.warning("[%s] agent 5xx: %s", request_id, str(data)[:300])
+        logger.warning("[%s] agent 5xx: %s", prepared.request_id, str(data)[:300])
         return JSONResponse(
-            content={
-                "content": KB_UNAVAILABLE_MESSAGE,
-                "retrieval_status": "error",
-                "request_id": request_id,
-                "latency_ms": _elapsed_ms(),
-            },
+            content={"content": KB_UNAVAILABLE_MESSAGE, "retrieval_status": "error", **prepared.base_meta()},
         )
 
     content = _clean_content(_extract_content(data))
-    sources, retrieval_status = _extract_sources(data, lookup_used)
-    if lookup_used:
+    sources, retrieval_status = _extract_sources(data, prepared.lookup_used)
+    if prepared.lookup_used:
         retrieval_status = "lookup"
     guardrails = _extract_guardrails(data)
-
-    if any(marker in content for marker in GUARDRAIL_CANNED_MARKERS):
-        content = GUARDRAIL_SAFE_MESSAGE
-        sources = []
-        if "content_moderation" not in guardrails:
-            guardrails.append("content_moderation")
+    content, sources, guardrails = _apply_guardrail_replacement(content, sources, guardrails)
 
     if not content:
-        logger.warning("[%s] agent returned no content. keys=%s", request_id, sorted(data.keys()))
-        content = "Die Antwort konnte gerade nicht generiert werden. Bitte versuchen Sie es erneut."
+        logger.warning("[%s] agent returned no content. keys=%s", prepared.request_id, sorted(data.keys()))
+        content = NO_ANSWER_MESSAGE
         retrieval_status = "error"
 
-    logger.info("[%s] done in %sms status=%s sources=%d", request_id, _elapsed_ms(), retrieval_status, len(sources))
+    logger.info(
+        "[%s] done in %sms status=%s sources=%d",
+        prepared.request_id, prepared.elapsed_ms(), retrieval_status, len(sources),
+    )
 
-    return JSONResponse(
-        content={
+    payload = {
+        "content": content,
+        "usage": data.get("usage"),
+        "sources": sources,
+        "retrieval_status": retrieval_status,
+        "guardrails": guardrails,
+        **prepared.base_meta(),
+    }
+    debug_block = prepared.debug_block(usage=data.get("usage"), streamed=False)
+    if debug_block:
+        payload["debug"] = debug_block
+    return JSONResponse(content=payload)
+
+
+# --- streaming ---------------------------------------------------------------
+
+# A citation marker can straddle two SSE chunks, so hold back a tail that could
+# still grow into one ("[", "[[C1", …) instead of emitting it to the browser.
+# Trailing whitespace is held back too: it may belong to a marker that is about
+# to be removed, and emitting it early would leave a double space behind.
+PARTIAL_MARKER_RE = re.compile(r"(?:\s+|\s*\[[\[\sC0-9\]]*)$")
+
+
+def split_streamable(buffer):
+    """Split accumulated text into (emit_now, keep_for_next_chunk)."""
+    cleaned = CITATION_MARKER_RE.sub("", buffer)
+    match = PARTIAL_MARKER_RE.search(cleaned)
+    if match:
+        return cleaned[: match.start()], cleaned[match.start():]
+    return cleaned, ""
+
+
+def _sse(event, data):
+    return f"event: {event}\ndata: {json.dumps(data, ensure_ascii=False)}\n\n"
+
+
+def _parse_stream_chunk(raw):
+    """Return (delta_text, payload_dict) for one SSE data line of the agent."""
+    if not raw or raw == "[DONE]":
+        return "", None
+    try:
+        payload = json.loads(raw)
+    except Exception:
+        return "", None
+    delta = ""
+    choices = payload.get("choices")
+    if isinstance(choices, list) and choices:
+        first = choices[0] or {}
+        piece = first.get("delta") if isinstance(first, dict) else None
+        if isinstance(piece, dict) and isinstance(piece.get("content"), str):
+            delta = piece["content"]
+        elif isinstance(first, dict) and isinstance(first.get("text"), str):
+            delta = first["text"]
+    return delta, payload
+
+
+@app.post("/api/chat/stream")
+async def chat_stream(request: Request):
+    """Stream the agent answer as server-sent events."""
+    if not STREAMING_ENABLED:
+        return JSONResponse(status_code=501, content={"error": "streaming disabled"})
+
+    prepared = await _prepare_chat(request)
+    if isinstance(prepared, JSONResponse):
+        return prepared
+
+    async def event_stream():
+        yield _sse("start", {"request_id": prepared.request_id})
+        buffer = ""
+        emitted = ""
+        collected = {}
+        failed = False
+        try:
+            async with httpx.AsyncClient(timeout=AGENT_TIMEOUT_SECONDS) as client:
+                async with client.stream(
+                    "POST", AGENT_ENDPOINT, json=_agent_payload(prepared, True), headers=_agent_headers()
+                ) as resp:
+                    if resp.status_code >= 400:
+                        await resp.aread()
+                        logger.warning("[%s] stream http %s", prepared.request_id, resp.status_code)
+                        failed = True
+                    else:
+                        async for line in resp.aiter_lines():
+                            if not line or not line.startswith("data:"):
+                                continue
+                            delta, payload = _parse_stream_chunk(line[5:].strip())
+                            if payload:
+                                for key in ("retrieval", "guardrails", "usage"):
+                                    if payload.get(key):
+                                        collected[key] = payload[key]
+                            if not delta:
+                                continue
+                            buffer += delta
+                            emit, buffer = split_streamable(buffer)
+                            if emit:
+                                emitted += emit
+                                yield _sse("delta", {"text": emit})
+        except httpx.HTTPError as exc:
+            logger.warning("[%s] stream failed: %s", prepared.request_id, exc)
+            failed = True
+
+        if buffer:
+            tail = CITATION_MARKER_RE.sub("", buffer)
+            if tail:
+                emitted += tail
+                yield _sse("delta", {"text": tail})
+
+        content = emitted.strip()
+        sources, retrieval_status = _extract_sources(collected, prepared.lookup_used)
+        if prepared.lookup_used:
+            retrieval_status = "lookup"
+        guardrails = _extract_guardrails(collected)
+        content, sources, guardrails = _apply_guardrail_replacement(content, sources, guardrails)
+
+        replaced = content == GUARDRAIL_SAFE_MESSAGE and emitted.strip() != content
+        if failed or not content:
+            content = KB_UNAVAILABLE_MESSAGE if failed else NO_ANSWER_MESSAGE
+            retrieval_status = "error"
+            sources = []
+            replaced = True
+
+        meta = {
             "content": content,
-            "usage": data.get("usage"),
             "sources": sources,
             "retrieval_status": retrieval_status,
             "guardrails": guardrails,
-            "request_id": request_id,
-            "latency_ms": _elapsed_ms(),
+            "replace_content": replaced,
+            **prepared.base_meta(),
         }
+        debug_block = prepared.debug_block(usage=collected.get("usage"), streamed=True)
+        if debug_block:
+            meta["debug"] = debug_block
+
+        logger.info(
+            "[%s] stream done in %sms status=%s sources=%d chars=%d",
+            prepared.request_id, prepared.elapsed_ms(), retrieval_status, len(sources), len(content),
+        )
+        yield _sse("meta", meta)
+        yield _sse("done", {})
+
+    return StreamingResponse(
+        event_stream(),
+        media_type="text/event-stream",
+        headers={"Cache-Control": "no-cache", "X-Accel-Buffering": "no", "Connection": "keep-alive"},
     )
+
+
+# --- feedback ----------------------------------------------------------------
+
+@app.post("/api/feedback")
+async def feedback(request: Request):
+    """Store a thumbs up/down for an answer (structured log + in-memory ring)."""
+    if rate_limited("fb:" + client_ip(request)):
+        return JSONResponse(status_code=429, content={"error": RATE_LIMIT_MESSAGE})
+    try:
+        body = await request.json()
+    except Exception:
+        return JSONResponse(status_code=400, content={"error": "Ungültige Anfrage."})
+
+    verdict = body.get("verdict")
+    if verdict not in ("yes", "no"):
+        return JSONResponse(status_code=400, content={"error": "verdict muss 'yes' oder 'no' sein."})
+
+    entry = {
+        "ts": datetime.now(timezone.utc).isoformat(timespec="seconds"),
+        "verdict": verdict,
+        "request_id": str(body.get("request_id", ""))[:32],
+        "session_id": str(body.get("session_id", ""))[:64],
+        "question": str(body.get("question", ""))[:200],
+    }
+    FEEDBACK_RING.append(entry)
+    logger.info("FEEDBACK %s", json.dumps(entry, ensure_ascii=False))
+    return JSONResponse(content={"status": "ok"})
+
+
+@app.get("/api/feedback/summary")
+async def feedback_summary():
+    """Recent feedback held in memory. Durable record is the FEEDBACK log line."""
+    yes = sum(1 for e in FEEDBACK_RING if e["verdict"] == "yes")
+    return {
+        "window": FEEDBACK_RING.maxlen,
+        "count": len(FEEDBACK_RING),
+        "yes": yes,
+        "no": len(FEEDBACK_RING) - yes,
+        "recent": list(FEEDBACK_RING)[-20:],
+    }
 
 
 async def _get_provider_status():

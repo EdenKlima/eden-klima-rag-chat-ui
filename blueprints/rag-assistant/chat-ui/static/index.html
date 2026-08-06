@@ -372,6 +372,41 @@
     }
     .answer-feedback strong { color: var(--eden-ink); }
 
+    .provider-hint {
+      margin-top: 12px;
+      padding: 9px 11px;
+      border-left: 3px solid var(--eden-warm);
+      border-radius: 0 6px 6px 0;
+      background: #fffaf0;
+      color: #60440b;
+      font-size: 12.5px;
+      line-height: 1.45;
+    }
+
+    .debug-box {
+      margin-top: 12px;
+      padding: 10px;
+      border: 1px dashed var(--eden-line);
+      border-radius: 6px;
+      overflow-x: auto;
+      background: #f7fafc;
+      color: var(--eden-muted);
+      font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+      font-size: 11px;
+      line-height: 1.4;
+      white-space: pre;
+    }
+
+    .bubble h3, .bubble h4, .bubble h5, .bubble h6 {
+      margin: 14px 0 6px;
+      font-size: 15px;
+      font-weight: 800;
+      line-height: 1.3;
+    }
+    .bubble h3:first-child, .bubble h4:first-child { margin-top: 0; }
+    .bubble a { color: var(--eden-blue); text-decoration: underline; }
+    .bubble a:hover { color: var(--eden-blue-dark); }
+
     .sources {
       margin-top: 12px;
       padding-top: 10px;
@@ -562,6 +597,9 @@
     const sendBtn = document.getElementById('send');
     let history = [];
     let loading = false;
+    let streamingSupported = true;
+    const SESSION_ID = (window.crypto && crypto.randomUUID) ? crypto.randomUUID() : String(Date.now()) + Math.random().toString(16).slice(2);
+    const DEBUG = new URLSearchParams(location.search).get('debug') === '1';
 
     textarea.addEventListener('input', function() {
       this.style.height = 'auto';
@@ -600,12 +638,102 @@
       textarea.style.height = 'auto';
 
       const typingEl = appendTyping();
+      const payload = { message, history: history.slice(0, -1).slice(-16), debug: DEBUG };
 
+      let answer = null;
+      if (streamingSupported) {
+        try {
+          answer = await streamAnswer(payload, typingEl, message);
+        } catch (err) {
+          console.warn('Streaming nicht möglich, nutze Standardabfrage:', err);
+          answer = null;
+        }
+      }
+      if (answer === null) {
+        answer = await requestAnswer(payload, typingEl, message);
+      }
+      if (answer) history.push({ role: 'assistant', content: answer });
+
+      loading = false;
+      sendBtn.disabled = false;
+      textarea.disabled = false;
+      textarea.focus();
+    }
+
+    // Streams the answer via server-sent events. Returns the final text, or
+    // null when streaming is unavailable so the caller can fall back.
+    async function streamAnswer(payload, typingEl, question) {
+      const res = await fetch('/api/chat/stream', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify(payload),
+      });
+      if (res.status === 501) { streamingSupported = false; return null; }
+      if (!res.ok || !res.body) {
+        if (res.status === 429) {
+          const data = await res.json().catch(() => ({}));
+          typingEl.remove();
+          appendMessage('assistant', data.error || 'Bitte versuchen Sie es gleich erneut.', true);
+          return '';
+        }
+        return null;
+      }
+
+      const reader = res.body.getReader();
+      const decoder = new TextDecoder();
+      let raw = '';
+      let text = '';
+      let meta = null;
+      let live = null;
+      let lastPaint = 0;
+
+      const paint = (force) => {
+        if (!live) return;
+        const now = Date.now();
+        if (!force && now - lastPaint < 80) return;
+        lastPaint = now;
+        live.bubble.innerHTML = renderMarkdown(text);
+        chatContainer.scrollTop = chatContainer.scrollHeight;
+      };
+
+      while (true) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        raw += decoder.decode(value, { stream: true });
+        const frames = raw.split('\n\n');
+        raw = frames.pop();
+        for (const frame of frames) {
+          const evLine = frame.split('\n').find((l) => l.startsWith('event:'));
+          const dataLine = frame.split('\n').find((l) => l.startsWith('data:'));
+          if (!evLine || !dataLine) continue;
+          const event = evLine.slice(6).trim();
+          let data;
+          try { data = JSON.parse(dataLine.slice(5).trim()); } catch (e) { continue; }
+          if (event === 'delta' && data.text) {
+            if (!live) { typingEl.remove(); live = createAssistantBubble(); }
+            text += data.text;
+            paint(false);
+          } else if (event === 'meta') {
+            meta = data;
+          }
+        }
+      }
+
+      if (!live) { typingEl.remove(); live = createAssistantBubble(); }
+      if (meta && (meta.replace_content || !text.trim())) text = meta.content || text;
+      live.bubble.innerHTML = renderMarkdown(text);
+      finalizeAnswer(live.bubble, meta || {}, question);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      return text;
+    }
+
+    // Classic single-response request, used when streaming is unavailable.
+    async function requestAnswer(payload, typingEl, question) {
       try {
         const res = await fetch('/api/chat', {
           method: 'POST',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ message, history: history.slice(0, -1).slice(-16) }),
+          body: JSON.stringify(payload),
         });
         const responseText = await res.text();
         let data;
@@ -621,19 +749,79 @@
 
         typingEl.remove();
         appendMessage('assistant', content, isError, data.sources, {
-          maintenance: !!data.maintenance,
           warn: !isError && data.retrieval_status === 'error',
+          meta: data,
+          question: question,
         });
-        history.push({ role: 'assistant', content });
+        return isError ? '' : content;
       } catch (err) {
         typingEl.remove();
         appendMessage('assistant', 'Verbindungsfehler: ' + err.message, true);
+        return '';
       }
+    }
 
-      loading = false;
-      sendBtn.disabled = false;
-      textarea.disabled = false;
-      textarea.focus();
+    function createAssistantBubble() {
+      const div = document.createElement('div');
+      div.className = 'message assistant';
+
+      const avatar = document.createElement('div');
+      avatar.className = 'avatar';
+      const logo = document.createElement('img');
+      logo.src = 'https://eden-klima.at/wp-content/uploads/2016/11/loader.png';
+      logo.alt = 'Eden Klima';
+      avatar.appendChild(logo);
+
+      const bubble = document.createElement('div');
+      bubble.className = 'bubble';
+
+      div.appendChild(avatar);
+      div.appendChild(bubble);
+      chatInner.appendChild(div);
+      chatContainer.scrollTop = chatContainer.scrollHeight;
+      return { div: div, bubble: bubble };
+    }
+
+    // Sources, provider hint, feedback buttons and optional debug details.
+    function finalizeAnswer(bubble, meta, question) {
+      if (meta.retrieval_status === 'error') bubble.classList.add('warn-bubble');
+      appendSources(bubble, meta.sources);
+      if (meta.provider_degraded && meta.provider_hint) appendProviderHint(bubble, meta.provider_hint);
+      if (meta.retrieval_status !== 'error') appendAnswerActions(bubble, meta.request_id, question);
+      if (DEBUG) appendDebug(bubble, meta);
+    }
+
+    function appendProviderHint(parent, hint) {
+      const note = document.createElement('div');
+      note.className = 'provider-hint';
+      note.textContent = hint;
+      parent.appendChild(note);
+    }
+
+    function appendDebug(parent, meta) {
+      const box = document.createElement('pre');
+      box.className = 'debug-box';
+      box.textContent = JSON.stringify({
+        request_id: meta.request_id,
+        latency_ms: meta.latency_ms,
+        retrieval_status: meta.retrieval_status,
+        guardrails: meta.guardrails,
+        debug: meta.debug,
+      }, null, 2);
+      parent.appendChild(box);
+    }
+
+    function sendFeedback(verdict, requestId, question) {
+      fetch('/api/feedback', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          verdict: verdict,
+          request_id: requestId || '',
+          session_id: SESSION_ID,
+          question: question || '',
+        }),
+      }).catch(() => {});
     }
 
     function appendMessage(role, text, isError, sources, options = {}) {
@@ -659,9 +847,8 @@
         bubble.textContent = text;
       }
 
-      if (role === 'assistant' && !isError && !options.maintenance && !options.warn) {
-        appendSources(bubble, sources);
-        appendAnswerActions(bubble);
+      if (role === 'assistant' && !isError) {
+        finalizeAnswer(bubble, options.meta || { sources: sources }, options.question);
       }
 
       div.appendChild(avatar);
@@ -671,7 +858,7 @@
       return div;
     }
 
-    function appendAnswerActions(parent) {
+    function appendAnswerActions(parent, requestId, question) {
       const actions = document.createElement('div');
       actions.className = 'answer-actions';
 
@@ -693,12 +880,14 @@
       yes.addEventListener('click', () => {
         yes.disabled = true;
         no.disabled = true;
+        sendFeedback('yes', requestId, question);
         feedback.textContent = 'Großartig, ich freue mich, dass ich Ihnen heute helfen konnte.';
       });
 
       no.addEventListener('click', () => {
         yes.disabled = true;
         no.disabled = true;
+        sendFeedback('no', requestId, question);
         feedback.innerHTML = '';
 
         const suggestion = document.createElement('p');
@@ -808,6 +997,15 @@
 
         flushTable();
 
+        const heading = trimmed.match(/^(#{1,4})\s+(.*)$/);
+        if (heading) {
+          flushParagraph();
+          closeList();
+          const level = Math.min(heading[1].length + 2, 6);
+          html.push('<h' + level + '>' + formatInline(heading[2]) + '</h' + level + '>');
+          return;
+        }
+
         const ordered = trimmed.match(/^(\d+)\.\s+(.*)$/);
         const unordered = trimmed.match(/^[-*]\s+(.*)$/);
         const quote = trimmed.match(/^>\s?(.*)$/);
@@ -893,7 +1091,13 @@
       return value
         .replace(/`([^`]+)`/g, '<code>$1</code>')
         .replace(/\*\*([^*]+)\*\*/g, '<strong>$1</strong>')
-        .replace(/\*([^*]+)\*/g, '<em>$1</em>');
+        .replace(/\*([^*]+)\*/g, '<em>$1</em>')
+        // [Text](https://…) — only http(s), the value is already HTML-escaped
+        .replace(/\[([^\]]+)\]\((https?:&#x2F;&#x2F;|https?:\/\/)([^\s)]+)\)/g,
+          (m, label, scheme, rest) => '<a href="' + scheme.replace(/&#x2F;/g, '/') + rest + '" target="_blank" rel="noopener noreferrer">' + label + '</a>')
+        // bare URLs
+        .replace(/(^|[\s(])(https?:\/\/[^\s<)]+)/g,
+          (m, lead, url) => lead + '<a href="' + url + '" target="_blank" rel="noopener noreferrer">' + url + '</a>');
     }
 
     function appendTyping() {

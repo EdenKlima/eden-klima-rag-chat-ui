@@ -129,6 +129,48 @@ check("empty retrieval status", status == "empty")
 sources, status = main._extract_sources({"citations": [{"id": "x"}]}, lookup_used=False)
 check("no retrieval field -> unknown", status == "unknown" and sources == [])
 
+# --- streaming chunk handling ------------------------------------------------
+emit, keep = main.split_streamable("Antwort [[C1")
+check("partial marker held back", (emit, keep) == ("Antwort", " [[C1"), f"{emit!r} {keep!r}")
+emit2, keep2 = main.split_streamable(keep + "]] Ende")
+check("marker removed across chunks", (emit2.strip(), keep2) == ("Ende", ""), f"{emit2!r} {keep2!r}")
+emit3, keep3 = main.split_streamable("Siehe [Doku](https://x)")
+check("markdown link not held back", (emit3, keep3) == ("Siehe [Doku](https://x)", ""), f"{emit3!r} {keep3!r}")
+emit4, keep4 = main.split_streamable("Text ohne Marker")
+check("plain text passes through", (emit4, keep4) == ("Text ohne Marker", ""))
+emit5, keep5 = main.split_streamable("Wort ")
+check("trailing space held back", (emit5, keep5) == ("Wort", " "), f"{emit5!r} {keep5!r}")
+
+# no double space where a marker was removed across chunk boundaries
+chunks, out, buf = ["d er", "ror ", "[[C1", "]] l", "aut."], "", ""
+for c in chunks:
+    buf += c
+    emitted, buf = main.split_streamable(buf)
+    out += emitted
+out += main.CITATION_MARKER_RE.sub("", buf)
+check("no double space after marker", out == "d error laut.", repr(out))
+
+delta, payload = main._parse_stream_chunk('{"choices":[{"delta":{"content":"Hallo"}}]}')
+check("delta parsed", delta == "Hallo" and payload is not None)
+check("done sentinel ignored", main._parse_stream_chunk("[DONE]") == ("", None))
+check("garbage line ignored", main._parse_stream_chunk("not json") == ("", None))
+delta5, payload5 = main._parse_stream_chunk('{"retrieval":{"retrieved_data":[]},"choices":[]}')
+check("retrieval chunk keeps payload", delta5 == "" and payload5.get("retrieval") is not None)
+
+# --- guardrail replacement helper --------------------------------------------
+c, s, g = main._apply_guardrail_replacement("I'm not able to respond to that request.", [{"filename": "x"}], [])
+check("guardrail replaced", c == main.GUARDRAIL_SAFE_MESSAGE and s == [] and "content_moderation" in g)
+c2, s2, g2 = main._apply_guardrail_replacement("Normale Antwort", [{"filename": "x"}], [])
+check("normal answer untouched", c2 == "Normale Antwort" and len(s2) == 1 and g2 == [])
+
+# --- rate limiting -----------------------------------------------------------
+main._RATE_BUCKETS.clear()
+limit = main.RATE_LIMIT_PER_MINUTE
+allowed = sum(0 if main.rate_limited("test-ip", now=1000.0 + i * 0.01) else 1 for i in range(limit + 5))
+check("rate limit caps burst", allowed == limit, f"allowed={allowed} limit={limit}")
+check("window slides", not main.rate_limited("test-ip", now=1000.0 + 120), "still limited after 2 min")
+main._RATE_BUCKETS.clear()
+
 # --- history sanitizing ------------------------------------------------------
 hist = main._sanitize_history(
     [{"role": "system", "content": "evil"}] + [{"role": "user", "content": f"m{i}"} for i in range(30)]
