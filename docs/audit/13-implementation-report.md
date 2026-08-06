@@ -75,6 +75,18 @@ Der volle Eval gegen den Streaming-Build ergab 47/49 und legte drei echte Schwä
 
 **Zusätzlicher Fund während der Messung:** Unter Last antwortet der DO-Agent selbst mit `Error code: 429 - {'error': …}` — dieser Rohtext landete unverändert im Chatfenster (Verstoß gegen „kein Roh-JSON in der UI"). Jetzt fängt `sanitize_upstream_error()` solche Payloads ab und ersetzt sie durch „Der Wissensassistent ist gerade stark ausgelastet…" mit `retrieval_status: error`. Die 429er stammten aus meinen eigenen Testläufen, das Muster hätte aber jeden Lastspitzen-Nutzer getroffen.
 
+**Messung nach den Korrekturen** (`results/eval-2026-08-06-final*.csv`, gestaffelt wegen des Agent-Kontingents):
+
+| Fall | vorher | nachher | Beleg |
+|---|---|---|---|
+| 27 Solar-Fernbedienung | inhaltlich schwach („keine Angabe") | ✅ **mit verschärfter Prüfung** | „Solarzelle oder USB-C-Kabel (5 V/≥2 A)" — K=8 wirkt |
+| 29 WindFree | ehrliches Nichtwissen | ✅ echte Erklärung | mehrere Solar-PDF-Chunks im Kontext |
+| 40 EEV von Hand | ❌ ohne Verweis | ✅ | `ensure_referral` |
+| 31, 32, 33 | ✅ | ✅ | keine Regression |
+| 07, 48 | ✅ | ✅ | Lookup + Produktgruppen-Tabelle |
+| 36, 38 | ✅ | ✅ | deutsche Guardrail-Antwort |
+| 34, 35, 37, 39, 47, 52 | ✅ (frühere Läufe) | **offen** | Agent-Kontingent erschöpft, siehe unten |
+
 **Verifikation:** 69 Offline-Tests grün (u. a. Marker über Chunk-Grenzen, Rate-Limit-Fenster, Guardrail-Ersetzung). Zusätzlich lokaler End-to-End-Test gegen einen Fake-Agenten mit 4-Zeichen-Chunks: Marker sauber entfernt (kein doppelter Leerschritt), Markdown-Link und Überschrift intakt, Retrieval-Info aus dem letzten Chunk übernommen, Guardrail-Fall streamt englisch und wird per `replace_content` durch die deutsche Antwort ersetzt.
 
 ## Offen / Runbook für Michael
