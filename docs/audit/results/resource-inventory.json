@@ -1,0 +1,107 @@
+{
+  "team": {
+    "name": "EdenKlima Team",
+    "team_uuid": "3cebbff5-3aa3-4b08-826b-7ca46f014026",
+    "billing_email": "eden@klima.ac"
+  },
+  "project": {
+    "name": "eden-klima-knowledge-assistant",
+    "uuid": "8e17dd74-ae34-4dae-b217-47eb57f31efd"
+  },
+  "app_platform": {
+    "app": "rag-assistant-hh9v-chat",
+    "tier": "professional",
+    "region": "fra",
+    "component": "chat-ui",
+    "instance": "apps-s-1vcpu-2gb (1 shared vCPU / 2GB)",
+    "count": 1,
+    "monthly_usd": 25.0,
+    "public_url": "https://rag-assistant-hh9v-chat-wlm7q.ondigitalocean.app/",
+    "source": "github EdenKlima/eden-klima-rag-chat-ui@main, Dockerfile, port 8080",
+    "runtime_env": [
+      "DO_API_TOKEN (SECRET, account-wide!)",
+      "AGENT_UUID (SECRET)",
+      "AGENT_NAME"
+    ]
+  },
+  "agent": {
+    "name": "rag-assistant-hh9v-agent",
+    "uuid": "44bcacc0-749c-11f1-aee4-4e013e2ddde4",
+    "workspace_uuid": "11f1749c-44b5-5653-aee4-4e013e2ddde4",
+    "endpoint": "https://iuahhjpgd4wy64ndnf7hormx.agents.do-ai.run",
+    "visibility": "Private",
+    "region": "tor1 (Toronto)",
+    "model": "OpenAI GPT-oss-20b",
+    "max_tokens": 1536,
+    "temperature": 0.2,
+    "top_p": 0.8,
+    "k_value": 5,
+    "retrieval_method": "None (original query as-is)",
+    "include_citations": true,
+    "guardrails": {
+      "content_moderation": "on (per invoice tokens)",
+      "jailbreak_detection": "on (per invoice tokens)",
+      "sensitive_data_detection": "off"
+    },
+    "access_keys": "2 pages of auto-minted 'chat-ui' keys (one per app boot; created 06/30 17:58 through 07/01 09:21+, more on page 2) — leak, needs cleanup",
+    "monthly_usd": 0.04
+  },
+  "knowledge_base": {
+    "name": "rag-assistant-hh9v-kb",
+    "uuid": "479333ec-749c-11f1-aee4-4e013e2ddde4",
+    "retrieve_endpoint": "https://kbaas.do-ai.run/v1/479333ec-749c-11f1-aee4-4e013e2ddde4/retrieve",
+    "embedding_model": "Qwen3 Embedding 0.6B ($0.04/1M tokens)",
+    "reranker": "none configured",
+    "last_real_indexing": "2026-06-30 19:52:30 GMT+2 (10,340 tokens, $0.00041)",
+    "auto_indexing": "weekly, Thu 12:00 UTC",
+    "data_sources": [
+      {
+        "name": "samsung_air_conditioner_error_codes.md",
+        "size": "40.21 KiB",
+        "chunking": "Section-based",
+        "note": "STALE: original table version; local RAG-optimized 372.5 KiB section version NEVER uploaded; chunk category TableChunk"
+      },
+      {
+        "name": "technisches-handbuch-samsung-samcool.pdf",
+        "size": "7.65 MiB",
+        "chunking": "Hierarchical"
+      },
+      {
+        "name": "IR Fernbedienung Solar.pdf",
+        "size": "800.73 KiB",
+        "chunking": "Hierarchical"
+      },
+      {
+        "name": "OptionCode Setting.pdf",
+        "size": "3.11 MiB",
+        "chunking": "Hierarchical"
+      }
+    ]
+  },
+  "opensearch": {
+    "cluster": "genai-walrus",
+    "region": "tor1 (Toronto!)",
+    "plan": "Basic 2GB RAM / 1 vCPU, single node",
+    "storage": "40 GiB (plan minimum for this tier; billed $11.00 node + $8.60 storage)",
+    "monthly_usd": 19.6,
+    "note": "region mismatch: app in FRA, agent+KB+cluster in TOR1; KB destroy does NOT destroy this cluster"
+  },
+  "billing_july_2026": {
+    "total_usage": 44.68,
+    "credits": -4.39,
+    "subtotal": 40.29,
+    "vat_at_20pct": 8.06,
+    "total_due": 48.35,
+    "agent_tokens": {
+      "input": 206041,
+      "output": 21275,
+      "moderation": 19545,
+      "jailbreak": 6131
+    }
+  },
+  "github": {
+    "repo": "EdenKlima/eden-klima-rag-chat-ui",
+    "local_clone": "/Users/michael/edenklima",
+    "duplicate_copy": "blueprints/rag-assistant/chat-ui (kept in sync manually)"
+  }
+}

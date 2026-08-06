@@ -1,0 +1,4 @@
+variante,komponenten,monat_usd_vor_ust,anmerkung
+A: Ist-Zustand (Juli 2026),App Platform apps-s-1vcpu-2gb $25.00 + OpenSearch Basic 2GB/1vCPU inkl. 40GiB $19.60 + GenAI Agent $0.04 + Serverless Inference $0.04,44.68,48.35 inkl. 20% USt (nach Credits 40.29)
+B: Optimierter DO-Pilot,"App auf apps-s-1vcpu-0.5gb $5.00 + OpenSearch Basic unveraendert $19.60 (40GiB = Plan-Minimum, kein Downsize moeglich) + Tokens ~$0.10",24.70,~29.60 inkl. USt; Einsparung ~$20/Monat
+C: Low-Cost-Architektur,"App $5.00 + KB serverless (kbaas, kein eigener OpenSearch-Cluster; Embedding-Tokens ~$0.05) + Tokens ~$0.10 + Cluster genai-walrus GELOESCHT",5.15,"~6.20 inkl. USt; erfordert KB-Neuanlage auf serverless Storage + Verifikation, dass kein Cluster mehr noetig ist"

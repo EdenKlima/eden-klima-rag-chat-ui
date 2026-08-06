@@ -1,0 +1,21 @@
+id,channel,query,alpha,num_results,top_result,md_table_hit_rank,verdict,latency_ms,notes
+K1,kbaas-retrieve-playground,Compressor overload error,0,5,samsung_air_conditioner_error_codes.md TableChunk 450-469,1,PASS,2144,464+465 chunk rank1; all 5 results = md TableChunks
+K2,kbaas-retrieve-playground,error 465,0.5,5,samsung_air_conditioner_error_codes.md TableChunk 450-469,1,PASS,1360,rank1+2 = md TableChunks
+K3,kbaas-retrieve-playground,E465,0,5,technisches-handbuch-samsung-samcool.pdf p69 TableChunk,none,FAIL,603,"only 2 results total, both PDF; md never writes E-prefix -> BM25 cannot match"
+K4,kbaas-retrieve-playground,Was bedeutet Fehler 465?,0.5,5,technisches-handbuch-samsung-samcool.pdf p18/19/20/40/70,none,FAIL,700,all 5 results = German handbook PDF; md TableChunks invisible for German phrasing
+A1,app /api/chat,Was bedeutet der Fehler E554?,agent-default,5,citations: KB id (remote-control chunk),n/a,PARTIAL-WRONG,7728,answered communication error (incorrect for 554); cites irrelevant chunk
+A2,app /api/chat,error 464,agent-default,5,none,n/a,FAIL,4104,keine gesicherten Informationen
+A3,app /api/chat,error 465,agent-default,5,none,n/a,FAIL,4498,keine gesicherten Informationen
+A4,app /api/chat,465,agent-default,5,none,n/a,FAIL,5536,refusal + generic advice
+A5,app /api/chat,E465,agent-default,5,none,n/a,FAIL,4484,refusal
+A6,app /api/chat,Compressor overload error,agent-default,5,none,n/a,FAIL,6207,refusal despite verbatim heading exists in KB table chunk
+A7,app /api/chat,Was bedeutet Fehler 464?,agent-default,5,none,n/a,FAIL,6384,refusal
+A8,app /api/chat,Gas leak error,agent-default,5,none,n/a,FAIL,3874,refusal despite verbatim heading (554)
+A9,app /api/chat,Welche Fehlercodes kennst du?,agent-default,5,citations: KB id (remote-control chunk),n/a,FAIL-STRUCTURAL,8576,lists only EIO1/E554/E422 from PDF; RAG cannot enumerate 446 codes with K=5
+A10,app /api/chat,Wie lade ich die Samsung Solar-Fernbedienung?,agent-default,5,citations: KB id (solar manual chunk),n/a,PASS,14151,correct answer with sources
+A11,app /api/chat,Was bedeutet der Fehler E999?,agent-default,5,none,n/a,PASS,4384,"correctly refuses unknown code, no hallucination"
+A12,app /api/chat,Welche Fehlercodes gelten für DVM?,agent-default,5,none,n/a,FAIL-STRUCTURAL,4650,list question; K=5 RAG cannot enumerate
+A13,app /api/chat,Fehlercode 554,agent-default,5,citations: KB id,n/a,PASS-LUCKY,8939,answered shortage of refrigerant (matches handbook); citation shown is irrelevant chunk
+A14,app /api/chat,Was bedeutet der Fehler 108?,agent-default,5,none,n/a,FAIL,3998,code exists in md table chunk (101-159 range) but refused
+P1,console agent playground,error 465,agent-default,5,md TableChunk cited [C1],cited,PASS,~8000 thinking,"same query as A3, 25 min later, correct: Compressor overload error"
+P2,console agent playground,Was bedeutet Fehler 465?,agent-default,5,cited [C1],cited,PASS-CONTAMINATED,~10000,second message in same thread; prior answer in context -> not a clean retrieval test

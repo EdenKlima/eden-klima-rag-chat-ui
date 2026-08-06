@@ -1,0 +1,448 @@
+code,error_message,in_local_master_md_sections,in_kb_indexed_table_version,verified_in_kb_via_retrieve_test
+101~120,Indoor Unit Communication,yes,assumed (full original table),not sampled
+101,Indoor Unit Communication Error - check the DC output voltage at the communication terminal,yes,assumed (full original table),not sampled
+102,Indoor Unit/Outdoor Unit communication time-out error: error in more than 6 packets,yes,assumed (full original table),not sampled
+103,Communication Error Between Indoor Unit Panel and Main,yes,assumed (full original table),not sampled
+104,"communication error : ""IF ↔ Indoor unit"" some disconnect in Indoor unit (communicating) only [GHP-R22]",yes,assumed (full original table),not sampled
+105,communication Error in between sensing space module and Indoor unit,yes,assumed (full original table),not sampled
+106,Communication Error Between LCD and Panel,yes,assumed (full original table),not sampled
+107,Communication Error Between LCD Outdoor Unit,yes,assumed (full original table),not sampled
+108,Duplicated assigned IDU main address Error,yes,assumed (full original table),not sampled
+109,Communication error - Indoor address tracking failed by ODU (IDU main address is not confirmed),yes,assumed (full original table),not sampled
+121,Error of temperature sensor in the indoor unit (open/short) Room senser,yes,assumed (full original table),not sampled
+122,Error of heat exchanger-in sensor on the indoor unit (open/short) Eva in,yes,assumed (full original table),not sampled
+123,Error of heat exchanger-out sensor on the indoor unit (open/short) Eva out,yes,assumed (full original table),not sampled
+124,Communication error between indoor unit and outdoor unit. (error is displayed on outdoor unit),yes,assumed (full original table),not sampled
+125,Eva_Mid 2 termperature sensor of outdoor unit (open/short),yes,assumed (full original table),not sampled
+126,IDU discharge temperature sensor short/open (for Ducted & AHU Kit),yes,assumed (full original table),not sampled
+127,[GHP-R22] Indoor Temperature(Suction Temperature) Sensor breakaway Error,yes,assumed (full original table),not sampled
+128,Indoor unit heat exchanger in temp sensor detached,yes,assumed (full original table),not sampled
+129,Indoor unit heat exchanger out temp sensor detached,yes,assumed (full original table),not sampled
+130,Indoor unit heat exchange in and out temprerature sensor is detached,yes,assumed (full original table),not sampled
+131,Sub(Electronic) Heater Sensor 1 Error,yes,assumed (full original table),not sampled
+132,Sub(Electronic) Heater Sensor 2 Error,yes,assumed (full original table),not sampled
+133,Sub(Electronic) Heater Sensor 3 Error,yes,assumed (full original table),not sampled
+134,"Shutter Sensor Error (In case of model which have two shutter, upper Error : Aurora)",yes,assumed (full original table),not sampled
+135,Indoor fan cleaner frequency feedback error,yes,assumed (full original table),not sampled
+136,"Shutter Sensor Error (In case, model which have two shutter Error in bottom : Aurora)",yes,assumed (full original table),not sampled
+137,VOC sensor of ERV (open/short),yes,assumed (full original table),not sampled
+138,Gas sensor of ERV (open/short),yes,assumed (full original table),not sampled
+139,CO2 Sensor of ERV (open/short),yes,assumed (full original table),not sampled
+140,Indoor Dust sensor Error,yes,assumed (full original table),not sampled
+141,IAQ CO2 SENSOR OPEN/SHORT ERROR,yes,assumed (full original table),not sampled
+142,Indoor Unit Humid Sensor short/open,yes,assumed (full original table),not sampled
+143,Sensing space Sensor Error,yes,assumed (full original table),not sampled
+144,Eva2_in Sensor of Indoor Unit short/open,yes,assumed (full original table),not sampled
+145,Eva2_out Sensor of Indoor Unit  short/open,yes,assumed (full original table),not sampled
+146,EEV Inlet Sensor short/open,yes,assumed (full original table),not sampled
+147,Indoor Eva2_in Sensor break away Error,yes,assumed (full original table),not sampled
+148,Indoor Eva2_out Sensor break away Error,yes,assumed (full original table),not sampled
+149,Error of AHU Master Indoor unit's Room Sensor setting,yes,assumed (full original table),not sampled
+150,RESERVED(DMS-SNET3 Error),yes,assumed (full original table),not sampled
+151,Open error of electoronic expansion valve in indoor unit(2nd),yes,assumed (full original table),not sampled
+152,Close error of electoronic expansion valve in indoor unit(2nd),yes,assumed (full original table),not sampled
+153,2nd Float switch on indoor unit detection,yes,assumed (full original table),not sampled
+154,Indoor unit Fan Error,yes,assumed (full original table),not sampled
+155,"Indoor unit fan error, (the 2nd motor of indoor unit)",yes,assumed (full original table),not sampled
+156,Indoor unit (EEV2) open error 2nd,yes,assumed (full original table),not sampled
+157,Indoor unit (EEV2) close error 2nd,yes,assumed (full original table),not sampled
+158,UDoor upper operation Error,yes,assumed (full original table),not sampled
+159,UDoor lower operation Error,yes,assumed (full original table),not sampled
+160,IDU drain pump lock error,yes,assumed (full original table),not sampled
+161,More than 2 indoor units are heating and cooling simultaneously,yes,assumed (full original table),not sampled
+162,Outdoor unit EEPROM error,yes,assumed (full original table),not sampled
+163,EEPROM option setting error,yes,assumed (full original table),not sampled
+164,"IDU EEPROM error (wrong EEPROM, download EEPROM or shoot again Option Code)",yes,assumed (full original table),not sampled
+165,Elect Discharge Temp Protect Error,yes,assumed (full original table),not sampled
+166,Electric motor related to no wind Error,yes,assumed (full original table),not sampled
+167,Option code setting error on the indoor unit's dipswitches,yes,assumed (full original table),not sampled
+168,IAQ Safety S/W Open Error,yes,assumed (full original table),not sampled
+169,Error of AHU EEV,yes,assumed (full original table),not sampled
+170,Temperature display setting error (settings for celsius and farenheir display mixed up),yes,assumed (full original table),not sampled
+171,EVA-MID Break away,yes,assumed (full original table),not sampled
+172,EVA-IN Break away,yes,assumed (full original table),not sampled
+173,EVA-OUT Break away,yes,assumed (full original table),not sampled
+174,"""Return air temp. sensor in ERV"" short/open",yes,assumed (full original table),not sampled
+175,"""Outdoor temp. sensor in ERV"" short/open Error",yes,assumed (full original table),not sampled
+177,Indoor unit control kit completes emergency stop. Check the indoor unit (control kit),yes,assumed (full original table),not sampled
+180,MCU solenoid valve error. Opening in cooling and heating simultaneously (1st Detection),yes,assumed (full original table),not sampled
+181,MCU solenoid valve error. Opening in cooling and heating simultaneously (2nd Detection),yes,assumed (full original table),not sampled
+182,Indoor Hudimity sensor Error (ERV),yes,assumed (full original table),not sampled
+183,Outdoor Hudimity sensor Error (ERV),yes,assumed (full original table),not sampled
+185,"Incorrect wiring, crossed wires between power of indoor unit and communication cables",yes,assumed (full original table),not sampled
+186,MPI (SPi) malfunction error,yes,assumed (full original table),not sampled
+187,K1Filter Feedback  Error,yes,assumed (full original table),not sampled
+190,Pipe check operation failure - no match between indoor unit address and eva-in sensor,yes,assumed (full original table),not sampled
+191,Pipe check operation failure - no match between indoor unit address and eva-out sensor,yes,assumed (full original table),not sampled
+192,Indoor Unit COVER OPEN(Indoor unit switch for safety,yes,assumed (full original table),not sampled
+193,Indoor Panel Zero-Crossing Error,yes,assumed (full original table),not sampled
+194,Indoor Main Zero-Crossing Error,yes,assumed (full original table),not sampled
+195,IAQ safety S/W Open Error,yes,assumed (full original table),not sampled
+199,Pipe check operation has failed,yes,assumed (full original table),not sampled
+201,"Communication error between indoor and outdoor unit (tracking failure, the quantity/address of indoor units set on the outdoor unit's PCB differs from the quantity/address of actual indoor units)",yes,assumed (full original table),not sampled
+202,Indoor/Outdoor communication error after 1 min. (all the indoor units fail to communicate with outdoor unit),yes,assumed (full original table),not sampled
+203,Communication error between outdoor main & inverter micom (detected after 1 min. of operation),yes,assumed (full original table),not sampled
+204,"After completing Tracking 5 times, the quantity of MCU boxes set on the PCB of the ODU's PCB differ from the amount of MCU boxes actually connected to the ODU",yes,assumed (full original table),not sampled
+205,Communication Error Between Outdoor Unit Inv Micom -- Fan Motor Micom,yes,assumed (full original table),not sampled
+206,Outdoor unit communication error between main MICOM and inverter MICOM,yes,assumed (full original table),not sampled
+210,Communication error between MCU box and outdoor unit,yes,assumed (full original table),not sampled
+211,Conflicting addresses on indoor units and MCU,yes,assumed (full original table),not sampled
+212,Occurs if the same indoor unit is assigned to an MCU box 3 times,yes,assumed (full original table),not sampled
+213,Indoor unit addresses and indoor unit activating dip switch on the MCU box do not match,yes,assumed (full original table),not sampled
+214,Quantity of MCU's set on the outdoor unit does not match actual quantity of MCU's,yes,assumed (full original table),not sampled
+215,Indoor unit's address setting error on the MCU box,yes,assumed (full original table),not sampled
+216,Indoor unit's activating dipaswitch causes setting error on MCU's PCB (the indoor unit is not connected to the MCU's port but the indoor unit's activating dipswitch on the MCU's PCB turns on),yes,assumed (full original table),not sampled
+217,Indoor unit's activating dipaswitch causes setting error on MCU's PCB (the indoor unit is connected to the MCU's port but the indoor unit's activating dipswitch on the MCU's PCB turns off),yes,assumed (full original table),not sampled
+218,Indoor unit quantity causes error MCU's PCB (quantity of installed indoor units has exceeded the maximum for the MCU's PCB),yes,assumed (full original table),not sampled
+219,MCU subcooler-in sensor short/open error,yes,assumed (full original table),not sampled
+220,MCU subcooler-in sensor short/open error,yes,assumed (full original table),not sampled
+221,Outdoor temperature sensor error Error level; over 4.9V (-50°C) under 0.4V (93°C),yes,assumed (full original table),not sampled
+224,Water Temprature SENSOR ERROR (OPEN/SHORT),yes,assumed (full original table),not sampled
+226,Ambient temperature sensor has become detached from the outdoor unit,yes,assumed (full original table),not sampled
+231,Condensor-out temperature sensor error on the main outdoor unit (open/short error),yes,assumed (full original table),not sampled
+236,Condensor-out temperature sensor of the outdoor unit open/short error,yes,assumed (full original table),not sampled
+237,Condensor temperature sensor error (open/short error) Error level; over 4.9V (-50°C) under 0.4V (93°C),yes,assumed (full original table),not sampled
+241,Condensor-mid temperature sensor has become detached,yes,assumed (full original table),not sampled
+242,Outdoor Unit Heater Error,yes,assumed (full original table),not sampled
+246,Condensor-out 1 temperature sensor has become detached,yes,assumed (full original table),not sampled
+251,Discharge temperature sensor error (open/short),yes,assumed (full original table),not sampled
+256,"Discharge temperature sensor of compressor 1 short/open  -ERROR detect Condition: detect outdoor temperatureerature more than -10°C  -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",yes,assumed (full original table),not sampled
+257,"Discharge temperature sensor of compressor 2 short/open  -ERROR detect Condition: detect Outdoor temperatureerature more than -10 °C  -ERROR LEVEL: more than 4.95V(-30'C),less than 0.5V(151'C)",yes,assumed (full original table),yes
+258,"Discharge temperature sensor of compressor 3 short/open  -ERROR detect Condition: Outdoor temperatureerature more than -10  detect °C  -ERROR LEVEL: more than 4.95V(-30'C),less than 0.5V(151'C)",yes,assumed (full original table),yes
+261,Compressor discharge temperature sensor of compressor 1 has become detached - self diagnosis,yes,assumed (full original table),yes
+262,Compressor discharge temperature sensor of compressor 1 has become detached - self diagnosis,yes,assumed (full original table),yes
+263,Compressor discharge temperature sensor of compressor 2 has become detached - self diagnosis,yes,assumed (full original table),yes
+264,Compressor discharge temperature sensor of compressor 3 has become detached - self diagnosis,yes,assumed (full original table),yes
+265,Sump (base) temperature sensor of main unit's compressor has become detached from the compressor,yes,assumed (full original table),yes
+266,Sump (base) temperature sensor of sub unit 1's compressor has become detached from the compressor,yes,assumed (full original table),yes
+267,Sump (base) temperature sensor of sub unit 2's compressor has become detached from the compressor,yes,assumed (full original table),yes
+268,Sump (base) temperature sensor of sub unit 3's compressor has become detached from the compressor,yes,assumed (full original table),yes
+269,Suction line 1 temperature sensor has become detached from the sensor bracket,yes,assumed (full original table),yes
+271,"Sump (base) temperature sensor error on compressor 1 (short/open)  -ERROR detect Condition: detect outdoortemperatureerature -10°C  -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",yes,assumed (full original table),yes
+276,"Sump (base) temperature sensor error on compressor 1 (short/open)  -ERROR detect Condition: detect outdoor temperatureerature more than -10°C  -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",yes,assumed (full original table),not sampled
+277,"Sump (base) temperature sensor error on compressor 2 (short/open)  -ERROR detect Condition: detect outdoor temperatureerature -10°C  -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",yes,assumed (full original table),not sampled
+278,"Sump (base) temperature sensor error on compressor 3 (short/open)  -ERROR detect Condition: detect outdoor temperatureerature more than -10°C  -ERROR LEVEL: more than 4.95V(-30'C), less than 0.5V(151'C)",yes,assumed (full original table),not sampled
+286,중압센서 short/open에러 Middle Pressure short/open Error (To be confirmed by HQ),yes,assumed (full original table),not sampled
+291,Refrigerant leakage or high pressure sensor is open/short,yes,assumed (full original table),not sampled
+296,Refrigerant leakage or low pressure sensor is open/short,yes,assumed (full original table),not sampled
+301,High Pressure SENSOR breakaway ERROR,yes,assumed (full original table),not sampled
+306,Low Pressure SENSOR breakaway ERROR,yes,assumed (full original table),not sampled
+307,Oil balance temperature sensor (open/short),yes,assumed (full original table),not sampled
+308,Suction line 1 temperature sensor error (open/short),yes,assumed (full original table),not sampled
+309,Oil Balace Sensor2  SHORT/OPEN,yes,assumed (full original table),not sampled
+310,Oil Balance Sensor3 SHORT/OPEN,yes,assumed (full original table),not sampled
+311,Double tube / liquid temperature sensor error (open/short),yes,assumed (full original table),not sampled
+312,Main cooling solenoid valve opening error (open/short),yes,assumed (full original table),not sampled
+313,4-Way Valve operation Error,yes,assumed (full original table),not sampled
+314,Oil Balace Sensor4 SHORT/OPEN,yes,assumed (full original table),not sampled
+315,CT1 Sensor Short or Open,yes,assumed (full original table),not sampled
+316,CT2 Sensor Short or Open,yes,assumed (full original table),not sampled
+317,CT3 Sensor Short or Open,yes,assumed (full original table),not sampled
+320,OLP Sensor Error (open/short) Error condition; outdoor temperature under -20°C Error level; over 4.95V (-30°C) under 0.5V (151°C),yes,assumed (full original table),not sampled
+321,EVI-in temperature sensor error (open/short),yes,assumed (full original table),not sampled
+322,EVI-out temperature sensor error (open/short),yes,assumed (full original table),not sampled
+323,Suction line 2 temperature sensor error (open/short) (on heat recovery systems only),yes,assumed (full original table),not sampled
+324,Outdoor Unit Fan Motor Current Sensor SHORT / OPEN,yes,assumed (full original table),not sampled
+325,Outdoor Unit Fan2 Motor Current Sensor SHORT / OPEN,yes,assumed (full original table),not sampled
+330,Eva-In1 sensor short/open,yes,assumed (full original table),not sampled
+331,Eva-In2 sensor short/open,yes,assumed (full original table),not sampled
+332,Eva-In3 sensor short/open,yes,assumed (full original table),not sampled
+333,Eva-In4 sensor short/open,yes,assumed (full original table),not sampled
+334,Eva-In5 sensor short/open,yes,assumed (full original table),not sampled
+335,EVA-Out1 sensor short/open,yes,assumed (full original table),not sampled
+336,EVA-Out2 sensor short/open,yes,assumed (full original table),not sampled
+337,EVA-Out3 sensor short/open,yes,assumed (full original table),not sampled
+338,EVA-Out4 sensor short/open,yes,assumed (full original table),not sampled
+339,EVA-Out5 sensor short/open,yes,assumed (full original table),not sampled
+346,Failure of starting 'fan controller 2',yes,assumed (full original table),not sampled
+347,Error of wiring of 'fan controller 2',yes,assumed (full original table),yes
+348,Locking Error of 'fan controller 2',yes,assumed (full original table),yes
+353,Overheat Error of Outdoor 2nd fan,yes,assumed (full original table),yes
+355,IPM(Internal PCB Module) Overheat Error of Outdoor 2nd fan,yes,assumed (full original table),yes
+361,Starting failure error of compressor 2 OR CT1 Low Current,yes,assumed (full original table),yes
+364,Inverter 2 DC Peak Compressor down - ( Over current error of compressor 2),yes,assumed (full original table),yes
+365,Inverter 2 Compressor down overcurrent (over than 30 A) / Overload,yes,assumed (full original table),yes
+366,Inverter 2 PBA DC Link over / under Voltage (Equal or Less than 150 V / Equal or over 410V),yes,assumed (full original table),yes
+367,Inverter 2 Compressor rotating failure -  Wiring disconnection error of compressor 2.,yes,assumed (full original table),yes
+368,Inverter 2 Compressor CT sensor Error -  Current sensor error of INV PBA 2,yes,assumed (full original table),yes
+369,DC-link voltage sensor error of INV PBA 2,yes,assumed (full original table),yes
+371,Inverter 2 ODU EEPROM Read / Write Error (OTP Error),yes,assumed (full original table),yes
+374,Inverter PBA 2 Heatsink Temperature sensor Error,yes,assumed (full original table),yes
+378,ODU FAN 2 IPM H/W OC ( Over current of fan 2),yes,assumed (full original table),yes
+385,Inverter 2 PBA Input Current sensor Error,yes,assumed (full original table),yes
+387,Outdoor unit Fan 2 Hall Sensor Error,yes,assumed (full original table),yes
+388,Inverter 2 PBA Input Voltage sensor Error,yes,assumed (full original table),yes
+389,Outdoor fan 2 motor Overload error (system stop),yes,assumed (full original table),yes
+391,Fan 2 PBA EEPROM Read/Writer Error,yes,assumed (full original table),yes
+393,Fan 2 PBA CT Sensor Error (Motor current sensor error),yes,assumed (full original table),yes
+396,Fan 2 PBA DC Link voltage sensor Error,yes,assumed (full original table),yes
+399,Fan 2 PBA Heatsink temperature sensor error,yes,assumed (full original table),yes
+400,IGBT module overheated error of INV PCB 2 (Compressor down),yes,assumed (full original table),yes
+401,Outdoor unit freeze up (compressor stopped),yes,assumed (full original table),yes
+402,Outdoor Freezing detect 2,yes,assumed (full original table),yes
+403,Detection of outdoor unit freeze up when compressor is stopped or the indoor units do not reach above -4°C after 5 minutes of operation,yes,assumed (full original table),yes
+404,Outdoor overload 1 Protection Control Error,yes,assumed (full original table),yes
+405,Outdoor overload 2 Protection Control Error,yes,assumed (full original table),yes
+406,Outdoor overload 3 Protection Control Error,yes,assumed (full original table),yes
+407,Compressor stopped by high pressure protection control,yes,assumed (full original table),yes
+408,COMP down due to High PressureSensor Protection Control 2,yes,assumed (full original table),yes
+409,COMP down due to High PressureSensor Protection Control 3,yes,assumed (full original table),yes
+410,Compressor stopped by low pressure protection control or refrigerant leakage,yes,assumed (full original table),yes
+411,COMP down due to Low PressureSensor Protection Control 2,yes,assumed (full original table),yes
+412,COMP down due to Low PressureSensor Protection Control 3,yes,assumed (full original table),yes
+413,Sump sensor has gone into protection control,yes,assumed (full original table),yes
+414,Outdoor SUMP DOWN_2 Protection Control,yes,assumed (full original table),yes
+415,Outdoor SUMP DOWN_3 Protection Control,yes,assumed (full original table),yes
+416,Compressor is stopped due to discharge temperature by protection control,yes,assumed (full original table),yes
+417,Outdoor DischargeTemperature  _2 Protection Control,yes,assumed (full original table),yes
+418,Outdoor DischargeTemperature  _3 Protection Control,yes,assumed (full original table),yes
+419,EEV open error (self diagnosis),yes,assumed (full original table),yes
+420,Outdoor EEV#2 opening 6th Self-Check Error,yes,assumed (full original table),yes
+421,Outdoor EEV#3 opening 6th Self-Check Error,yes,assumed (full original table),yes
+422,EEV close error (self diagnosis),yes,assumed (full original table),yes
+423,Outdoor EEV#2 closing 6th Self-Check Error,yes,assumed (full original table),not sampled
+424,Outdoor EEV#3 closing 6th Self-Check Error,yes,assumed (full original table),not sampled
+425,"Reverse phase or phase open (3 phase wiring of outdoor unit, R-S-T-N)",yes,assumed (full original table),not sampled
+426,Outdoor Reverse Phase or Missing Phase detect 2 Error,yes,assumed (full original table),not sampled
+427,Outdoor Reverse Phase or Missing Phase detect 3 Error,yes,assumed (full original table),not sampled
+428,Compressor stopped by abnormal compression ratio,yes,assumed (full original table),not sampled
+429,COMP down by Compression Ratio control  Error 2,yes,assumed (full original table),not sampled
+430,COMP down by Compression Ratio control  Error 3,yes,assumed (full original table),not sampled
+431,Self diagnosis of oil solenoid valve (open and close error) or closing error of oil balance valve,yes,assumed (full original table),not sampled
+432,Oil Balance Valve2 Error,yes,assumed (full original table),not sampled
+433,Oil Balance Valve3 Error,yes,assumed (full original table),not sampled
+434,"Oil Balance Valve opening Error (In DVM PLUS 2,  HotGasValve Opening Error)",yes,assumed (full original table),not sampled
+435,Water Cooling Flow Switch Error,yes,assumed (full original table),not sampled
+436,Evaporator Protect for Freeze and Burst Error,yes,assumed (full original table),not sampled
+437,"Oil Balance Valve Closing Error(In DVM PLUS 2,  HotGasValve Opening Error)",yes,assumed (full original table),not sampled
+438,EVI EEV leakage or intercooler leakage,yes,assumed (full original table),not sampled
+439,Refrigerant leakage error,yes,assumed (full original table),not sampled
+440,Temperature range in heating has been exceeded,yes,assumed (full original table),not sampled
+441,Temperature range in cooling has been exceeded,yes,assumed (full original table),not sampled
+442,Temperature range for refrigerant charging in heating operation has been exceeded (over 15°C),yes,assumed (full original table),not sampled
+443,System cannot operate due to pressure of system being too low,yes,assumed (full original table),not sampled
+445,CCH wire is broken or sump sensor has become detached,yes,assumed (full original table),not sampled
+446,Fan1 Motor Starting Failure,yes,assumed (full original table),not sampled
+447,Fan 1 Motor Wiring disconnection,yes,assumed (full original table),not sampled
+448,Fan 1 Motor lock Error,yes,assumed (full original table),not sampled
+450,COND High Temperature(Protection Control) Every Time,yes,assumed (full original table),yes
+451,Low Pressure Switch Low Pressure(Protection Control),yes,assumed (full original table),yes
+452,Temporary power failure or zero crossing error,yes,assumed (full original table),yes
+453,Outdoor unit's fan motor is in overload (due to temperature),yes,assumed (full original table),yes
+454,"OutdoorFan RPM Error (RPM has exceeded 2500rpm, the difference between the target velocity and the practical velocity is more than 100rpm every 10 seconds)",yes,assumed (full original table),yes
+455,Internal PCB Module (IPM) overload error on outdoor unit's fan motor (due to temperature),yes,assumed (full original table),yes
+456,OutdoorFan Overcurrent Error,yes,assumed (full original table),yes
+457,Backlash error on outdoor unit's fan motor,yes,assumed (full original table),yes
+458,Outdoor unit fan 1 error (fan RPM error)/or for DVM compressor 1 over current error,yes,assumed (full original table),yes
+459,Outdoor unit IPM Fault Error Or CT2 over currency,yes,assumed (full original table),yes
+460,Outdoor Unit/Indoor Unit communication wired incorrect (connected to power terminal)/For DVM Compressor  3 over current,yes,assumed (full original table),yes
+461,Inverter Compressor start up error (failed to start 5 times),yes,assumed (full original table),yes
+462,Total current error / PFC over current error (inverter compressor),yes,assumed (full original table),yes
+463,Compressor tripped by OLP temperature control mode,yes,assumed (full original table),yes
+464,IPM over current (o.c) error,yes,assumed (full original table),yes
+465,Compressor overload error,yes,assumed (full original table),yes
+466,DC-Link under/over voltage error (under 150V or over 410V),yes,assumed (full original table),yes
+467,Inverter compressor rotation error,yes,assumed (full original table),yes
+468,Current sensor error on inverter compressor,yes,assumed (full original table),yes
+469,DC-Link voltage sensor error on inverter compressor,yes,assumed (full original table),yes
+470,Outdoor unit EEPROM Read/Write Error,yes,assumed (full original table),yes
+471,OTP Error on inverter,yes,assumed (full original table),yes
+472,Inverter MICOM zero-croosing error,yes,assumed (full original table),yes
+473,Inverter compressor lock error,yes,assumed (full original table),yes
+474,Heat-Sink sensor error,yes,assumed (full original table),yes
+475,Outdoor fan 2 error with BLDC fan,yes,assumed (full original table),yes
+476,4wAY Error detect,yes,assumed (full original table),yes
+477,Compressor has stopped due to luquid refrigerant entering the compressor,yes,assumed (full original table),yes
+478,OutdoorFan IPM H/W OC,yes,assumed (full original table),yes
+479,4WAY miss connection detect Error,yes,assumed (full original table),yes
+480,Fixed Comp 1 Stege OLP Protection Control(leakage for refrigerant Error),yes,assumed (full original table),yes
+481,Comp1 operating Error,yes,assumed (full original table),yes
+482,Comp2 operating Error,yes,assumed (full original table),yes
+483,Over AC-voltage error,yes,assumed (full original table),yes
+484,PFC Overload error,yes,assumed (full original table),yes
+485,Input-current sensor error,yes,assumed (full original table),yes
+486,Outdoor Fan DC-Link Voltage Under/Over Error,yes,assumed (full original table),yes
+487,Outdoor Fan Hall Sensor Error,yes,assumed (full original table),yes
+488,ODU Fan Input voltage Sensor Error,yes,assumed (full original table),yes
+489,ODU FAN 1 motor Overload error (system stop),yes,assumed (full original table),yes
+490,Outdoor Temperature   0 deegree & Indoor Temperature  less than 0 deegree prohibition to operate,yes,assumed (full original table),yes
+491,Fan Controller1 EEPROM Read/Write Error,yes,assumed (full original table),yes
+492,Outdoor Fan2 IPM H/W OC,yes,assumed (full original table),yes
+493,Fan Controller1 Current Sensor Error,yes,assumed (full original table),yes
+494,Delayed time Error due to OutdoorFan2 Fan Error,yes,assumed (full original table),yes
+495,Outdoor Fan2 Overheat Error,yes,assumed (full original table),yes
+496,Fan Controller1 DC Link Sensor Error,yes,assumed (full original table),yes
+497,Outdoor Fan2 Overcurrent Error,yes,assumed (full original table),not sampled
+498,Outdoor Fan2 IPM(Internal PCB Module) Overheat Error,yes,assumed (full original table),not sampled
+499,Fan Controller1 Heat Sink Temp Sensor Error,yes,assumed (full original table),not sampled
+500,Heat-Sink over heating error,yes,assumed (full original table),not sampled
+503,Service valve lock error,yes,assumed (full original table),not sampled
+504,Compressor operation failure error,yes,assumed (full original table),not sampled
+505,High pressure sensor error,yes,assumed (full original table),not sampled
+506,Low pressure sensor error,yes,assumed (full original table),not sampled
+508,Smart Install failed or could not start,yes,assumed (full original table),not sampled
+512,RESERVED(DMS-SNET3 Error),yes,assumed (full original table),not sampled
+551,Defrost working,yes,assumed (full original table),not sampled
+552,Low Discharge Pressure,yes,assumed (full original table),not sampled
+553,equability operation,yes,assumed (full original table),not sampled
+554,Gas leak error,yes,assumed (full original table),not sampled
+555,Oil collection operation (not an error),yes,assumed (full original table),not sampled
+556,Capacity miss match between indoor unit and outdoor unit,yes,assumed (full original table),not sampled
+557,Option code miss match between indoor unit and outdoor unit,yes,assumed (full original table),not sampled
+559,Indoor Unit  operation stops due to an unknown error in Outdoor Unit,yes,assumed (full original table),not sampled
+560,Outdoor Unit option switch setting error(inapplicable option switch turns on),yes,assumed (full original table),not sampled
+561,ERV supply air fan error due to RPM,yes,assumed (full original table),not sampled
+562,ERV return air fan error due to RPM,yes,assumed (full original table),not sampled
+563,Indoor units do not match what the outdoor unit reads,yes,assumed (full original table),not sampled
+564,IAQ Clean Fan Error,yes,assumed (full original table),not sampled
+565,Miss connection Error between Comp and power wire - power line of Eva1 connect with Comp2 or  power line of Eva2 connect with Comp1,yes,assumed (full original table),not sampled
+570,Boot Code Check FAIL,yes,assumed (full original table),not sampled
+573,DVM WATER mixed module installation dip switch error (HP and HR connected together),yes,assumed (full original table),not sampled
+574,Total Leakage of Refrigerant of Outdoor Unit  2,yes,assumed (full original table),not sampled
+575,"Total Leakage of Refrigerant of Outdoor Unit 3 (Comp1, Comp2 bot detected)",yes,assumed (full original table),not sampled
+590,Inverter Driver#1 Communication error,yes,assumed (full original table),not sampled
+591,Inverter Driver#2 Communication error,yes,assumed (full original table),not sampled
+592,Inverter Driver#3 Communication error,yes,assumed (full original table),not sampled
+593,Inverter Driver#4 Communication error,yes,assumed (full original table),not sampled
+594,Fan Driver#1 Communication Error,yes,assumed (full original table),not sampled
+595,Fan Driver#2 Communication Error,yes,assumed (full original table),not sampled
+596,Fan Driver#3 Communication Error,yes,assumed (full original table),not sampled
+601,Communication error between indoor unit and wired remote control after 3 minutes,yes,assumed (full original table),not sampled
+602,Communication error between master and slave wired remote control,yes,assumed (full original table),not sampled
+603,Communication packet error (baud rate error),yes,assumed (full original table),not sampled
+604,Communication error between the indoor unit and wired remote controller after tracking has been  completed 10 times.,yes,assumed (full original table),not sampled
+605,"Communication error (between 7 day scheduler, wired remote control/7 day scheduler and the centralized controller)",yes,assumed (full original table),not sampled
+606,COM1/COM2 cross-installed error,yes,assumed (full original table),not sampled
+607,Error between master wired remote controller and slave wired remote controller settings,yes,assumed (full original table),not sampled
+608,ERV controller can not be detected,yes,assumed (full original table),not sampled
+609,Indoor unit can not be detected for sychronised control,yes,assumed (full original table),not sampled
+610,Communication error between centralized controler and interface module,yes,assumed (full original table),not sampled
+611,Communication error between DMS and centralized controller,yes,assumed (full original table),not sampled
+612,DMS ↔ PEAK Transmitter Communication Error,yes,assumed (full original table),not sampled
+613,Communication error between DMS and SIM interface module,yes,assumed (full original table),not sampled
+614,Communication error between SIM and power meter,yes,assumed (full original table),not sampled
+615,Communication error between interface module and the indoor unit,yes,assumed (full original table),not sampled
+616,Communication error between interface module and the outdoor unit,yes,assumed (full original table),not sampled
+617,"Peak power Transmitter <-> Demand Controller Communication Error, Demand Transmitter <-> Amount of eletricity system communication Error",yes,assumed (full original table),not sampled
+618,Amount of indoor units installed has exceeded the limit for the outdoor unit,yes,assumed (full original table),not sampled
+619,Temperature displays are mixed up when indoor units have been connected to MWR-WS00 (celsius/farneheit),yes,assumed (full original table),not sampled
+620,Temperature display setting error on MWR-WS00 (celsius/farenheit),yes,assumed (full original table),not sampled
+621,Option code setting error when connected to wired remote controller (master/slave),yes,assumed (full original table),not sampled
+622,Demand Controller / select the type of amount of electricity system Error,yes,assumed (full original table),not sampled
+623,Demand Transmitter PT / CT ratio set Error,yes,assumed (full original table),not sampled
+624,Demand Transmitter data receive error from amount of electricity,yes,assumed (full original table),not sampled
+625,Master DMS ↔ Slave DMS Communication Error,yes,assumed (full original table),not sampled
+626,"ERV linkage wire remote controller(AWR-WE00) ERV separate installation Error (not connect indoor unit and, only ERV be installed) indoor unit linkage wire remocontroller(AWR-VH10) indoor unit separate installation Error (not connect indoor unit and, only ERV be installed)",yes,assumed (full original table),not sampled
+627,"While in linkage controll Master/Slave Wire Remote controller, Slave Wire Remote controller 2EA installation Error(Installing Wire Remocontroller set slave in Master Wire Remocontroller 2EA at the same time)",yes,assumed (full original table),not sampled
+628,DMS↔Transmitter Communication Error,yes,assumed (full original table),not sampled
+629,DMS↔DDC Communication Error,yes,assumed (full original table),not sampled
+630,"ERV wire remote controller normal ventilation option set Error  -  Check normal ventilation option set only. - ERV normal ventilation No option, use Wire Remote controller option normal ventilation",yes,assumed (full original table),not sampled
+631,"ERVWire Remote controller auto ventilation option set  Error  - Check set auto ventilation only - ERV auto ventilation no option, use wire remote controller auto ventilation",yes,assumed (full original table),not sampled
+632,"Error when input the pulse except set the value of Pulse Width by PIM     1. less than 20ms , 2. over 400ms , 3. over range of set pulse width, 4. repeated purse over 3min",yes,assumed (full original table),not sampled
+652,Two wired remote controllers have been set to Master mode (COM1 wiring),yes,assumed (full original table),not sampled
+653,Error with the room temperature sensor in the wired remote control (open/short),yes,assumed (full original table),not sampled
+654,Memory data error in the wired remote control (MWR-WS00),yes,assumed (full original table),not sampled
+655,RESERVED(DMS-SNET3 Error),yes,assumed (full original table),not sampled
+656,RESERVED(DMS-SNET3Error),yes,assumed (full original table),not sampled
+701,Floating switch error on the indoor unit (1st detection),yes,assumed (full original table),not sampled
+702,EEV closing error on the indoor unit (1st detection),yes,assumed (full original table),not sampled
+703,EEV opening error on the indoor unit (1st detection),yes,assumed (full original table),not sampled
+720,Outdoor EEV#1 opening Self-Check Every time error,yes,assumed (full original table),not sampled
+721,Outdoor EEV#2 opening Self-Check Every time error,yes,assumed (full original table),not sampled
+722,Outdoor EEV#3 opening Self-Check Every time error,yes,assumed (full original table),not sampled
+723,Outdoor EEV#1 closing Self-Check Every time error,yes,assumed (full original table),not sampled
+724,Outdoor EEV#2 closing Self-Check Every time error,yes,assumed (full original table),not sampled
+725,Outdoor EEV#3 closing Self-Check Every time error,yes,assumed (full original table),not sampled
+768,RESERVED(DMS-SNET3 Error),yes,assumed (full original table),not sampled
+801,"[GHP-R410A] communication error : ""IF → Outdoor unit"" : Disconnection",yes,assumed (full original table),not sampled
+802,"[GHP-R410A] communication error : ""Outdoor unit → IF"" : Disconnection",yes,assumed (full original table),not sampled
+803,"[GHP-R410A] communication error : ""IF ↔ Indoor unit"" some disconnect in Indoor unit (communicating)",yes,assumed (full original table),not sampled
+804,[GHP-R410A] communication error : Among outdoor unit,yes,assumed (full original table),not sampled
+805,[GHP-R410A] Error setting ourdoor unit organization,yes,assumed (full original table),not sampled
+806,[GHP-R410A] Remocon Sensor disconnect/short circuit,yes,assumed (full original table),not sampled
+807,[GHP-R410A] outdoor liquid pipe Sensor disconnect/short circuit,yes,assumed (full original table),not sampled
+808,[GHP-R410A] outdoor Unit - overcooling heat exchanger entry temp thermystor disconnect/short circuit,yes,assumed (full original table),not sampled
+809,[GHP-R410A]COMP suction temp overheat,yes,assumed (full original table),not sampled
+810,[GHP-R410A] COMP suction superheat not soar,yes,assumed (full original table),not sampled
+811,[GHP-R410A]  refrigerant high pressure Switch disconnect,yes,assumed (full original table),not sampled
+812,[GHP-R410A] Gas EEV Output error,yes,assumed (full original table),not sampled
+813,[GHP-R410A] refrigerant low pressure Sensor error(2nd),yes,assumed (full original table),not sampled
+814,[GHP-R410A] refrigerant high pressure Sensor error 1,yes,assumed (full original table),not sampled
+815,[GHP-R410A] refrigerant high pressure Sensor error 2 (value of high pressure sensor less than standard low pressure),yes,assumed (full original table),not sampled
+816,[GHP-R410A] Water Pump operation failure,yes,assumed (full original table),not sampled
+817,[GHP-R410A] Water Pump a number of revolute error,yes,assumed (full original table),not sampled
+818,[GHP-R410A] IPM(outdoor unit FAN operating Driver) error,yes,assumed (full original table),not sampled
+819,[GHP-R410A] outdoor heat exchange Fan 1 operating failure,yes,assumed (full original table),not sampled
+820,[GHP-R410A] outdoor heat exchange Fan 2 operating failure,yes,assumed (full original table),not sampled
+821,[GHP-R410A] outdoor heat exchange Fan 3 operating failure,yes,assumed (full original table),not sampled
+822,[GHP-R410A] outdoor heat exchange Fan 1 a number of revolute error,yes,assumed (full original table),not sampled
+823,[GHP-R410A] outdoor heat exchange Fan 2 a number of revolute error,yes,assumed (full original table),not sampled
+824,[GHP-R410A] outdoor heat exchange Fan 3 a number of revolute error,yes,assumed (full original table),not sampled
+825,[GHP-R410A] outdoor Unit - heat exchange Fan error,yes,assumed (full original table),not sampled
+826,[GHP-R410A] outdoor Unit - Accum exit temp  thermystor 1 disconnect/short circuit,yes,assumed (full original table),not sampled
+827,[GHP-R410A] outdoor Unit - Accum exit temp thermystor 2 disconnect/short circuit,yes,assumed (full original table),not sampled
+828,[GHP-R410A] outdoor unit Unit - refrigerant low pressure Switch disconnect,yes,assumed (full original table),not sampled
+829,[GHP-R410A] refrigerant low pressure error,yes,assumed (full original table),not sampled
+830,[GHP-R410A] three phase error,yes,assumed (full original table),not sampled
+831,[GHP-R410A] one phase power part error,yes,assumed (full original table),not sampled
+832,[GHP-R410A] Main - Sub MICOM Program Version Unmatch,yes,assumed (full original table),not sampled
+833,[GHP-R410A] indoor unit connection number Over,yes,assumed (full original table),not sampled
+834,[GHP-R410A] indoor unit connection capacity Over,yes,assumed (full original table),not sampled
+835,[GHP-R410A] outdoor-indoor connection Unmatch,yes,assumed (full original table),not sampled
+836,[GHP-R410A] Outdoor Unit -Regular Inspection,yes,assumed (full original table),not sampled
+837,[GHP-R410A] Refrigerant High pressure error 1,yes,assumed (full original table),not sampled
+838,[GHP-R410A] Refrigerant High pressure error 2,yes,assumed (full original table),not sampled
+841,[GHP-R410A] Ourdoor Unit Gas Temp Thermistor short/disconnection,yes,assumed (full original table),not sampled
+842,[GHP-R410A] Engine Room 온도 Sensor 단선/단락,yes,assumed (full original table),not sampled
+843,[GHP-R410A] Engine water temp Sensor short/disconnection,yes,assumed (full original table),not sampled
+844,[GHP-R410A] Enginedischarge temp Sensor disconnection,yes,assumed (full original table),not sampled
+845,[GHP-R410A] Engine fluid pressure error,yes,assumed (full original table),not sampled
+846,[GHP-R410A] Engine Fluid pressure Switch disconnected,yes,assumed (full original table),not sampled
+847,[GHP-R410A] Engine over revolute 1,yes,assumed (full original table),not sampled
+848,[GHP-R410A] Engine over revolute 2,yes,assumed (full original table),not sampled
+849,[GHP-R410A] Starter Error,yes,assumed (full original table),not sampled
+850,[GHP-R410A] Engine a number of revolute control error,yes,assumed (full original table),not sampled
+851,[GHP-R410A] Engine Stop,yes,assumed (full original table),not sampled
+852,[GHP-R410A] IGUNAITA(firer) low voltage,yes,assumed (full original table),not sampled
+853,[GHP-R410A] IGUNAITA(firer) disconnect,yes,assumed (full original table),not sampled
+854,[GHP-R410A] IGUNAITA(firer) over voltage,yes,assumed (full original table),not sampled
+855,[GHP-R410A] Engine discharge temp Error,yes,assumed (full original table),not sampled
+856,[GHP-R410A] Engine water temp overheat,yes,assumed (full original table),not sampled
+857,[GHP-R410A] Engine operation failure,yes,assumed (full original table),not sampled
+858,[GHP-R410A] Engine cooling,yes,assumed (full original table),not sampled
+859,[GHP-R410A] Engine insufficient operating revolute,yes,assumed (full original table),not sampled
+860,[GHP-R410A] Engine a number of revolute Haunting Error,yes,assumed (full original table),not sampled
+861,[GHP-R410A] COMP discharge temperature overheat,yes,assumed (full original table),not sampled
+862,[GHP-R410A] Compressor Discharge temperature Sensor1 short/disconnection,yes,assumed (full original table),not sampled
+863,[GHP-R410A] Compressor Discharge temperature Sensor2 short/disconnection,yes,assumed (full original table),not sampled
+864,[GHP-R410A] Compressor Discharge temperature Sensor3 short/disconnection,yes,assumed (full original table),not sampled
+865,[GHP-R410A] Compressor Discharge temperature Sensor4 short/disconnection,yes,assumed (full original table),not sampled
+866,[GHP-R410A] Compressor nhale temperature Sensor1 short/disconnection,yes,assumed (full original table),not sampled
+867,[GHP-R410A] Compressor suction temperature Sensor2 short/disconnection,yes,assumed (full original table),not sampled
+868,[GHP-R22] Outdoor Unit - Accum Entrance Temperature Sensor short/disconnection,yes,assumed (full original table),not sampled
+869,[GHP-R22] Outdoor Unit - refrigerants Gas pipe temperature Sensor short/disconnection,yes,assumed (full original table),not sampled
+870,[GHP-R22] Outdoor Unit - comp lubricating oil insufficiency error,yes,assumed (full original table),not sampled
+871,[GHP-R22] Outdoor Unit - Refrigerant overfill error,yes,assumed (full original table),not sampled
+872,[GHP-R22] Outdoor Unit - Compressor induction temperature error,yes,assumed (full original table),not sampled
+873,[GHP-R22] Engine cooling system Error,yes,assumed (full original table),not sampled
+874,[GHP-R22] Engine Oil System error,yes,assumed (full original table),not sampled
+875,[GHP-R22] Engine power system Error,yes,assumed (full original table),not sampled
+876,[GHP-R22] Engine operating/control system Error,yes,assumed (full original table),not sampled
+880,[GHP-R410A] Outdoor Unit - Engine Temp of Cooling water low,yes,assumed (full original table),not sampled
+881,[GHP-R410A] Outdoor Unit - leakage of Engine oil,yes,assumed (full original table),not sampled
+882,[GHP-R410A] Outdoor Unit - Lack of Comp oil,yes,assumed (full original table),not sampled
+883,[GHP-R410A] Outdoor Unit - starter Trans voltage short,yes,assumed (full original table),not sampled
+901,Water Inlet Sensor(Tw1)  SHORT / OPEN,yes,assumed (full original table),not sampled
+902,Water Outlet Sensor(Tw3)  SHORT / OPEN,yes,assumed (full original table),not sampled
+903,PHE Sensor(Tw2)  SHORT / OPEN,yes,assumed (full original table),not sampled
+904,Water TANK Sensor SHORT / OPEN,yes,assumed (full original table),not sampled
+905,SOLAR Sensor SHORT / OPEN,yes,assumed (full original table),not sampled
+906,Outdoor Unit's EVA In_sensor SHORT / OPEN,yes,assumed (full original table),not sampled
+907,Heat exchanger freezing burst protection,yes,assumed (full original table),not sampled
+908,During Heat exchanger freezing burst protection Compressor Stop (system will try to restart),yes,assumed (full original table),not sampled
+909,Failure to restart after 908 error 3 times. System stop,yes,assumed (full original table),not sampled
+910,Breakaway of Water Out temperature-sensor (TW2) error,yes,assumed (full original table),not sampled
+911,Flow Switch Open Error,yes,assumed (full original table),not sampled
+912,Flow Switch Close Error,yes,assumed (full original table),not sampled
+913,Failure to restart after 911 error after 6 times,yes,assumed (full original table),not sampled
+914,Thermostat Wiring Error,yes,assumed (full original table),not sampled
