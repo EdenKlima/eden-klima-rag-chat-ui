@@ -100,6 +100,12 @@ check("neighbors near 544", "554" in neighbors or "545" in neighbors, str(neighb
 check("citation strip", main._clean_content("Antwort [[C1]] und [C2] Ende.") == "Antwort und Ende.")
 check("markdown link untouched", main._clean_content("Siehe [Doku](https://x) fertig.") == "Siehe [Doku](https://x) fertig.")
 
+# --- guardrail canned-text detection -----------------------------------------
+canned = "I'm not able to respond to that request, but I can answer other questions."
+check("canned marker matches", any(m in canned for m in main.GUARDRAIL_CANNED_MARKERS))
+check("german answer untouched by markers", not any(m in "Dazu liegen mir keine Informationen vor." for m in main.GUARDRAIL_CANNED_MARKERS))
+check("safe message mentions technician", "Fachtechniker" in main.GUARDRAIL_SAFE_MESSAGE and "Eden Klima" in main.GUARDRAIL_SAFE_MESSAGE)
+
 # --- sources extraction ------------------------------------------------------
 data = {
     "retrieval": {

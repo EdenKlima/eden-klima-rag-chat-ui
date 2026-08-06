@@ -53,6 +53,20 @@ KB_UNAVAILABLE_MESSAGE = (
     "Die Wissensdatenbank konnte gerade nicht zuverlässig abgefragt werden. "
     "Bitte versuchen Sie es erneut oder kontaktieren Sie Eden Klima."
 )
+# The platform guardrail replaces blocked answers with canned English text.
+GUARDRAIL_CANNED_MARKERS = (
+    "I'm not able to respond to that request",
+    "I am not able to respond to that request",
+    "I can't help with that request",
+    "I cannot help with that request",
+)
+GUARDRAIL_SAFE_MESSAGE = (
+    "Zu dieser Anfrage kann ich keine Anleitung geben, da sie sicherheitsrelevante Arbeiten an der "
+    "Anlage betreffen kann. Arbeiten an Strom, Kältemittel oder sicherheitsrelevanten Bauteilen "
+    "dürfen nur qualifizierte Fachtechniker durchführen. Eden Klima hilft gerne weiter — Wartung "
+    "oder Reparatur können Sie unverbindlich über den Preisrechner anfragen: "
+    "https://www.eden-klima.at/klimaanlagen-wartung/preisrechner/"
+)
 DO_RELEVANT_COMPONENTS = {
     "Agentic Inference Cloud",
     "Agent Runtime",
@@ -525,6 +539,12 @@ async def chat(request: Request):
     if lookup_used:
         retrieval_status = "lookup"
     guardrails = _extract_guardrails(data)
+
+    if any(marker in content for marker in GUARDRAIL_CANNED_MARKERS):
+        content = GUARDRAIL_SAFE_MESSAGE
+        sources = []
+        if "content_moderation" not in guardrails:
+            guardrails.append("content_moderation")
 
     if not content:
         logger.warning("[%s] agent returned no content. keys=%s", request_id, sorted(data.keys()))
