@@ -87,7 +87,9 @@ Der volle Eval gegen den Streaming-Build ergab 47/49 und legte drei echte Schwä
 | 36, 38 | ✅ | ✅ | deutsche Guardrail-Antwort |
 | 34, 35, 37, 47 | ✅ | ✅ | nach Kontingent-Pause nachgemessen |
 | 52 Fehler 103 | ❌ ohne Produktgruppe | ✅ | Datensatz-Anweisung wirkt |
-| 39 Platinentausch | ❌ | ✅ live, Eval nach Typografie-Fix | siehe unten |
+| 39 Platinentausch | ❌ | ✅ | nach Typografie-Fix bestätigt (siehe unten) |
+
+**Endstand: alle 49 automatisierbaren Fälle grün** (6 Skips = manuelle/Fault-Injection-Fälle by design). Wegen des Agent-Kontingents über vier gestaffelte Läufe gemessen (`eval-2026-08-06-p3/final/final2/final3/final4.csv`); der jeweils letzte Lauf pro Fall zählt.
 
 **Letzter Befund (Commit `ebf1cdd`):** Fall 39 antwortete live korrekt mit Eden-Klima-Verweis, fiel im Eval aber durch. Ursache war nicht die Antwort, sondern die Typografie des Modells: Es setzt geschützte Leerzeichen und Sonderbindestriche („Eden Klima", „Compressor‑Overload"), wodurch reine Substring-Prüfungen danebengreifen — sowohl im Eval als auch, gravierender, in `ensure_referral()`, das den Verweis dann gar nicht erst anhängt. Beide Stellen normalisieren jetzt U+00A0/U+2009/U+202F/U+2007 und U+2010–U+2013 vor dem Vergleich.
 
