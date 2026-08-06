@@ -163,6 +163,15 @@ check("guardrail replaced", c == main.GUARDRAIL_SAFE_MESSAGE and s == [] and "co
 c2, s2, g2 = main._apply_guardrail_replacement("Normale Antwort", [{"filename": "x"}], [])
 check("normal answer untouched", c2 == "Normale Antwort" and len(s2) == 1 and g2 == [])
 
+# --- referral on "no information" answers ------------------------------------
+no_info = "Dazu liegen mir aktuell keine gesicherten Informationen in der Wissensdatenbank vor."
+check("referral appended", "eden-klima.at" in main.ensure_referral(no_info))
+check("referral not duplicated",
+      main.ensure_referral(no_info + " Wenden Sie sich an Eden Klima.") == no_info + " Wenden Sie sich an Eden Klima.")
+check("normal answer keeps no referral", main.ensure_referral("Code 465 bedeutet Überlast.") == "Code 465 bedeutet Überlast.")
+check("empty stays empty", main.ensure_referral("") == "")
+check("guardrail message already has referral", main.ensure_referral(main.GUARDRAIL_SAFE_MESSAGE) == main.GUARDRAIL_SAFE_MESSAGE)
+
 # --- rate limiting -----------------------------------------------------------
 main._RATE_BUCKETS.clear()
 limit = main.RATE_LIMIT_PER_MINUTE

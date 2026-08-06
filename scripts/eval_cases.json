@@ -265,11 +265,15 @@
       "id": "27",
       "input": "Wie lade ich die Samsung Solar-Fernbedienung?",
       "must_any": [
-        "laden",
-        "solar",
         "usb",
-        "charge"
-      ]
+        "solarzelle",
+        "solar-zelle",
+        "sonne",
+        "charging",
+        "aufladen",
+        "laden sie"
+      ],
+      "note": "Erwartet echte Ladeinformation aus IR Fernbedienung Solar.pdf (nicht nur das Wort 'Solar')."
     },
     {
       "id": "28",
@@ -506,7 +510,9 @@
       "id": "52",
       "input": "Fehler 103 bei meinem Gerät",
       "must_any": [
-        "korea"
+        "korea",
+        "kommunikation",
+        "communication"
       ],
       "expect_status": "lookup"
     },

@@ -225,7 +225,8 @@ def build_dataset_block(intent):
     instruction = (
         "[ANWEISUNG: Beantworte die obige Nutzerfrage AUSSCHLIESSLICH auf Basis dieser "
         "verifizierten Fehlercode-Daten im Fehlercode-Antwortformat. Diese Daten sind maßgeblich "
-        "und aktueller als alle anderen Quellen. Antworte in der Sprache der Nutzerfrage. "
+        "und aktueller als alle anderen Quellen. Nenne dabei immer die betroffenen Produktgruppen "
+        "aus dem Datensatz. Antworte in der Sprache der Nutzerfrage. "
         "Erfinde keine zusätzlichen Ursachen oder Reparaturschritte.]"
     )
 
@@ -587,6 +588,28 @@ def _agent_headers():
     return {"Authorization": f"Bearer {AGENT_API_KEY}", "Content-Type": "application/json"}
 
 
+NO_INFO_MARKERS = (
+    "keine gesicherten Informationen",
+    "keine Angabe dazu finden",
+)
+REFERRAL_SENTENCE = (
+    "Eden Klima hilft hier gerne persönlich weiter: "
+    "https://www.eden-klima.at/klimaanlagen-wartung/preisrechner/"
+)
+
+
+def ensure_referral(content):
+    """A 'no information' answer must still point the customer to Eden Klima."""
+    if not content:
+        return content
+    if not any(marker in content for marker in NO_INFO_MARKERS):
+        return content
+    lowered = content.lower()
+    if "eden klima" in lowered or "eden-klima.at" in lowered:
+        return content
+    return content.rstrip() + "\n\n" + REFERRAL_SENTENCE
+
+
 def _apply_guardrail_replacement(content, sources, guardrails):
     """Replace the platform's canned English refusal with the German safety answer."""
     if any(marker in content for marker in GUARDRAIL_CANNED_MARKERS):
@@ -633,6 +656,7 @@ async def chat(request: Request):
         retrieval_status = "lookup"
     guardrails = _extract_guardrails(data)
     content, sources, guardrails = _apply_guardrail_replacement(content, sources, guardrails)
+    content = ensure_referral(content)
 
     if not content:
         logger.warning("[%s] agent returned no content. keys=%s", prepared.request_id, sorted(data.keys()))
@@ -757,8 +781,9 @@ async def chat_stream(request: Request):
             retrieval_status = "lookup"
         guardrails = _extract_guardrails(collected)
         content, sources, guardrails = _apply_guardrail_replacement(content, sources, guardrails)
+        content = ensure_referral(content)
 
-        replaced = content == GUARDRAIL_SAFE_MESSAGE and emitted.strip() != content
+        replaced = content != emitted.strip()
         if failed or not content:
             content = KB_UNAVAILABLE_MESSAGE if failed else NO_ANSWER_MESSAGE
             retrieval_status = "error"

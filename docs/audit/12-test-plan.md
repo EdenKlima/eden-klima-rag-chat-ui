@@ -115,6 +115,14 @@ Legende Kern = erwartete Kernaussage; „Techniker" = Empfehlung Fachtechniker/E
 | 54 | Windfree AR9500 Fehler 554 | Code-Kern wie 01, Modell ignoriert falls unbelegt |
 | 55 | 101~120 was bedeutet dieser Bereich? | Bereichseintrag „Indoor Unit Communication" |
 
+## Streaming-Pfad
+
+Der Eval-Runner spricht bewusst `/api/chat` an (deterministische, vollständige Antwort). Der Streaming-Pfad `/api/chat/stream` wird zusätzlich geprüft:
+
+- **Offline** (`scripts/test_lookup.py`): Marker-Entfernung über Chunk-Grenzen, kein doppelter Leerschritt, Markdown-Link bleibt unangetastet, Chunk-Parser ignoriert `[DONE]` und kaputte Zeilen.
+- **Lokal gegen Fake-Agent**: 4-Zeichen-Chunks, Retrieval-Info im letzten Frame, Guardrail-Fall mit `replace_content`.
+- **Live**: eine Lookup- und eine RAG-Frage über `curl -N`; erwartet werden `start` → mehrere `delta` → `meta` (mit Quellen, `retrieval_status`, Latenz) → `done`.
+
 ## Regressionsregeln
 
 - Fälle 01–20, 41–49 müssen nach P0-1+P1-1 **100 %** bestehen (deterministisch).
