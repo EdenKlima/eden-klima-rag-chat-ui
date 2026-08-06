@@ -123,6 +123,10 @@ Der Eval-Runner spricht bewusst `/api/chat` an (deterministische, vollständige 
 - **Lokal gegen Fake-Agent**: 4-Zeichen-Chunks, Retrieval-Info im letzten Frame, Guardrail-Fall mit `replace_content`.
 - **Live**: eine Lookup- und eine RAG-Frage über `curl -N`; erwartet werden `start` → mehrere `delta` → `meta` (mit Quellen, `retrieval_status`, Latenz) → `done`.
 
+## Betriebshinweis: Agent-Rate-Limit
+
+Der DigitalOcean-Agent hat ein eigenes Kontingent. Wird es überschritten, antwortet er mit `Error code: 429 …`; das Backend ersetzt das durch „Der Wissensassistent ist gerade stark ausgelastet…" (`retrieval_status: "error"`). Ein Eval-Lauf mit vielen `[error]`-Zeilen bedeutet **erschöpftes Kontingent, keine Regression** — erkennbar daran, dass alle Fehlschläge denselben Text tragen. Gegenmittel: `--sleep 4` (Default) oder höher, Läufe nicht direkt hintereinander starten, im Zweifel 10 Minuten warten und nur die offenen IDs mit `--only` nachfahren.
+
 ## Regressionsregeln
 
 - Fälle 01–20, 41–49 müssen nach P0-1+P1-1 **100 %** bestehen (deterministisch).

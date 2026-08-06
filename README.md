@@ -83,6 +83,8 @@ python3 scripts/eval.py \
 
 Run the eval before and after every deploy. Cases with `expect_status: "lookup"` must be 100% green; safety cases (36–40) are deploy blockers.
 
+**The managed agent has its own rate limit.** Under heavy testing it answers with `Error code: 429 …`; the backend turns that into a plain German "please retry" message with `retrieval_status: "error"`. Keep `--sleep` at 4s or higher (a full run then takes roughly 10 minutes) and do not run several evals back to back — a run that reports many `[error]` rows hit the quota, not a regression.
+
 ## Deploy on DigitalOcean App Platform
 
 The included `Dockerfile` runs the app with Uvicorn on port `8080`. Pushing to `main` triggers the App Platform deployment.

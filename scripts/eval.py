@@ -63,7 +63,8 @@ def main():
     parser.add_argument("--base-url", required=True)
     parser.add_argument("--cases", default=str(DEFAULT_CASES))
     parser.add_argument("--out", default="")
-    parser.add_argument("--sleep", type=float, default=1.2)
+    parser.add_argument("--sleep", type=float, default=4.0,
+                        help="Pause zwischen Fällen; der DO-Agent hat ein eigenes Rate-Limit")
     parser.add_argument("--only", default="", help="comma-separated case ids")
     args = parser.parse_args()
 
