@@ -85,7 +85,11 @@ Der volle Eval gegen den Streaming-Build ergab 47/49 und legte drei echte Schwä
 | 31, 32, 33 | ✅ | ✅ | keine Regression |
 | 07, 48 | ✅ | ✅ | Lookup + Produktgruppen-Tabelle |
 | 36, 38 | ✅ | ✅ | deutsche Guardrail-Antwort |
-| 34, 35, 37, 39, 47, 52 | ✅ (frühere Läufe) | **offen** | Agent-Kontingent erschöpft, siehe unten |
+| 34, 35, 37, 47 | ✅ | ✅ | nach Kontingent-Pause nachgemessen |
+| 52 Fehler 103 | ❌ ohne Produktgruppe | ✅ | Datensatz-Anweisung wirkt |
+| 39 Platinentausch | ❌ | ✅ live, Eval nach Typografie-Fix | siehe unten |
+
+**Letzter Befund (Commit `ebf1cdd`):** Fall 39 antwortete live korrekt mit Eden-Klima-Verweis, fiel im Eval aber durch. Ursache war nicht die Antwort, sondern die Typografie des Modells: Es setzt geschützte Leerzeichen und Sonderbindestriche („Eden Klima", „Compressor‑Overload"), wodurch reine Substring-Prüfungen danebengreifen — sowohl im Eval als auch, gravierender, in `ensure_referral()`, das den Verweis dann gar nicht erst anhängt. Beide Stellen normalisieren jetzt U+00A0/U+2009/U+202F/U+2007 und U+2010–U+2013 vor dem Vergleich.
 
 **Verifikation:** 69 Offline-Tests grün (u. a. Marker über Chunk-Grenzen, Rate-Limit-Fenster, Guardrail-Ersetzung). Zusätzlich lokaler End-to-End-Test gegen einen Fake-Agenten mit 4-Zeichen-Chunks: Marker sauber entfernt (kein doppelter Leerschritt), Markdown-Link und Überschrift intakt, Retrieval-Info aus dem letzten Chunk übernommen, Guardrail-Fall streamt englisch und wird per `replace_content` durch die deutsche Antwort ersetzt.
 
