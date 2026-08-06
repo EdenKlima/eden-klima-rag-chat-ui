@@ -613,13 +613,30 @@ REFERRAL_SENTENCE = (
 )
 
 
+# The model likes typographic whitespace and hyphens ("Eden Klima",
+# "Compressor‑Overload"). Normalize before any substring check.
+_TYPO_MAP = {
+    " ": " ", " ": " ", " ": " ", " ": " ",
+    "‐": "-", "‑": "-", "‒": "-", "–": "-",
+}
+
+
+def normalize_text(value):
+    if not value:
+        return ""
+    for src, dst in _TYPO_MAP.items():
+        value = value.replace(src, dst)
+    return value
+
+
 def ensure_referral(content):
     """A 'no information' answer must still point the customer to Eden Klima."""
     if not content:
         return content
-    if not any(marker in content for marker in NO_INFO_MARKERS):
+    normalized = normalize_text(content)
+    if not any(marker in normalized for marker in NO_INFO_MARKERS):
         return content
-    lowered = content.lower()
+    lowered = normalized.lower()
     if "eden klima" in lowered or "eden-klima.at" in lowered:
         return content
     return content.rstrip() + "\n\n" + REFERRAL_SENTENCE

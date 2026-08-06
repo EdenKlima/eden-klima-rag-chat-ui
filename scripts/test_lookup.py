@@ -172,6 +172,13 @@ check("normal answer keeps no referral", main.ensure_referral("Code 465 bedeutet
 check("empty stays empty", main.ensure_referral("") == "")
 check("guardrail message already has referral", main.ensure_referral(main.GUARDRAIL_SAFE_MESSAGE) == main.GUARDRAIL_SAFE_MESSAGE)
 
+# typographic whitespace/hyphens must not defeat the checks
+nb_no_info = "Dazu liegen mir aktuell keine gesicherten Informationen in der Wissensdatenbank vor."
+check("referral fires despite nbsp", "eden-klima.at" in main.ensure_referral(nb_no_info))
+nb_has_eden = no_info + " Wenden Sie sich an Eden Klima."
+check("existing Eden Klima with nbsp recognised", main.ensure_referral(nb_has_eden) == nb_has_eden)
+check("normalize maps nbsp and figure dash", main.normalize_text("Eden Klima‑Test") == "Eden Klima-Test")
+
 # --- upstream error payloads must never reach the user -----------------------
 raw429 = "Error code: 429 - {'error': {'message': 'Rate limit exceeded.', 'type': 'rate_limit_exceeded_error'}}"
 c3, is_err = main.sanitize_upstream_error(raw429)

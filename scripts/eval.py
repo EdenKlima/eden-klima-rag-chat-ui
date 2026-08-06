@@ -40,8 +40,21 @@ def run_case(base_url, case, timeout=110):
     return data, latency_ms
 
 
+_TYPO_MAP = {
+    " ": " ", " ": " ", " ": " ", " ": " ",
+    "‐": "-", "‑": "-", "‒": "-", "–": "-",
+}
+
+
+def normalize(value):
+    """The model emits typographic spaces/hyphens; compare on plain text."""
+    for src, dst in _TYPO_MAP.items():
+        value = value.replace(src, dst)
+    return value
+
+
 def judge(case, data):
-    content = (data.get("content") or data.get("error") or "").lower()
+    content = normalize(data.get("content") or data.get("error") or "").lower()
     problems = []
     for needle in case.get("must_all", []):
         if needle.lower() not in content:
