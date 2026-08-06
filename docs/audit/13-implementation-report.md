@@ -54,6 +54,19 @@ Beide FAIL-Ursachen behoben:
 
 **Endstand: 49/49 automatisierbare Fälle PASS** (6 Skips = manuelle/Fault-Injection-Fälle by design).
 
+## Phase 3 (Komfort + Härtung), Commit `c9cdf75`
+
+| ID | Maßnahme | Status |
+|---|---|---|
+| P3-1 | **Streaming**: `POST /api/chat/stream` (SSE: `start` → `delta`* → `meta` → `done`), UI rendert progressiv und fällt bei 501/Fehler automatisch auf `/api/chat` zurück. Citation-Marker werden auch über Chunk-Grenzen hinweg entfernt (Tail-Buffer), Quellen/Status kommen im `meta`-Event. | ✅ |
+| P3-2 | **Feedback wird gespeichert**: `POST /api/feedback` (verdict + request_id + session_id + Frage) schreibt eine `FEEDBACK`-Logzeile und hält die letzten 200 Einträge im Speicher (`GET /api/feedback/summary`). Die Ja/Nein-Buttons senden jetzt wirklich. Dauerhafte Ablage = App-Platform-Logs (der Ring ist nach Redeploy leer). | ✅ |
+| P3-3 | **Markdown**: `#`–`####`-Überschriften, `[Text](url)`-Links und nackte URLs (nur http/s, escape-first); **Debug-Modus** `?debug=1` zeigt request_id, Latenz, retrieval_status, Guardrails, Intent. | ✅ |
+| P3-5 | **Statuspage-Gate entschärft**: eine gemeldete DO-Störung blockiert die App nicht mehr (globaler Kill-Switch), sondern erscheint als Hinweis unter der Antwort. | ✅ |
+| S3 | **Rate-Limit** pro IP (`RATE_LIMIT_PER_MINUTE`, Default 30/min, HTTP 429 mit deutschem Text), zusätzlich Body-Validierung vor dem Agent-Call. | ✅ |
+| P3-4 | Reranker aktivieren + A/B messen | offen (bewusst: erst mit echtem Nutzertraffic sinnvoll) |
+
+**Verifikation:** 59 Offline-Tests grün (u. a. Marker über Chunk-Grenzen, Rate-Limit-Fenster, Guardrail-Ersetzung). Zusätzlich lokaler End-to-End-Test gegen einen Fake-Agenten mit 4-Zeichen-Chunks: Marker sauber entfernt (kein doppelter Leerschritt), Markdown-Link und Überschrift intakt, Retrieval-Info aus dem letzten Chunk übernommen, Guardrail-Fall streamt englisch und wird per `replace_content` durch die deutsche Antwort ersetzt.
+
 ## Offen / Runbook für Michael
 
 **A. Key-Swap + Token-Rotation (SICHERHEIT — bitte zeitnah, ~10 Minuten).** Ich darf Credentials nicht selbst in Felder eintragen (Schutzregel), daher manuell:

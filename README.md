@@ -8,10 +8,13 @@ Error-code questions do **not** rely on vector search: a regex detects the code,
 
 - Eden Klima branded German interface with HVAC prompt examples and safety note
 - **Deterministic error-code lookup** (446 Samsung codes, with/without `E` prefix, typo-tolerant, list/range/product-group questions answered from data, not retrieval)
-- Source display from `retrieval.retrieved_data` (filename + page), deduplicated; inline `[[C1]]` markers stripped
+- **Streaming answers** via server-sent events, with automatic fallback to the single-response endpoint
+- Source display from `retrieval.retrieved_data` (filename + page), deduplicated; inline `[[C1]]` markers stripped (also across stream chunks)
 - `retrieval_status` in every response (`lookup` / `success` / `empty` / `error`) — KB outages render as a warning, not as "no information"
-- Duplicate-submit protection, history capped at 16 turns, role whitelist, message length limit
-- Clean fallback messages, feedback CTA flow, Markdown rendering incl. tables
+- Guardrail blocks are answered in German with a technician/Preisrechner hint instead of the platform's English placeholder
+- **Feedback is stored**: `POST /api/feedback` writes a `FEEDBACK …` log line and keeps the last 200 entries in memory (`GET /api/feedback/summary`)
+- Per-IP rate limit, duplicate-submit protection, history capped at 16 turns, role whitelist, message length limit
+- Markdown rendering incl. tables, headings and links; `?debug=1` shows request id, latency, retrieval status and guardrails
 
 ## Environment Variables
 
@@ -29,7 +32,20 @@ AGENT_UUID="your-digitalocean-agent-uuid"
 DO_API_TOKEN="your-digitalocean-api-token"
 ```
 
-Optional: `AGENT_NAME`, `LOOKUP_ENABLED=0`, `MAX_MESSAGE_CHARS`, `MAX_HISTORY_ENTRIES`, `DO_API_BASE`, `DO_STATUS_URL`.
+Optional: `AGENT_NAME`, `LOOKUP_ENABLED=0`, `STREAMING_ENABLED=0`, `RATE_LIMIT_PER_MINUTE` (default 30, `0` disables), `MAX_MESSAGE_CHARS`, `MAX_HISTORY_ENTRIES`, `AGENT_TIMEOUT_SECONDS`, `DO_API_BASE`, `DO_STATUS_URL`.
+
+## Endpoints
+
+| Endpoint | Purpose |
+|---|---|
+| `GET /` | chat UI |
+| `GET /health` | liveness, agent state, loaded error codes, streaming flag |
+| `POST /api/chat` | single JSON answer (used by the eval runner and as streaming fallback) |
+| `POST /api/chat/stream` | SSE: `start`, `delta`*, `meta` (sources/status/latency), `done` |
+| `POST /api/feedback` | `{verdict: "yes"\|"no", request_id, session_id, question}` |
+| `GET /api/feedback/summary` | counts + last 20 entries held in memory |
+
+Feedback is durable only through the application log (`FEEDBACK {...}` lines in App Platform → Runtime Logs); the in-memory ring resets on redeploy.
 
 Do not commit real token values to the repository.
 
