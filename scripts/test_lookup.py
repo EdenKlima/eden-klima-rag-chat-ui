@@ -172,6 +172,18 @@ check("normal answer keeps no referral", main.ensure_referral("Code 465 bedeutet
 check("empty stays empty", main.ensure_referral("") == "")
 check("guardrail message already has referral", main.ensure_referral(main.GUARDRAIL_SAFE_MESSAGE) == main.GUARDRAIL_SAFE_MESSAGE)
 
+# --- upstream error payloads must never reach the user -----------------------
+raw429 = "Error code: 429 - {'error': {'message': 'Rate limit exceeded.', 'type': 'rate_limit_exceeded_error'}}"
+c3, is_err = main.sanitize_upstream_error(raw429)
+check("429 payload replaced", is_err and c3 == main.UPSTREAM_BUSY_MESSAGE)
+check("no raw json leaks", "rate_limit_exceeded_error" not in c3 and "{" not in c3)
+c4, is_err4 = main.sanitize_upstream_error("{'error': {'message': 'boom'}}")
+check("json error payload replaced", is_err4 and c4 == main.UPSTREAM_BUSY_MESSAGE)
+c5, is_err5 = main.sanitize_upstream_error("Der Fehlercode 465 bedeutet Überlast.")
+check("normal answer not flagged", not is_err5 and c5.startswith("Der Fehlercode"))
+c6, is_err6 = main.sanitize_upstream_error("")
+check("empty content not flagged", not is_err6 and c6 == "")
+
 # --- rate limiting -----------------------------------------------------------
 main._RATE_BUCKETS.clear()
 limit = main.RATE_LIMIT_PER_MINUTE

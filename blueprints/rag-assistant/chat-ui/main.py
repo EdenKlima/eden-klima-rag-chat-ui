@@ -592,6 +592,21 @@ NO_INFO_MARKERS = (
     "keine gesicherten Informationen",
     "keine Angabe dazu finden",
 )
+# The agent occasionally answers with its own error text (e.g. its rate limit).
+# That must never reach the chat window.
+UPSTREAM_ERROR_RE = re.compile(r"^\s*(Error code:\s*\d{3}|\{['\"]error['\"])")
+UPSTREAM_BUSY_MESSAGE = (
+    "Der Wissensassistent ist gerade stark ausgelastet. "
+    "Bitte versuchen Sie es in einer Minute noch einmal."
+)
+
+
+def sanitize_upstream_error(content):
+    """Return (content, is_error): replace raw agent error payloads with plain German."""
+    if content and UPSTREAM_ERROR_RE.match(content):
+        logger.warning("upstream error surfaced in content: %s", content[:200])
+        return UPSTREAM_BUSY_MESSAGE, True
+    return content, False
 REFERRAL_SENTENCE = (
     "Eden Klima hilft hier gerne persönlich weiter: "
     "https://www.eden-klima.at/klimaanlagen-wartung/preisrechner/"
@@ -656,7 +671,11 @@ async def chat(request: Request):
         retrieval_status = "lookup"
     guardrails = _extract_guardrails(data)
     content, sources, guardrails = _apply_guardrail_replacement(content, sources, guardrails)
-    content = ensure_referral(content)
+    content, upstream_error = sanitize_upstream_error(content)
+    if upstream_error:
+        sources, retrieval_status = [], "error"
+    else:
+        content = ensure_referral(content)
 
     if not content:
         logger.warning("[%s] agent returned no content. keys=%s", prepared.request_id, sorted(data.keys()))
@@ -781,7 +800,11 @@ async def chat_stream(request: Request):
             retrieval_status = "lookup"
         guardrails = _extract_guardrails(collected)
         content, sources, guardrails = _apply_guardrail_replacement(content, sources, guardrails)
-        content = ensure_referral(content)
+        content, upstream_error = sanitize_upstream_error(content)
+        if upstream_error:
+            sources, retrieval_status = [], "error"
+        else:
+            content = ensure_referral(content)
 
         replaced = content != emitted.strip()
         if failed or not content:
