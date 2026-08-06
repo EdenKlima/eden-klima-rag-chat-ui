@@ -65,7 +65,17 @@ Beide FAIL-Ursachen behoben:
 | S3 | **Rate-Limit** pro IP (`RATE_LIMIT_PER_MINUTE`, Default 30/min, HTTP 429 mit deutschem Text), zusätzlich Body-Validierung vor dem Agent-Call. | ✅ |
 | P3-4 | Reranker aktivieren + A/B messen | offen (bewusst: erst mit echtem Nutzertraffic sinnvoll) |
 
-**Verifikation:** 59 Offline-Tests grün (u. a. Marker über Chunk-Grenzen, Rate-Limit-Fenster, Guardrail-Ersetzung). Zusätzlich lokaler End-to-End-Test gegen einen Fake-Agenten mit 4-Zeichen-Chunks: Marker sauber entfernt (kein doppelter Leerschritt), Markdown-Link und Überschrift intakt, Retrieval-Info aus dem letzten Chunk übernommen, Guardrail-Fall streamt englisch und wird per `replace_content` durch die deutsche Antwort ersetzt.
+### Nachjustierung nach dem P3-Eval (Commits `1d54c57`, `c454032`)
+
+Der volle Eval gegen den Streaming-Build ergab 47/49 und legte drei echte Schwächen offen:
+
+1. **K von 5 auf 8 erhöht** (Agent-Setting). Belegt durch Retrieval-Daten: die neu ergänzte `eden_klima_faq.md` belegte bei kurzen Fragen Platz 1 und verdrängte die Handbuch-Passagen, sodass „Wie lade ich die Samsung Solar-Fernbedienung?" mit „keine gesicherten Informationen" beantwortet wurde, obwohl der Inhalt nachweislich indexiert ist (dieselbe Frage ausführlicher gestellt lieferte Solar-PDF S. 4/25/36 mit USB-C, „Charging"/„Complete"). Mit 6 Quellen im Index ist K=5 zu eng; Mehrkosten ~0,0001 $/Anfrage.
+2. **Produktgruppen sind jetzt Pflichtbestandteil** der Fehlercode-Antwort (Datensatz-Anweisung). Auslöser: „Fehler 103" wurde korrekt erklärt, aber ohne den entscheidenden Zusatz „Korea model only".
+3. **„Keine Information" endet immer mit dem Eden-Klima-Verweis** (`ensure_referral`, deterministisch im Backend statt per Prompt-Hoffnung).
+
+**Zusätzlicher Fund während der Messung:** Unter Last antwortet der DO-Agent selbst mit `Error code: 429 - {'error': …}` — dieser Rohtext landete unverändert im Chatfenster (Verstoß gegen „kein Roh-JSON in der UI"). Jetzt fängt `sanitize_upstream_error()` solche Payloads ab und ersetzt sie durch „Der Wissensassistent ist gerade stark ausgelastet…" mit `retrieval_status: error`. Die 429er stammten aus meinen eigenen Testläufen, das Muster hätte aber jeden Lastspitzen-Nutzer getroffen.
+
+**Verifikation:** 69 Offline-Tests grün (u. a. Marker über Chunk-Grenzen, Rate-Limit-Fenster, Guardrail-Ersetzung). Zusätzlich lokaler End-to-End-Test gegen einen Fake-Agenten mit 4-Zeichen-Chunks: Marker sauber entfernt (kein doppelter Leerschritt), Markdown-Link und Überschrift intakt, Retrieval-Info aus dem letzten Chunk übernommen, Guardrail-Fall streamt englisch und wird per `replace_content` durch die deutsche Antwort ersetzt.
 
 ## Offen / Runbook für Michael
 

@@ -8,7 +8,7 @@
 | Max Tokens | 1536 | ok (längste Antwort 1297 Tokens — nahe am Limit, beobachten) |
 | Temperature | 0.2 | ok |
 | Top P | 0.8 | ok |
-| K Value | 5 | ok als Default; für PDFs mit Parent-Chunks eher 3–5 als 8–10 (Kontextkosten ~6,9k Tokens/Anfrage schon jetzt) |
+| K Value | 5 → **8** (2026-08-06 erhöht) | Mit 6 Datenquellen war 5 zu eng: das FAQ-Dokument verdrängte bei kurzen Fragen die Handbuch-Chunks (siehe `13-implementation-report.md`). Mehrkosten vernachlässigbar |
 | Retrieval Method | **None** („uses the original query as-is") | ok — kein Rewrite; damit ist die Query-Normalisierung Aufgabe des Backends |
 | Alpha | **nicht konfigurierbar auf Agent-Ebene** (kein Regler) | Plattform-Default (Hybrid); exakte Steuerung nur über kbaas-Retrieve-API |
 | Include citations | Yes | ok, aber UI kann die gelieferten Objekte nicht anzeigen (siehe 03) |
