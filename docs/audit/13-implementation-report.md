@@ -122,3 +122,44 @@ Der volle Eval gegen den Streaming-Build ergab 47/49 und legte drei echte Schwä
 - Code: `git revert 34537e9` + Konsole-Deploy; Lookup allein: `LOOKUP_ENABLED=0` als Env.
 - KB: v2-Quelle löschen; Master + Generator liegen im Repo (jederzeit reproduzierbar).
 - Instructions: Originaltext in `04-agent-audit.md` dokumentiert.
+
+---
+
+## Nachtrag 2026-09-01: Kostenprüfung nach der August-Rechnung
+
+Anlass: Emmanuel fragt, warum ~$35 zusammenkommen.
+
+**Antwort:** Die August-Rechnung deckt den Monat ab, in dem am 6.8. optimiert wurde. Aufteilung: App ~$8,58 (6 Tage à $25/Monat, dann 25 Tage à $5/Monat) + OpenSearch $19,60 (voller Monat) + Agent/Inference ~$0,40 = ~$28,60 netto, mit 20 % USt ~$34,50. Gegenüber Juli ($48,35) bereits −28 %.
+
+**Ist-Prüfung (1.9.):** App unverändert $5 (RAM 13–15 %), genau eine App/Agent/KB/Cluster, keine zusätzlichen Ressourcen, Assistent voll funktionsfähig (446 Codes, Streaming, Lookup).
+
+### Umgesetzt am 1.9.
+
+| Maßnahme | Wirkung |
+|---|---|
+| **OpenSearch-Plan gewechselt**: `os-s-1-2-40-dd` ($19,60, 40 GiB) → `os-s-1-2-10-dd` ($12,15, 10 GiB) | **−$7,45/Monat** (−$107/Jahr). Beleg: Disk-Auslastung 0,02 %, der komplette Index belegt ~8 MB. Resize lief ohne Ausfall, KB während und nach dem Vorgang durchgehend geprüft. |
+| **Antworttiefe bei dünnen Codes** (`build_dataset_block`) | Die Anweisung „AUSSCHLIESSLICH auf Basis dieser Daten" verbot dem Modell, Handbuchtreffer zu nutzen; bei Codes mit Ein-Zeilen-Eintrag entstand dadurch „keine weiteren Angaben". Jetzt: Datensatz bleibt maßgeblich für Code/Bedeutung/Produktgruppen, Ursachen und Prüfschritte dürfen aus der Wissensdatenbank ergänzt werden. |
+| `NO_INFO_MARKERS` erweitert | Eden-Klima-Verweis greift auch bei „keine weiteren/näheren Angaben". |
+| Eval-Fälle 56–58 ergänzt | Die drei real gestellten Fragen aus dem Feedback (563, E560, e553) sind jetzt Teil der Regression. |
+
+### Produktionsfeedback (erste echte Signale)
+
+Die am 6.8. eingebaute Feedback-Funktion hat drei Bewertungen gesammelt: 6.8. „E560" (Nein), 14.8. „563" (Nein), 17.8. „e553" (Ja). Alle drei Codes waren dokumentiert und wurden gefunden — die negativen Bewertungen kamen von der Antworttiefe, nicht von einem Treffer-Problem. Genau das ist mit dem Fix oben adressiert; Nachmessung am 1.9.: 7/7 grün, „563" liefert jetzt Produktgruppe, Ursache und Handbuchquelle.
+
+**Zugleich das wichtigste Produktsignal:** drei Interaktionen in vier Wochen, Tokenkosten von wenigen Cent. Der Assistent wird praktisch nicht genutzt. Die Infrastrukturkosten sind damit nicht das eigentliche Problem, sondern die fehlende Nutzung.
+
+### Kostenstand
+
+| | netto | inkl. 20 % USt |
+|---|---|---|
+| Juli (vor Optimierung) | $44,68 | $48,35 |
+| August (Umstellung mitten im Monat) | ~$28,60 | ~$34,50 |
+| **September (ab jetzt)** | **$17,25** | **~$20,70** |
+| theoretisch ohne KB (nur App, Codes liefen weiter) | $5,10 | ~$6,12 |
+
+### Weiterhin offen
+
+- **Key-Swap + Token-Rotation** (Runbook A): unverändert offen, inzwischen fast einen Monat. Der account-weite DO-Token liegt weiterhin als Variable in der öffentlichen App.
+- **Auto-Deploy**: bewusst nicht gesetzt. Die App-Spec liegt in einem Monaco-Editor; ein automatisierter Eingriff dort wäre für eine reine Komfortfunktion zu riskant. Ein Deploy bleibt ein Klick unter Actions → Deploy.
+- **PDFs sichern** (Runbook E): Die drei Quell-PDFs lassen sich in der KB-Oberfläche **nicht exportieren**, es gibt nur „löschen". Sie existieren damit ausschließlich in der Knowledge Base. Solange das so ist, darf die KB nicht neu aufgebaut werden.
+- **Serverless-KB**: erneut geprüft, weiterhin nicht verfügbar (der KB-Assistent verlangt zwingend eine Datenbank). Weaviate existiert nur als Public Preview und ist für Kundenbetrieb ungeeignet.
