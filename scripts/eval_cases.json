@@ -545,6 +545,43 @@
         "indoor"
       ],
       "expect_status": "lookup"
+    },
+    {
+      "id": "56",
+      "input": "563",
+      "must_any": [
+        "indoor",
+        "innengerä",
+        "aussengerä",
+        "außengerä",
+        "stimmen",
+        "match"
+      ],
+      "expect_status": "lookup",
+      "note": "Echte Nutzerfrage aus dem Feedback vom 14.08. (damals negativ bewertet)."
+    },
+    {
+      "id": "57",
+      "input": "E560",
+      "must_any": [
+        "option",
+        "schalter",
+        "switch",
+        "dvm"
+      ],
+      "expect_status": "lookup",
+      "note": "Echte Nutzerfrage aus dem Feedback vom 06.08. (damals negativ bewertet)."
+    },
+    {
+      "id": "58",
+      "input": "e553",
+      "must_any": [
+        "553",
+        "equability",
+        "gleich"
+      ],
+      "expect_status": "lookup",
+      "note": "Echte Nutzerfrage aus dem Feedback vom 17.08. (positiv bewertet)."
     }
   ]
 }

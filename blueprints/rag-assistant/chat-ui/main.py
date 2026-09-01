@@ -223,11 +223,14 @@ def build_dataset_block(intent):
     """Render the verified dataset that gets appended to the user message."""
     parts = []
     instruction = (
-        "[ANWEISUNG: Beantworte die obige Nutzerfrage AUSSCHLIESSLICH auf Basis dieser "
-        "verifizierten Fehlercode-Daten im Fehlercode-Antwortformat. Diese Daten sind maßgeblich "
-        "und aktueller als alle anderen Quellen. Nenne dabei immer die betroffenen Produktgruppen "
-        "aus dem Datensatz. Antworte in der Sprache der Nutzerfrage. "
-        "Erfinde keine zusätzlichen Ursachen oder Reparaturschritte.]"
+        "[ANWEISUNG: Antworte im Fehlercode-Antwortformat. Die obigen verifizierten Fehlercode-Daten "
+        "sind für Code, Bedeutung und Produktgruppen maßgeblich und aktueller als alle anderen "
+        "Quellen; widersprich ihnen nicht und nenne immer die betroffenen Produktgruppen. "
+        "Ergänzende Angaben zu Ursachen, gefahrlosen Prüfschritten oder Maßnahmen darfst du "
+        "zusätzlich aus der Wissensdatenbank übernehmen, wenn sie sich eindeutig auf denselben "
+        "Fehlercode oder dasselbe Bauteil beziehen. Erfinde nichts dazu. Wenn weder Datensatz noch "
+        "Wissensdatenbank eine Ursache hergeben, sage das in einem Satz und empfiehl die Prüfung "
+        "durch Eden Klima. Antworte in der Sprache der Nutzerfrage.]"
     )
 
     if intent["type"] == "codes":
@@ -591,6 +594,8 @@ def _agent_headers():
 NO_INFO_MARKERS = (
     "keine gesicherten Informationen",
     "keine Angabe dazu finden",
+    "keine weiteren Angaben",
+    "keine näheren Angaben",
 )
 # The agent occasionally answers with its own error text (e.g. its rate limit).
 # That must never reach the chat window.
