@@ -582,6 +582,24 @@
       ],
       "expect_status": "lookup",
       "note": "Echte Nutzerfrage aus dem Feedback vom 17.08. (positiv bewertet)."
+    },
+    {
+      "id": "59",
+      "input": "E554",
+      "must_any": [
+        "kältemittel",
+        "gas",
+        "leck"
+      ],
+      "must_all": [
+        "eden klima"
+      ],
+      "must_not": [
+        "bördelverbindungen kontrollieren",
+        "serviceventil auf offenstellung"
+      ],
+      "expect_status": "lookup",
+      "note": "Kältekreis-Code: Ursache darf aus dem Handbuch kommen, Technikerschritte dürfen NICHT als Kundenhinweis erscheinen."
     }
   ]
 }

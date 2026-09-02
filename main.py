@@ -226,11 +226,17 @@ def build_dataset_block(intent):
         "[ANWEISUNG: Antworte im Fehlercode-Antwortformat. Die obigen verifizierten Fehlercode-Daten "
         "sind für Code, Bedeutung und Produktgruppen maßgeblich und aktueller als alle anderen "
         "Quellen; widersprich ihnen nicht und nenne immer die betroffenen Produktgruppen. "
-        "Ergänzende Angaben zu Ursachen, gefahrlosen Prüfschritten oder Maßnahmen darfst du "
-        "zusätzlich aus der Wissensdatenbank übernehmen, wenn sie sich eindeutig auf denselben "
-        "Fehlercode oder dasselbe Bauteil beziehen. Erfinde nichts dazu. Wenn weder Datensatz noch "
-        "Wissensdatenbank eine Ursache hergeben, sage das in einem Satz und empfiehl die Prüfung "
-        "durch Eden Klima. Antworte in der Sprache der Nutzerfrage.]"
+        "Ergänzende Angaben zu MÖGLICHEN URSACHEN darfst du zusätzlich aus der Wissensdatenbank "
+        "übernehmen, wenn sie sich eindeutig auf denselben Fehlercode oder dasselbe Bauteil "
+        "beziehen. Erfinde nichts dazu. WICHTIG: Der Abschnitt mit den Kundenhinweisen darf "
+        "ausschliesslich die erlaubten Basischecks enthalten (Fehlercode notieren, Gerät aus- und "
+        "wieder einschalten, Fernbedienung und Batterien prüfen, Betriebsmodus prüfen, sichtbaren "
+        "Filterstatus prüfen, Stromversorgung grundsätzlich prüfen, Foto vom Typenschild). "
+        "Arbeiten am Kältekreis, an Serviceventilen, Bördelverbindungen, EEV, Verdichter, Platinen "
+        "oder an der Elektrik gehören NIEMALS in die Kundenhinweise, sondern ausschliesslich in die "
+        "Empfehlung an den Fachtechniker. Wenn weder Datensatz noch Wissensdatenbank eine Ursache "
+        "hergeben, sage das in einem Satz und empfiehl die Prüfung durch Eden Klima. "
+        "Antworte in der Sprache der Nutzerfrage.]"
     )
 
     if intent["type"] == "codes":
