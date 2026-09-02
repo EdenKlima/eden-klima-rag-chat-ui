@@ -144,7 +144,7 @@ Anlass: Emmanuel fragt, warum ~$35 zusammenkommen.
 
 ### Produktionsfeedback (erste echte Signale)
 
-Die am 6.8. eingebaute Feedback-Funktion hat drei Bewertungen gesammelt: 6.8. „E560" (Nein), 14.8. „563" (Nein), 17.8. „e553" (Ja). Alle drei Codes waren dokumentiert und wurden gefunden — die negativen Bewertungen kamen von der Antworttiefe, nicht von einem Treffer-Problem. Genau das ist mit dem Fix oben adressiert; Nachmessung am 1.9.: 7/7 grün, „563" liefert jetzt Produktgruppe, Ursache und Handbuchquelle.
+Die am 6.8. eingebaute Feedback-Funktion hat drei Bewertungen gesammelt: 6.8. „E560" (Nein), 14.8. „563" (Nein), 17.8. „e553" (Ja). Alle drei Codes waren dokumentiert und wurden gefunden — die negativen Bewertungen kamen von der Antworttiefe, nicht von einem Treffer-Problem. Genau das ist mit dem Fix oben adressiert; Nachmessung am 1.9.: 7/7 grün (inkl. der drei realen Fragen), „563" liefert jetzt Produktgruppe, Ursache und Handbuchquelle. Zusätzliche Regression über 13 deterministische Lookup-Fälle nach der Instruktionsänderung: **13/13 grün** (`results/eval-2026-09-01-regression.csv`) — die gelockerte Anweisung hat die Codegenauigkeit nicht aufgeweicht.
 
 **Zugleich das wichtigste Produktsignal:** drei Interaktionen in vier Wochen, Tokenkosten von wenigen Cent. Der Assistent wird praktisch nicht genutzt. Die Infrastrukturkosten sind damit nicht das eigentliche Problem, sondern die fehlende Nutzung.
 
