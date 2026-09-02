@@ -163,3 +163,21 @@ Die am 6.8. eingebaute Feedback-Funktion hat drei Bewertungen gesammelt: 6.8. �
 - **Auto-Deploy**: bewusst nicht gesetzt. Die App-Spec liegt in einem Monaco-Editor; ein automatisierter Eingriff dort wäre für eine reine Komfortfunktion zu riskant. Ein Deploy bleibt ein Klick unter Actions → Deploy.
 - **PDFs sichern** (Runbook E): Die drei Quell-PDFs lassen sich in der KB-Oberfläche **nicht exportieren**, es gibt nur „löschen". Sie existieren damit ausschließlich in der Knowledge Base. Solange das so ist, darf die KB nicht neu aufgebaut werden.
 - **Serverless-KB**: erneut geprüft, weiterhin nicht verfügbar (der KB-Assistent verlangt zwingend eine Datenbank). Weaviate existiert nur als Public Preview und ist für Kundenbetrieb ungeeignet.
+
+### Chat-Abnahme 1.9. (sechs Live-Fälle) und zwei Folgefunde
+
+Getestet: E554, „Fehler 563 bei einem DVM", e553, E999, Bereich 460–470, „zeigt 471 an". Alle inhaltlich korrekt (Bedeutung, Produktgruppen, Quellen, Eden-Klima-Verweis); E999 schlägt korrekt die nächstgelegenen dokumentierten Codes vor.
+
+**Fund 1 (sicherheitsrelevant, selbst verursacht):** Bei E554 landeten Technikerschritte im Kundenabschnitt („Serviceventil auf Offenstellung prüfen", „Bördelverbindungen kontrollieren"). Ursache war die Lockerung von 13:xx: Handbuch-Ergänzung erlaubt, aber ohne Angabe, *welchen Abschnitt* sie speisen darf. Behoben (`94c3606`): Ergänzungen speisen ausschliesslich „Mögliche Ursache"; der Kundenabschnitt ist auf die erlaubten Basischecks begrenzt, Kältekreis/Ventile/EEV/Elektrik gehören ausnahmslos in die Techniker-Empfehlung. Verifiziert: Ursachen nennen jetzt Serviceventil und Bördelverbindungen, die Kundenhinweise nicht mehr. Neuer Dauertest **Fall 59** sichert das ab.
+
+**Fund 2 (kosmetisch):** Das Modell schrieb Chunk-Kennungen als Text („*Quelle: C3*"), die der Marker-Filter nicht erfasste (er kannte nur `[[C1]]`/`[C2]`). Behoben (`a669aca`); benannte Quellen wie „Quelle: Technisches Handbuch Samsung" bleiben erhalten (Test deckt beides ab).
+
+**Abnahme nach beiden Fixes:** 7/7 grün inkl. Fall 59 (`results/eval-2026-09-01-final.csv`), 75 Offline-Tests grün.
+
+### Ressourcen-Sweep 1.9. (Frage: Doppelverrechnung?)
+
+Ganzes Konto geprüft: **1 App, 1 Agent (1 Workspace), 1 Knowledge Base, 1 Datenbank.** Keine Droplets, Spaces, Functions, Container Registry, Snapshots oder Volumes. Keine Doppelressourcen, keine Altlasten.
+
+`genai-walrus` ist **kein Zusatzposten, sondern der Speicher der Wissensdatenbank** (DO verlangt für jede KB zwingend einen OpenSearch-Cluster; der Name ist automatisch vergeben). Zur besseren Zuordnung auf der Rechnung vom Projekt `first-project` nach `eden-klima-knowledge-assistant` verschoben (reine Metadaten-Änderung, kostenneutral).
+
+**Nebenbefund:** Die DO-Konsole zeigt Zeitstempel in US-Zeitzone; ein Deploy von 18:5x erscheint dort als „09:16 AM". Das erklärt scheinbar widersprüchliche „vor X Stunden"-Angaben.
