@@ -99,6 +99,9 @@ check("neighbors near 544", "554" in neighbors or "545" in neighbors, str(neighb
 # --- content cleaning --------------------------------------------------------
 check("citation strip", main._clean_content("Antwort [[C1]] und [C2] Ende.") == "Antwort und Ende.")
 check("markdown link untouched", main._clean_content("Siehe [Doku](https://x) fertig.") == "Siehe [Doku](https://x) fertig.")
+check("plain Quelle: C3 stripped", main._clean_content("Bedeutung\n*Quelle: C3*\nEnde") == "Bedeutung\nEnde")
+check("parenthesised Quelle stripped", main._clean_content("Text (Quelle: C5) weiter") == "Text weiter")
+check("named source survives", "Technisches Handbuch" in main._clean_content("Quelle: Technisches Handbuch Samsung"))
 
 # --- guardrail canned-text detection -----------------------------------------
 canned = "I'm not able to respond to that request, but I can answer other questions."

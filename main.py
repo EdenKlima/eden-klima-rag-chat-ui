@@ -944,7 +944,12 @@ async def _get_provider_status():
     return PROVIDER_STATUS_CACHE
 
 
-CITATION_MARKER_RE = re.compile(r"\s*\[+\s*C\d+\s*\]+")
+CITATION_MARKER_RE = re.compile(
+    # [[C1]] / [C2] and the plain-text variants the model sometimes writes
+    # ("Quelle: C3", "(Quelle: C5)"). A named source like
+    # "Quelle: Technisches Handbuch Samsung" must survive.
+    r"\s*\(?\*{0,2}Quellen?:\s*C\d+\*{0,2}\)?|\s*\[+\s*C\d+\s*\]+"
+)
 
 
 def _clean_content(text):
